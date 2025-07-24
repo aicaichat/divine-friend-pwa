@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  
+  <!-- PWA 支持 -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#d4af37" />
+  <meta name="background-color" content="#f5f4e8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="神仙朋友" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="交个神仙朋友" />
+  
+  <!-- 标准图标 -->
+  <link rel="icon" href="/favicon.ico" />
+  
+  <!-- SEO 优化 -->
+  <title>交个神仙朋友 - 东方禅意的AI陪伴应用</title>
+  <meta name="description" content="融合传统文化与现代科技的智慧陪伴应用。与AI神仙对话、八字命理分析、NFC开光手串验证、经典诵读，体验五千年文化的数字化传承。" />
+  
+  <!-- 性能优化 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  
+  <!-- 字体预加载 -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap"></noscript>
+  
+  <!-- 关键 CSS 内联 -->
+  <style>
+    /* 关键渲染路径 CSS */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { 
+      scroll-behavior: smooth; 
+      font-size: 16px; 
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      line-height: 1.8;
+      color: #2c2c2c;
+      background: linear-gradient(135deg, #f5f4e8 0%, #faf9f0 100%);
+      min-height: 100vh;
+      letter-spacing: 0.02em;
+      text-rendering: optimizeLegibility;
+    }
+    
+    /* 应用容器 */
+    #root {
+      min-height: 100vh;
+      position: relative;
+    }
+  </style>
+  
+  <script type="module" crossorigin src="/assets/index-b61e2580.js"></script>
+  <link rel="stylesheet" href="/assets/index-1aa60aba.css">
+</head>
+<body>
+  <!-- 应用根容器 -->
+  <div id="root"></div>
+  
+  <!-- 直接跳转到聊天页面的脚本 -->
+  <script>
+    // 设置URL hash直接跳转到聊天页面
+    if (!window.location.hash.includes('page=free-chat')) {
+      // 获取URL参数中的神仙ID
+      const urlParams = new URLSearchParams(window.location.search);
+      const deity = urlParams.get('deity') || 'guanyin';
+      window.location.hash = `#?page=free-chat&deity=${deity}`;
+    }
+    
+    // 监听来自父窗口的配置消息
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'DIVINE_FRIEND_CONFIG') {
+        const config = event.data.config;
+        if (config.deity) {
+          // 更新hash中的神仙参数
+          window.location.hash = `#?page=free-chat&deity=${config.deity}`;
+        }
+        console.log('收到插件配置:', config);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+/* =================== ⚡ 性能优化和兼容性 =================== */
+/* 确保所有视觉效果在各种设备上流畅运行 */
+
+/* === GPU 加速优化 === */
+.zen-accelerated,
+.zen-card,
+.zen-button,
+.divine-avatar,
+.fortune-card-premium {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* === 动画性能优化 === */
+@media (prefers-reduced-motion: no-preference) {
+  .zen-smooth-animation {
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* === 低性能设备优化 === */
+@media (max-width: 768px) and (max-height: 1024px) {
+  /* 减少复杂动画 */
+  .zen-card,
+  .divine-avatar,
+  .fortune-card-premium {
+    animation-duration: 6s !important;
+  }
+  
+  /* 简化背景效果 */
+  body::before {
+    background-size: 400px 400px, 300px 300px, 200px 200px !important;
+    animation-duration: 120s !important;
+  }
+  
+  /* 降低模糊效果强度 */
+  .zen-card,
+  .zen-glass,
+  .quantum-container {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+}
+
+/* === 超低性能设备回退 === */
+@media (max-width: 480px) and (max-height: 800px) {
+  /* 禁用复杂动画 */
+  .zen-particles::after,
+  .zen-divine-light::before,
+  .zen-hologram::before {
+    display: none !important;
+  }
+  
+  /* 简化渐变效果 */
+  .zen-card-divine::before,
+  .zen-card-aurora,
+  .zen-electric::before {
+    animation: none !important;
+    background: rgba(255, 215, 0, 0.1) !important;
+  }
+  
+  /* 降低阴影复杂度 */
+  .zen-card,
+  .zen-button,
+  .divine-button {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* === 浏览器兼容性 === */
+
+/* Safari 兼容性 */
+@supports (-webkit-backdrop-filter: blur(10px)) {
+  .zen-glass,
+  .quantum-container,
+  .floating-panel {
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+/* Firefox 兼容性 */
+@-moz-document url-prefix() {
+  .zen-card-divine::before,
+  .zen-electric::before {
+    /* Firefox不支持mask-composite，使用简化版本 */
+    background: linear-gradient(45deg, 
+      rgba(255, 215, 0, 0.3) 0%, 
+      rgba(255, 107, 107, 0.2) 50%, 
+      rgba(72, 219, 251, 0.3) 100%);
+    mask: none;
+  }
+}
+
+/* Edge 兼容性 */
+@supports (-ms-ime-align: auto) {
+  .zen-title {
+    /* Edge不完全支持background-clip: text */
+    background: none;
+    color: #C9A961;
+    -webkit-text-fill-color: initial;
+  }
+}
+
+/* === 高刷新率屏幕优化 === */
+@media (min-resolution: 120dpi) {
+  .zen-card,
+  .divine-avatar,
+  .zen-button {
+    /* 高DPI屏幕上的精细调整 */
+    border-width: 0.5px;
+  }
+  
+  .zen-title {
+    /* 高DPI下文字渲染优化 */
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* === 横屏模式优化 === */
+@media (orientation: landscape) and (max-height: 500px) {
+  .zen-container {
+    padding: var(--space-pulse) var(--space-verse);
+  }
+  
+  .zen-title {
+    font-size: var(--text-heading);
+    margin-bottom: var(--space-pulse);
+  }
+  
+  .divine-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+}
+
+/* === 打印样式优化 === */
+@media print {
+  /* 移除所有动画和背景效果 */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  .zen-card {
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+  
+  .zen-title {
+    color: #333 !important;
+    -webkit-text-fill-color: #333 !important;
+  }
+  
+  .bottom-nav,
+  .floating-panel {
+    display: none !important;
+  }
+}
+
+/* === 暗色模式性能优化 === */
+@media (prefers-color-scheme: dark) {
+  /* 暗色模式下减少发光效果以节省电量 */
+  .zen-card:hover,
+  .zen-button:hover,
+  .divine-button:hover {
+    box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2) !important;
+  }
+  
+  .zen-particles::after {
+    opacity: 0.3 !important;
+  }
+}
+
+/* === 网络状况优化 === */
+@media (prefers-reduced-data: reduce) {
+  /* 在数据节省模式下禁用复杂效果 */
+  .zen-particles::after,
+  .zen-divine-light::before,
+  body::before {
+    display: none !important;
+  }
+  
+  .zen-card,
+  .zen-button {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* === 触摸设备优化 === */
+@media (hover: none) and (pointer: coarse) {
+  /* 触摸设备上增大可点击区域 */
+  .zen-button,
+  .divine-button,
+  .bottom-nav .nav-item {
+    min-height: 48px;
+    min-width: 48px;
+    padding: var(--space-pulse);
+  }
+  
+  /* 移除hover效果，避免粘滞 */
+  .zen-card:hover,
+  .zen-button:hover,
+  .bottom-nav .nav-item:hover {
+    transform: none !important;
+  }
+  
+  /* 增强active状态反馈 */
+  .zen-button:active,
+  .bottom-nav .nav-item:active {
+    transform: scale(0.95) !important;
+    transition: transform 0.1s ease !important;
+  }
+}
+
+/* === 可访问性增强 === */
+@media (prefers-contrast: high) {
+  .zen-card {
+    border: 3px solid #000;
+    background: #fff;
+  }
+  
+  .zen-title {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+  }
+  
+  .zen-button {
+    background: #000 !important;
+    color: #fff !important;
+    border: 3px solid #000;
+  }
+  
+  .bottom-nav .nav-item {
+    color: #000 !important;
+  }
+  
+  .bottom-nav .nav-item.active {
+    background: #000 !important;
+    color: #fff !important;
+  }
+}
+
+/* === 焦点管理 === */
+.zen-focus-visible:focus-visible,
+.zen-button:focus-visible,
+.bottom-nav .nav-item:focus-visible {
+  outline: 3px solid var(--earth-golden);
+  outline-offset: 2px;
+  z-index: 1001;
+}
+
+/* === 内存优化 === */
+.zen-lazy-load {
+  /* 懒加载容器，减少初始渲染负担 */
+  contain: layout style paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 200px;
+}
+
+/* === 性能监控类 === */
+.zen-perf-critical {
+  /* 标记性能关键元素 */
+  contain: strict;
+  will-change: transform, opacity;
+}
+
+.zen-perf-optimized {
+  /* 已优化元素标记 */
+  transform: translate3d(0, 0, 0);
+  contain: layout style paint;
+}
+
+/* === 错误回退样式 === */
+@supports not (backdrop-filter: blur(10px)) {
+  .zen-glass,
+  .quantum-container,
+  .floating-panel {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+@supports not (mask: linear-gradient(#fff 0 0)) {
+  .zen-card-divine::before,
+  .zen-electric::before {
+    display: none;
+  }
+  
+  .zen-card-divine,
+  .zen-electric {
+    border: 2px solid rgba(255, 215, 0, 0.5);
+  }
+}
+
+/* === 调试辅助 === */
+.zen-debug {
+  /* 开发调试时使用 */
+  outline: 2px dashed red;
+  outline-offset: 2px;
+}
+
+.zen-debug::before {
+  content: 'DEBUG';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  background: red;
+  color: white;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: bold;
+  z-index: 9999;
+}

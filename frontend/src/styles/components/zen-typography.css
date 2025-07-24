@@ -1,0 +1,364 @@
+/*
+交个神仙朋友 PWA - 东方禅意字体系统
+诗意表达 · 文字的灵魂律动
+*/
+
+/* 🖋️ 字体族定义 */
+:root {
+  /* 中文字体族 - 传统与现代的平衡 */
+  --font-chinese-display: 'Ma Shan Zheng', 'Zhi Mang Xing', '华文行楷', 'STXingkai', cursive;
+  --font-chinese-title: 'Noto Serif SC', 'Source Han Serif SC', '思源宋体', 'SimSun', serif;
+  --font-chinese-body: 'Noto Sans SC', 'Source Han Sans SC', '思源黑体', 'SimHei', sans-serif;
+  --font-chinese-elegant: 'ZCOOL KuaiLe', 'Liu Jian Mao Cao', '华文楷体', 'STKaiti', cursive;
+  
+  /* 英文字体族 - 现代科技感 */
+  --font-english-display: 'Playfair Display', 'Crimson Text', Georgia, serif;
+  --font-english-title: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+  --font-english-body: 'Inter', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-english-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Consolas', monospace;
+  
+  /* 混合字体族 - 中英文和谐统一 */
+  --font-mixed-display: var(--font-chinese-display), var(--font-english-display);
+  --font-mixed-title: var(--font-chinese-title), var(--font-english-title);
+  --font-mixed-body: var(--font-chinese-body), var(--font-english-body);
+  
+  /* 🎨 字体尺寸系统 - 黄金比例 */
+  --text-xs: clamp(0.75rem, 2vw, 0.875rem);      /* 12-14px */
+  --text-sm: clamp(0.875rem, 2.5vw, 1rem);       /* 14-16px */
+  --text-base: clamp(1rem, 3vw, 1.125rem);       /* 16-18px */
+  --text-lg: clamp(1.125rem, 3.5vw, 1.25rem);    /* 18-20px */
+  --text-xl: clamp(1.25rem, 4vw, 1.5rem);        /* 20-24px */
+  --text-2xl: clamp(1.5rem, 5vw, 2rem);          /* 24-32px */
+  --text-3xl: clamp(2rem, 6vw, 2.5rem);          /* 32-40px */
+  --text-4xl: clamp(2.5rem, 7vw, 3rem);          /* 40-48px */
+  --text-5xl: clamp(3rem, 8vw, 4rem);            /* 48-64px */
+  --text-6xl: clamp(4rem, 10vw, 6rem);           /* 64-96px */
+  
+  /* 📏 行高系统 - 呼吸感的节奏 */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* 📐 字符间距 - 优雅的留白 */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  
+  /* 🎭 字体权重 */
+  --font-thin: 100;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+}
+
+/* 🌟 字体层级系统 */
+
+/* 显示级标题 - 震撼人心的视觉冲击 */
+.text-display-giant {
+  font-family: var(--font-mixed-display);
+  font-size: var(--text-6xl);
+  font-weight: var(--font-black);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  background: var(--gradient-divine-aura);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 4px 8px rgba(251, 191, 36, 0.3));
+}
+
+.text-display-large {
+  font-family: var(--font-mixed-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-normal);
+  color: var(--divine-gold);
+  text-shadow: 0 2px 4px rgba(251, 191, 36, 0.4);
+}
+
+.text-display-medium {
+  font-family: var(--font-mixed-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-primary);
+}
+
+/* 标题级文字 - 清晰的信息层次 */
+.text-title-huge {
+  font-family: var(--font-mixed-title);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.text-title-large {
+  font-family: var(--font-mixed-title);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-primary);
+}
+
+.text-title-medium {
+  font-family: var(--font-mixed-title);
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-primary);
+}
+
+.text-title-small {
+  font-family: var(--font-mixed-title);
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-secondary);
+}
+
+/* 正文级文字 - 舒适的阅读体验 */
+.text-body-large {
+  font-family: var(--font-mixed-body);
+  font-size: var(--text-lg);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-primary);
+}
+
+.text-body-medium {
+  font-family: var(--font-mixed-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-primary);
+}
+
+.text-body-small {
+  font-family: var(--font-mixed-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-secondary);
+}
+
+.text-caption {
+  font-family: var(--font-mixed-body);
+  font-size: var(--text-xs);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+}
+
+/* 🎨 特殊文字效果 */
+
+/* 神仙朋友专属字体效果 */
+.text-deity-shine {
+  background: linear-gradient(45deg, 
+    var(--divine-gold) 0%, 
+    var(--divine-crystal) 50%, 
+    var(--divine-jade) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: deity-shine 3s ease-in-out infinite;
+}
+
+@keyframes deity-shine {
+  0%, 100% { 
+    filter: brightness(1) saturate(1);
+  }
+  50% { 
+    filter: brightness(1.2) saturate(1.3);
+  }
+}
+
+/* 禅意文字 - 宁静致远 */
+.text-zen-wisdom {
+  font-family: var(--font-chinese-elegant);
+  color: var(--zen-shadow);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.text-zen-wisdom:hover {
+  color: var(--divine-gold);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* 运势文字 - 五行能量 */
+.text-fortune-wood {
+  color: var(--wood-spring);
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.text-fortune-fire {
+  color: var(--fire-summer);
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.text-fortune-earth {
+  color: var(--earth-center);
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.text-fortune-metal {
+  color: var(--metal-autumn);
+  text-shadow: 0 0 10px rgba(148, 163, 184, 0.3);
+}
+
+.text-fortune-water {
+  color: var(--water-winter);
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* 🌊 文字动画效果 */
+
+/* 呼吸文字 - 生命的律动 */
+.text-breathe {
+  animation: text-breathe 4s ease-in-out infinite;
+}
+
+@keyframes text-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+/* 浮现文字 - 渐次显现 */
+.text-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: text-fade-in 1s ease-out forwards;
+}
+
+@keyframes text-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 打字机效果 - 逐字显现 */
+.text-typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--divine-gold);
+  white-space: nowrap;
+  animation: 
+    typing 3s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--divine-gold); }
+}
+
+/* 🎯 响应式字体优化 */
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .text-display-giant {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: var(--leading-tight);
+  }
+  
+  .text-display-large {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  
+  .text-title-huge {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
+}
+
+/* 平板端优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .text-display-giant {
+    font-size: clamp(3rem, 8vw, 5rem);
+  }
+}
+
+/* 桌面端优化 */
+@media (min-width: 1025px) {
+  .text-display-giant {
+    font-size: clamp(4rem, 6vw, 6rem);
+  }
+}
+
+/* 🌟 可访问性优化 */
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .text-deity-shine,
+  .text-breathe,
+  .text-fade-in,
+  .text-typewriter {
+    animation: none;
+  }
+  
+  .text-zen-wisdom {
+    transition: none;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .text-deity-shine,
+  .text-fortune-wood,
+  .text-fortune-fire,
+  .text-fortune-earth,
+  .text-fortune-metal,
+  .text-fortune-water {
+    -webkit-text-fill-color: initial;
+    background: none;
+    text-shadow: none;
+    color: var(--color-text-primary);
+  }
+}
+
+/* 🎨 工具类 */
+.font-chinese { font-family: var(--font-chinese-body); }
+.font-english { font-family: var(--font-english-body); }
+.font-mixed { font-family: var(--font-mixed-body); }
+.font-display { font-family: var(--font-mixed-display); }
+.font-elegant { font-family: var(--font-chinese-elegant); }
+
+.leading-tight { line-height: var(--leading-tight); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+
+.tracking-tight { letter-spacing: var(--tracking-tight); }
+.tracking-normal { letter-spacing: var(--tracking-normal); }
+.tracking-wide { letter-spacing: var(--tracking-wide); } 

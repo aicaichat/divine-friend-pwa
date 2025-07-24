@@ -1,0 +1,484 @@
+/* 交个神仙朋友 - 世界级玄学大师美学系统 v4.0 */
+/* 天人合一 · 道法自然 · 万物有灵 · 五千年智慧的数字化表达 */
+
+/* =================== 📚 字体导入 =================== */
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Zhi+Mang+Xing&family=ZCOOL+KuaiLe&display=swap');
+
+:root {
+  /* =================== 🌌 宇宙哲学色彩体系 =================== */
+  --taiji-yang: #FFFFFF;
+  --taiji-yin: #1A1A1A;
+  --wood-essence: #228B22;
+  --fire-essence: #DC143C;
+  --earth-essence: #DAA520;
+  --metal-essence: #C0C0C0;
+  --water-essence: #4169E1;
+  --primary-gold: #FFD700;
+  --primary-gold-light: #FFF8DC;
+  --primary-gold-dark: #B8860B;
+
+  /* =================== 🔮 运势色彩系统 =================== */
+  --color-excellent: #22c55e;          /* 大吉运势 - 翠绿生机 */
+  --color-good: #3b82f6;               /* 吉运势 - 天青蓝色 */
+  --color-normal: #f59e0b;             /* 平运势 - 琥珀橙色 */
+  --color-challenging: #ef4444;        /* 谨慎运势 - 朱砂红色 */
+  --color-online: #10b981;             /* 在线状态 - 翡翠绿 */
+
+  /* =================== 🎨 基础色彩 =================== */
+  --background-primary: #0A0A0A;
+  --background-secondary: #1A1A1A;
+  --background-tertiary: #2A2A2A;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-tertiary: #999999;
+  --border-primary: rgba(255, 215, 0, 0.3);
+  --border-secondary: rgba(255, 255, 255, 0.1);
+  --border-mystic: rgba(255, 215, 0, 0.2);
+  --border-divine: rgba(255, 215, 0, 0.4);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-fortune: rgba(255, 215, 0, 0.15);
+  --border-action: rgba(255, 255, 255, 0.15);
+
+  /* =================== 🌅 神圣渐变系统 =================== */
+  --gradient-primary: linear-gradient(135deg, 
+    #0a0a0a 0%, 
+    #1a1a1a 50%, 
+    #2a1a0a 100%);
+  
+  --gradient-mystic-card: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.08) 0%,
+    rgba(255, 182, 193, 0.05) 50%,
+    rgba(138, 43, 226, 0.03) 100%);
+    
+  --gradient-deity-card: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.12) 0%,
+    rgba(255, 182, 193, 0.08) 50%,
+    rgba(138, 43, 226, 0.05) 100%);
+
+  --gradient-fortune-card: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.06) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 182, 193, 0.04) 100%);
+
+  --gradient-avatar-bg: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.1) 0%,
+    rgba(255, 182, 193, 0.05) 100%);
+
+  --gradient-fallback: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.2) 0%,
+    rgba(255, 182, 193, 0.1) 100%);
+
+  --gradient-action-area: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 215, 0, 0.03) 100%);
+
+  --gradient-primary-button: linear-gradient(135deg,
+    var(--primary-gold) 0%,
+    #ffb347 100%);
+
+  --gradient-secondary-button: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 215, 0, 0.05) 100%);
+
+  --gradient-secondary-button-hover: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 215, 0, 0.08) 100%);
+
+  /* =================== 💫 神圣阴影系统 =================== */
+  --shadow-divine: 
+    0 8px 32px rgba(255, 215, 0, 0.25),
+    0 4px 16px rgba(255, 215, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  --shadow-conversation:
+    0 6px 24px rgba(255, 215, 0, 0.2),
+    0 3px 12px rgba(255, 215, 0, 0.1);
+
+  --shadow-conversation-hover:
+    0 8px 32px rgba(255, 215, 0, 0.3),
+    0 4px 16px rgba(255, 215, 0, 0.15);
+
+  --shadow-fortune:
+    0 4px 16px rgba(255, 215, 0, 0.1),
+    0 2px 8px rgba(255, 215, 0, 0.05);
+
+  --shadow-button:
+    0 4px 12px rgba(255, 215, 0, 0.3),
+    0 2px 6px rgba(255, 215, 0, 0.2);
+
+  --shadow-button-hover:
+    0 6px 20px rgba(255, 215, 0, 0.4),
+    0 3px 10px rgba(255, 215, 0, 0.25);
+
+  /* =================== 📏 间距系统 =================== */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+
+  /* =================== 🔵 圆角系统 =================== */
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-large: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* =================== 📝 字体系统 =================== */
+  --font-primary: 'Noto Serif SC', serif;
+  --font-decorative: 'Ma Shan Zheng', serif;
+  --font-playful: 'Zhi Mang Xing', cursive;
+  --font-modern: 'ZCOOL KuaiLe', sans-serif;
+
+  /* =================== 🎯 功能性变量 =================== */
+  --color-primary-action: var(--primary-gold);
+  --color-primary-hover: var(--primary-gold-light);
+  --color-background: var(--background-primary);
+  --nav-height: 80px;
+
+  /* =================== ⚡ 动画时长 =================== */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+  --duration-extra-slow: 1s;
+
+  /* =================== 📱 响应式断点 =================== */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+}
+
+/* =================== 🎨 全局样式重置 =================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =================== 🎯 基础组件样式 =================== */
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all var(--duration-normal) ease;
+  -webkit-tap-highlight-color: rgba(255, 215, 0, 0.2);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =================== 🎭 动画类 =================== */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-slow) ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--duration-slow) ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-normal) ease-out;
+}
+
+/* =================== 🎪 动画关键帧 =================== */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -30px, 0);
+  }
+  70% {
+    transform: translate3d(0, -15px, 0);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =================== 🎨 实用工具类 =================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* =================== 📱 移动端优化 =================== */
+.mobile-haptic-feedback:active {
+  transform: scale(0.96);
+  transition: transform var(--duration-fast) ease;
+}
+
+.mobile-touch-target {
+  min-height: 48px;
+  min-width: 48px;
+  margin: 12px 0;
+}
+
+.mobile-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-normal) ease, height var(--duration-normal) ease;
+}
+
+.mobile-ripple:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+/* =================== 📱 响应式设计 =================== */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* =================== 🌙 深色模式优化 =================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* =================== ♿ 无障碍优化 =================== */
+@media (prefers-reduced-motion: reduce) {
+*,
+*::before,
+*::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: rgba(255, 215, 0, 0.8);
+    --border-divine: rgba(255, 215, 0, 0.9);
+    --text-secondary: #EEEEEE;
+  }
+}
+
+/* =================== 🎯 焦点可见性 =================== */
+:focus-visible {
+  outline: 2px solid var(--primary-gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+
+/* =================== 🎪 滚动条美化 =================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-gold), #ffb347);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-gold-light), var(--primary-gold));
+}
+
+/* =================== 🎨 选择文本样式 =================== */
+::selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background: rgba(255, 215, 0, 0.3);
+  color: var(--text-primary);
+}

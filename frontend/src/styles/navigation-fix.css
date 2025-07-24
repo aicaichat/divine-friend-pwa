@@ -1,0 +1,203 @@
+/* 导航样式修复 - 覆盖冲突的CSS */
+/* 优先级提升和样式重置 */
+
+/* 字体和文本渲染修复 */
+* {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+body {
+  font-family: 'Noto Serif SC', 'Ma Shan Zheng', serif !important;
+  line-height: 1.6 !important;
+  color: #ffffff !important;
+}
+
+/* 重置可能冲突的全局样式 */
+.zen-bottom-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border-top: 1px solid rgba(255, 215, 0, 0.3) !important;
+  padding: 12px 0 !important;
+  z-index: 1000 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3) !important;
+  height: auto !important;
+  min-height: auto !important;
+  font-family: 'Noto Serif SC', serif !important;
+}
+
+.zen-nav-items {
+  display: flex !important;
+  justify-content: space-around !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  padding: 0 16px !important;
+  align-items: center !important;
+  height: auto !important;
+}
+
+.zen-nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  font-size: 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  border-radius: 8px !important;
+  min-width: 60px !important;
+  position: relative !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-family: 'Noto Serif SC', serif !important;
+}
+
+.zen-nav-item.active {
+  background: rgba(255, 215, 0, 0.15) !important;
+  transform: none !important;
+  color: #ffd700 !important;
+}
+
+.zen-nav-item:hover {
+  background: rgba(255, 215, 0, 0.1) !important;
+  transform: translateY(-2px) !important;
+  color: #ffd700 !important;
+}
+
+.zen-nav-icon {
+  font-size: 1.5rem !important;
+  margin-bottom: 4px !important;
+  transition: transform 0.3s ease !important;
+  display: block !important;
+  color: inherit !important;
+}
+
+.zen-nav-item:hover .zen-nav-icon {
+  transform: scale(1.1) !important;
+}
+
+.zen-nav-item.active .zen-nav-icon {
+  color: #ffd700 !important;
+}
+
+.zen-nav-label {
+  font-size: 0.7rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  margin-bottom: 2px !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  color: inherit !important;
+  font-family: 'Noto Serif SC', serif !important;
+}
+
+.zen-nav-item.active .zen-nav-label {
+  font-weight: 600 !important;
+  color: #ffd700 !important;
+}
+
+.zen-nav-desc {
+  font-size: 0.6rem !important;
+  text-align: center !important;
+  line-height: 1.1 !important;
+  opacity: 0.8 !important;
+  color: inherit !important;
+  font-family: 'Noto Serif SC', serif !important;
+}
+
+.zen-nav-item.active .zen-nav-desc {
+  color: rgba(255, 215, 0, 0.8) !important;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .zen-nav-items {
+    padding: 0 12px !important;
+  }
+  
+  .zen-nav-item {
+    min-width: 50px !important;
+    padding: 6px 8px !important;
+  }
+  
+  .zen-nav-icon {
+    font-size: 1.3rem !important;
+  }
+  
+  .zen-nav-label {
+    font-size: 0.65rem !important;
+  }
+  
+  .zen-nav-desc {
+    font-size: 0.55rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .zen-nav-items {
+    padding: 0 8px !important;
+  }
+  
+  .zen-nav-item {
+    min-width: 45px !important;
+    padding: 6px !important;
+  }
+  
+  .zen-nav-icon {
+    font-size: 1.2rem !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .zen-nav-label {
+    font-size: 0.6rem !important;
+  }
+  
+  .zen-nav-desc {
+    font-size: 0.5rem !important;
+  }
+}
+
+/* 确保主内容区域不被导航遮挡 */
+main {
+  padding-bottom: 100px !important;
+  min-height: 100vh !important;
+}
+
+/* 页面切换动画 */
+.page-transition-enter {
+  animation: fadeIn 0.3s ease-in-out !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 修复可能的布局问题 */
+.min-h-screen {
+  min-height: 100vh !important;
+  position: relative !important;
+}
+
+/* 确保首页和其他页面的基础样式正确 */
+.home-optimized,
+.chat-page-container {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+} 

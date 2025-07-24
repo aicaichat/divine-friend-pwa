@@ -1,0 +1,506 @@
+/* =================== 🎯 增强视觉组件系统 =================== */
+/* 世界级交互体验和视觉震撼效果 */
+
+/* === 神仙朋友特色组件 === */
+
+/* 神性头像组件 */
+.divine-avatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--divine-aurora);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  animation: divine-breathe 4s ease-in-out infinite;
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.4),
+    0 0 40px rgba(255, 215, 0, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.divine-avatar::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 215, 0, 0.6) 90deg,
+    transparent 180deg,
+    rgba(255, 215, 0, 0.6) 270deg,
+    transparent 360deg
+  );
+  animation: divine-rotation 8s linear infinite;
+  z-index: -1;
+}
+
+.divine-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(255, 215, 0, 0.1) 0%, 
+    transparent 70%);
+  animation: quantum-pulse 3s ease-out infinite;
+  z-index: -2;
+}
+
+/* 运势卡片组件 */
+.fortune-card-premium {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 215, 0, 0.1) 100%);
+  backdrop-filter: blur(30px);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sun);
+  padding: var(--space-stanza);
+  position: relative;
+  overflow: hidden;
+  animation: divine-breathe 6s ease-in-out infinite;
+}
+
+.fortune-card-premium::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  background: var(--divine-aurora);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  animation: aurora-dance 12s linear infinite;
+}
+
+.fortune-card-premium::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+  background: radial-gradient(ellipse at center,
+    rgba(255, 215, 0, 0.05) 0%,
+    transparent 70%);
+  border-radius: inherit;
+  animation: zen-breathe 8s ease-in-out infinite;
+}
+
+/* 五行能量条 */
+.element-energy-bar {
+  position: relative;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.element-energy-fill {
+  height: 100%;
+  border-radius: 6px;
+  position: relative;
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.element-energy-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    transparent 100%);
+  animation: energy-flow 2s linear infinite;
+}
+
+.element-energy-fill.wood {
+  background: linear-gradient(90deg, #4CAF50, #81C784);
+}
+
+.element-energy-fill.fire {
+  background: linear-gradient(90deg, #F44336, #FF6F00);
+}
+
+.element-energy-fill.earth {
+  background: linear-gradient(90deg, #FF9800, #FFCC02);
+}
+
+.element-energy-fill.metal {
+  background: linear-gradient(90deg, #9E9E9E, #E0E0E0);
+}
+
+.element-energy-fill.water {
+  background: linear-gradient(90deg, #2196F3, #64B5F6);
+}
+
+@keyframes energy-flow {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* 神圣按钮组件 */
+.divine-button {
+  position: relative;
+  padding: var(--space-pulse) var(--space-stanza);
+  border: none;
+  border-radius: var(--radius-pebble);
+  background: transparent;
+  color: var(--paper-modern);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-base);
+  cursor: pointer;
+  overflow: hidden;
+  transform: translateZ(0);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.divine-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--divine-aurora);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.divine-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    transparent 70%);
+  border-radius: inherit;
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.6s ease;
+  z-index: -1;
+}
+
+.divine-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 15px 40px rgba(255, 215, 0, 0.4),
+    0 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+.divine-button:hover::after {
+  transform: translateX(100%) skewX(-15deg);
+}
+
+.divine-button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* 量子卡片容器 */
+.quantum-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-moon);
+  padding: var(--space-stanza);
+  overflow: hidden;
+}
+
+.quantum-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 107, 107, 0.1) 72deg,
+    transparent 144deg,
+    rgba(254, 202, 87, 0.1) 216deg,
+    transparent 288deg,
+    rgba(72, 219, 251, 0.1) 360deg
+  );
+  animation: quantum-rotation 15s linear infinite;
+  z-index: -1;
+}
+
+@keyframes quantum-rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 悬浮操作面板 */
+.floating-panel {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sun);
+  padding: var(--space-verse);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.1),
+    0 10px 30px rgba(255, 215, 0, 0.2);
+  animation: float-gentle 6s ease-in-out infinite;
+  z-index: 1000;
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-5px) rotate(1deg); }
+  66% { transform: translateY(-2px) rotate(-1deg); }
+}
+
+/* 神圣导航栏 */
+.divine-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.9) 100%);
+  backdrop-filter: blur(30px);
+  border-top: 2px solid transparent;
+  background-clip: padding-box;
+  z-index: 1000;
+}
+
+.divine-nav::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 0 0;
+  height: 2px;
+  background: var(--divine-aurora);
+  animation: aurora-dance 8s linear infinite;
+}
+
+.divine-nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--space-pulse) var(--space-verse);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.divine-nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-breath);
+  border-radius: var(--radius-pebble);
+  text-decoration: none;
+  color: var(--ink-medium);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  min-width: 60px;
+}
+
+.divine-nav-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: inherit;
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.divine-nav-item:hover,
+.divine-nav-item.active {
+  color: var(--earth-golden);
+  transform: translateY(-3px);
+}
+
+.divine-nav-item:hover::before,
+.divine-nav-item.active::before {
+  transform: scale(1);
+}
+
+.divine-nav-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.divine-nav-item:hover .divine-nav-icon {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.divine-nav-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+/* 智能提示气泡 */
+.smart-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: var(--space-breath) var(--space-pulse);
+  border-radius: var(--radius-pebble);
+  font-size: var(--text-small);
+  font-weight: 500;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+}
+
+.smart-tooltip.show {
+  transform: translateY(-5px);
+  opacity: 1;
+}
+
+.smart-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(0, 0, 0, 0.9);
+}
+
+/* 沉浸式进度指示器 */
+.immersive-progress {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.immersive-progress-fill {
+  height: 100%;
+  background: var(--divine-aurora);
+  border-radius: 4px;
+  position: relative;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: progress-glow 2s ease-in-out infinite alternate;
+}
+
+.immersive-progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.6) 50%, 
+    transparent 100%);
+  animation: progress-shine 2s linear infinite;
+}
+
+@keyframes progress-glow {
+  0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+  100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes progress-shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* 神性加载器 */
+.divine-loader {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: var(--space-stanza) auto;
+}
+
+.divine-loader::before,
+.divine-loader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.divine-loader::before {
+  border-top-color: #ff6b6b;
+  border-right-color: #feca57;
+  animation: divine-spin 1.5s linear infinite;
+}
+
+.divine-loader::after {
+  border-bottom-color: #48dbfb;
+  border-left-color: #ff9ff3;
+  animation: divine-spin 1.5s linear infinite reverse;
+  transform: scale(0.8);
+}
+
+@keyframes divine-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .divine-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .fortune-card-premium {
+    padding: var(--space-verse);
+  }
+  
+  .divine-nav-items {
+    padding: var(--space-breath) var(--space-pulse);
+  }
+  
+  .divine-nav-item {
+    min-width: 50px;
+    padding: var(--space-feather);
+  }
+  
+  .divine-nav-icon {
+    font-size: 1.3rem;
+  }
+  
+  .floating-panel {
+    padding: var(--space-pulse);
+    margin: var(--space-pulse);
+  }
+}
+
+/* 性能优化 */
+.zen-optimized {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+.zen-gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}

@@ -1,0 +1,262 @@
+/* 移动端性能优化样式 */
+/* 专为提升移动设备性能和用户体验设计 */
+
+/* GPU加速优化 */
+.deity-conversation-card,
+.deity-switch-btn,
+.primary-chat-btn,
+.quick-action-small,
+.bracelet-status {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 滚动性能优化 */
+.home-optimized {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.home-optimized::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* 触摸优化 */
+.deity-conversation-card {
+  touch-action: pan-x pan-y;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.deity-conversation-card:active {
+  cursor: grabbing;
+}
+
+/* 按钮触摸反馈优化 */
+.primary-chat-btn,
+.quick-action-small,
+.deity-switch-btn,
+.guidance-toggle {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 涟漪效果 */
+.primary-chat-btn::after,
+.quick-action-small::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.primary-chat-btn:active::after,
+.quick-action-small:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* 动画性能优化 */
+@media (prefers-reduced-motion: no-preference) {
+  .deity-switch-btn {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .primary-chat-btn {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .quick-action-small {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* 减少动画设置 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 高DPI屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi) {
+  .guanyin-avatar,
+  .status-icon {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* iOS Safe Area 适配 */
+@supports (padding: max(0px)) {
+  .home-optimized {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(96px, calc(80px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* 网络优化图片加载 */
+.guanyin-avatar {
+  content-visibility: auto;
+  contain-intrinsic-size: 100px 100px;
+}
+
+/* 字体渲染优化 */
+.deity-name,
+.fortune-message,
+.guidance-text {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 能量条动画优化 */
+.energy-fill {
+  transform: translateZ(0);
+  will-change: width;
+}
+
+/* 提示文字动画 */
+.mobile-gesture-hint {
+  animation: fadeInOut 4s ease-in-out;
+  animation-delay: 2s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInOut {
+  0%, 90%, 100% { opacity: 0; }
+  10%, 80% { opacity: 0.8; }
+}
+
+/* 禁用文本选择（除输入框外） */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable] {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 手势提示改进 */
+.deity-conversation-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 215, 0, 0.1), 
+    transparent
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.deity-conversation-card:active::before {
+  opacity: 1;
+}
+
+/* 触摸目标大小保证 */
+@media (max-width: 768px) {
+  .deity-switch-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .quick-action-small {
+    min-height: 44px;
+    padding: 12px 8px;
+  }
+  
+  .guidance-toggle {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+}
+
+/* 横屏模式优化 */
+@media (orientation: landscape) and (max-height: 600px) {
+  .home-optimized {
+    gap: 12px;
+  }
+  
+  .hero-section {
+    padding: 16px;
+  }
+  
+  .deity-conversation-card .conversation-header {
+    padding: 16px;
+  }
+  
+  .avatar-container {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* 高刷新率屏幕优化 */
+@media (min-refresh-rate: 90hz) {
+  .deity-switch-btn,
+  .primary-chat-btn,
+  .quick-action-small {
+    transition-duration: 0.1s;
+  }
+}
+
+/* 暗色模式性能优化 */
+@media (prefers-color-scheme: dark) {
+  .home-optimized {
+    color-scheme: dark;
+  }
+  
+  /* 减少透明度计算 */
+  .hero-section,
+  .deity-conversation-card,
+  .bracelet-status {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.03);
+  }
+} 

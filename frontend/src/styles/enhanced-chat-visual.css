@@ -1,0 +1,1590 @@
+/**
+ * 深度对话优化视觉系统
+ * 现代化、沉浸式的对话体验设计
+ */
+
+/* CSS 自定义属性 - 设计系统 */
+:root {
+  /* 主色彩系统 */
+  --primary-gold: #ffd700;
+  --primary-gold-light: #ffed4a;
+  --primary-gold-dark: #e6c200;
+  --primary-gold-alpha-10: rgba(255, 215, 0, 0.1);
+  --primary-gold-alpha-20: rgba(255, 215, 0, 0.2);
+  --primary-gold-alpha-30: rgba(255, 215, 0, 0.3);
+  
+  /* 背景色彩系统 */
+  --bg-primary: rgba(0, 0, 0, 0.95);
+  --bg-secondary: rgba(20, 20, 30, 0.9);
+  --bg-tertiary: rgba(255, 255, 255, 0.05);
+  --bg-glass: rgba(255, 255, 255, 0.08);
+  --bg-glass-strong: rgba(255, 255, 255, 0.12);
+  
+  /* 边框系统 */
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.2);
+  --border-gold: rgba(255, 215, 0, 0.3);
+  --border-gold-strong: rgba(255, 215, 0, 0.5);
+  
+  /* 文本颜色系统 */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.6);
+  --text-quaternary: rgba(255, 255, 255, 0.4);
+  --text-gold: #ffd700;
+  --text-dark: #1a1a1a;
+  
+  /* 阴影系统 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.4);
+  --shadow-gold: 0 4px 20px rgba(255, 215, 0, 0.2);
+  --shadow-gold-strong: 0 8px 32px rgba(255, 215, 0, 0.3);
+  
+  /* 圆角系统 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 50%;
+  
+  /* 间距系统 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  
+  /* 动画持续时间 */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.35s;
+  --duration-slower: 0.5s;
+  
+  /* 缓动函数 */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* 重置和基础样式 */
+.enhanced-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(20, 10, 40, 0.95) 30%,
+    rgba(40, 20, 60, 0.92) 60%,
+    rgba(0, 0, 0, 0.98) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* 动态粒子背景增强 */
+.particles-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.particles-layer.water-drops::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(34, 211, 238, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(147, 197, 253, 0.1) 0%, transparent 50%);
+  animation: gentleFloat 20s ease-in-out infinite;
+}
+
+.particles-layer.flames::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 30% 90%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 10%, rgba(251, 146, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(248, 113, 113, 0.1) 0%, transparent 50%);
+  animation: flameFlicker 15s ease-in-out infinite;
+}
+
+.particles-layer.light-orbs::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 75%, rgba(251, 191, 36, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 75% 25%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(254, 240, 138, 0.1) 0%, transparent 40%);
+  animation: lightPulse 12s ease-in-out infinite;
+}
+
+.particles-layer.stars::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 30%),
+    radial-gradient(circle at 50% 60%, rgba(196, 181, 253, 0.05) 0%, transparent 30%);
+  animation: starTwinkle 18s ease-in-out infinite;
+}
+
+.particles-layer.lotus-petals::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 40% 30%, rgba(236, 72, 153, 0.12) 0%, transparent 35%),
+    radial-gradient(circle at 60% 70%, rgba(219, 39, 119, 0.12) 0%, transparent 35%),
+    radial-gradient(circle at 80% 50%, rgba(244, 114, 182, 0.08) 0%, transparent 35%);
+  animation: petalDance 25s ease-in-out infinite;
+}
+
+/* 粒子动画 */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(1deg); }
+  66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.15; }
+  25% { transform: scale(1.05) rotate(0.5deg); opacity: 0.2; }
+  50% { transform: scale(0.95) rotate(-0.5deg); opacity: 0.1; }
+  75% { transform: scale(1.02) rotate(0.3deg); opacity: 0.18; }
+}
+
+@keyframes lightPulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.1; }
+  20% { opacity: 0.15; }
+  40% { opacity: 0.05; }
+  60% { opacity: 0.2; }
+  80% { opacity: 0.08; }
+}
+
+@keyframes petalDance {
+  0%, 100% { transform: translateX(0px) rotate(0deg); }
+  25% { transform: translateX(5px) rotate(90deg); }
+  50% { transform: translateX(-3px) rotate(180deg); }
+  75% { transform: translateX(2px) rotate(270deg); }
+}
+
+/* 增强版头部设计 */
+.chat-header-enhanced {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg-primary);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border-gold);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.chat-header-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold-light) 50%,
+    var(--primary-gold) 80%,
+    transparent 100%
+  );
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header-left .back-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-gold);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--duration-normal) var(--ease-out);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+
+.header-left .back-btn:hover {
+  background: var(--bg-glass-strong);
+  border-color: var(--border-gold);
+  transform: translateX(-2px);
+  box-shadow: var(--shadow-gold);
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 var(--space-lg);
+}
+
+.deity-indicator-pills {
+  display: flex;
+  gap: var(--space-sm);
+  background: var(--bg-glass);
+  padding: var(--space-xs);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(12px);
+}
+
+.deity-pill {
+  position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm) var(--space-md);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  overflow: hidden;
+}
+
+.deity-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--primary-gold-alpha-10);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.deity-pill:hover::before {
+  opacity: 1;
+}
+
+.deity-pill.active {
+  background: var(--primary-gold-alpha-20);
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-gold);
+  transform: scale(1.05);
+}
+
+.deity-pill.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--primary-gold);
+  border-radius: 1px;
+}
+
+.header-right {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.effect-toggle {
+  width: 36px;
+  height: 36px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all var(--duration-normal) var(--ease-out);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.effect-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--primary-gold-alpha-10);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.effect-toggle:hover::before {
+  opacity: 1;
+}
+
+.effect-toggle.active {
+  background: var(--primary-gold-alpha-20);
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.effect-toggle.active::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background: var(--primary-gold);
+  border-radius: var(--radius-full);
+  animation: activePulse 2s ease-in-out infinite;
+}
+
+@keyframes activePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+/* 增强版神仙展示区域 */
+.deity-showcase {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(20, 10, 40, 0.8) 50%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  backdrop-filter: blur(20px) saturate(120%);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.deity-showcase::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 50%,
+    transparent 100%
+  );
+}
+
+.deity-avatar-enhanced {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.avatar-container-enhanced {
+  position: relative;
+  padding: var(--space-xs);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-gold-alpha-20), var(--primary-gold-alpha-10));
+  transition: all var(--duration-slower) var(--ease-out);
+}
+
+.avatar-container-enhanced::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-light));
+  border-radius: var(--radius-full);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+/* 神仙特效光环 */
+.avatar-container-enhanced.compassion::before {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4);
+  opacity: 0.6;
+  animation: compassionGlow 4s ease-in-out infinite;
+}
+
+.avatar-container-enhanced.power::before {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  opacity: 0.7;
+  animation: powerPulse 3s ease-in-out infinite;
+}
+
+.avatar-container-enhanced.wisdom::before {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  opacity: 0.8;
+  animation: wisdomShine 5s ease-in-out infinite;
+}
+
+.avatar-container-enhanced.scholarly::before {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  opacity: 0.6;
+  animation: scholarlyFlow 6s ease-in-out infinite;
+}
+
+.avatar-container-enhanced.mystical::before {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  opacity: 0.7;
+  animation: mysticalSwirl 7s ease-in-out infinite;
+}
+
+.avatar-container-enhanced.serene::before {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  opacity: 0.5;
+  animation: sereneFloat 8s ease-in-out infinite;
+}
+
+/* 光环动画效果 */
+@keyframes compassionGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.9; transform: scale(1.05) rotate(180deg); }
+}
+
+@keyframes powerPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  30% { opacity: 1; transform: scale(1.1); }
+  60% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes wisdomShine {
+  0%, 100% { opacity: 0.8; transform: rotate(0deg); }
+  25% { opacity: 1; transform: rotate(90deg); }
+  50% { opacity: 0.9; transform: rotate(180deg); }
+  75% { opacity: 1; transform: rotate(270deg); }
+}
+
+@keyframes scholarlyFlow {
+  0%, 100% { opacity: 0.6; transform: translateY(0px); }
+  33% { opacity: 0.8; transform: translateY(-2px); }
+  66% { opacity: 0.7; transform: translateY(1px); }
+}
+
+@keyframes mysticalSwirl {
+  0%, 100% { opacity: 0.7; transform: rotate(0deg) scale(1); }
+  25% { opacity: 0.9; transform: rotate(90deg) scale(1.03); }
+  50% { opacity: 0.8; transform: rotate(180deg) scale(1.06); }
+  75% { opacity: 0.95; transform: rotate(270deg) scale(1.03); }
+}
+
+@keyframes sereneFloat {
+  0%, 100% { opacity: 0.5; transform: translateY(0px) scale(1); }
+  50% { opacity: 0.8; transform: translateY(-3px) scale(1.02); }
+}
+
+.deity-image {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--primary-gold);
+  transition: all var(--duration-slower) var(--ease-out);
+  position: relative;
+}
+
+.deity-image.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.deity-image.loading {
+  opacity: 0.6;
+  transform: scale(0.95);
+  animation: imageLoading 1.5s ease-in-out infinite;
+}
+
+@keyframes imageLoading {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.deity-fallback-enhanced {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--primary-gold-alpha-20);
+  border: 3px solid var(--primary-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.online-status-enhanced {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  background: #10b981;
+  border-radius: var(--radius-full);
+  border: 2px solid white;
+  animation: statusPulse 2s infinite;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.deity-navigation {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  color: var(--text-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-normal) var(--ease-out);
+  backdrop-filter: blur(8px);
+  font-size: 0.9rem;
+}
+
+.nav-btn:hover {
+  background: var(--bg-glass-strong);
+  border-color: var(--border-gold);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-gold);
+}
+
+.deity-info-enhanced {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.deity-name {
+  color: var(--text-gold);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.deity-title {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.deity-specialty {
+  background: var(--bg-glass);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: inline-block;
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(8px);
+  width: fit-content;
+}
+
+/* 对话洞察面板增强 */
+.conversation-insights {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(30, 20, 50, 0.8) 50%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  backdrop-filter: blur(20px) saturate(120%);
+  margin: 0 var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-gold);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  animation: insightsSlideIn var(--duration-slower) var(--ease-out);
+}
+
+.conversation-insights::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold-light) 50%,
+    var(--primary-gold) 80%,
+    transparent 100%
+  );
+}
+
+@keyframes insightsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.insight-item {
+  background: var(--bg-glass);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(8px);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.insight-item:hover {
+  background: var(--bg-glass-strong);
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 消息气泡系统重新设计 */
+.messages-container-enhanced {
+  flex: 1;
+  margin-top: 220px;
+  margin-bottom: 200px;
+  overflow: hidden;
+  z-index: 10;
+  position: relative;
+}
+
+.messages-scroll-enhanced {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-gold-alpha-30) transparent;
+}
+
+.message-bubble {
+  display: flex;
+  margin-bottom: var(--space-lg);
+  gap: var(--space-md);
+  animation: messageSlideIn var(--duration-slow) var(--ease-out);
+  position: relative;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.message-bubble.user {
+  justify-content: flex-end;
+}
+
+.message-bubble.deity {
+  justify-content: flex-start;
+}
+
+.message-content-enhanced {
+  max-width: 75%;
+  position: relative;
+  backdrop-filter: blur(12px) saturate(120%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-out);
+  overflow: hidden;
+}
+
+.message-content-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  z-index: -1;
+}
+
+.message-bubble.user .message-content-enhanced {
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
+  color: var(--text-dark);
+  border: 1px solid var(--border-gold-strong);
+  box-shadow: var(--shadow-gold);
+}
+
+.message-bubble.user .message-content-enhanced::before {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 74, 0.1));
+}
+
+.message-bubble.deity .message-content-enhanced {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+}
+
+.message-bubble.deity .message-content-enhanced::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+.message-content-enhanced:hover::before {
+  opacity: 1;
+}
+
+.message-header-enhanced {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.sender-name {
+  font-weight: 600;
+  color: var(--text-gold);
+}
+
+.message-time {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+.message-text {
+  line-height: 1.6;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message-bubble.user .message-text {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.message-bubble.deity .message-text {
+  color: var(--text-primary);
+}
+
+/* 增强版打字指示器 */
+.typing-indicator-enhanced {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  align-items: center;
+  animation: typingSlideIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes typingSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.typing-content {
+  background: var(--bg-glass);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--border-medium);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.typing-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.1) 50%,
+    transparent 100%
+  );
+  animation: typingShimmer 2s ease-in-out infinite;
+}
+
+@keyframes typingShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.typing-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+  font-weight: 500;
+}
+
+.typing-dots {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  background: var(--primary-gold);
+  border-radius: var(--radius-full);
+  animation: typingBounce 1.4s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(0.8);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.2);
+  }
+}
+
+/* 快速建议系统增强 */
+.quick-suggestions-enhanced {
+  position: fixed;
+  bottom: 180px;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  padding: 0 var(--space-lg);
+  max-height: 120px;
+  overflow: hidden;
+}
+
+.suggestions-title {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+  font-weight: 500;
+}
+
+.suggestions-grid {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  padding-bottom: var(--space-sm);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.suggestions-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestion-pill {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-sm) var(--space-lg);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  flex-shrink: 0;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+.suggestion-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.1) 50%,
+    transparent 100%
+  );
+  transition: left var(--duration-normal) var(--ease-out);
+}
+
+.suggestion-pill:hover {
+  background: var(--bg-glass-strong);
+  border-color: var(--border-gold);
+  color: var(--text-gold);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-gold);
+}
+
+.suggestion-pill:hover::before {
+  left: 100%;
+}
+
+.suggestion-pill:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* 输入区域重新设计 */
+.input-area-enhanced {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.95) 50%,
+    rgba(0, 0, 0, 0.98) 100%
+  );
+  backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid var(--border-gold);
+  padding: var(--space-lg);
+  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+  box-shadow: var(--shadow-xl);
+}
+
+.input-area-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 50%,
+    transparent 100%
+  );
+}
+
+.input-container-enhanced {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-end;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.message-input-enhanced {
+  flex: 1;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  resize: none;
+  max-height: 120px;
+  min-height: 20px;
+  line-height: 1.5;
+  transition: all var(--duration-normal) var(--ease-out);
+  backdrop-filter: blur(12px);
+  font-family: inherit;
+  outline: none;
+}
+
+.message-input-enhanced::placeholder {
+  color: var(--text-quaternary);
+  font-weight: 400;
+}
+
+.message-input-enhanced:focus {
+  background: var(--bg-glass-strong);
+  border-color: var(--border-gold);
+  box-shadow: 
+    0 0 0 3px rgba(255, 215, 0, 0.1),
+    var(--shadow-gold);
+  transform: translateY(-1px);
+}
+
+.send-btn-enhanced {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
+  border: none;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-bounce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.send-btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.send-btn-enhanced:hover:not(:disabled) {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: var(--shadow-gold-strong);
+}
+
+.send-btn-enhanced:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.send-btn-enhanced:active:not(:disabled) {
+  transform: scale(1.05) translateY(-1px);
+}
+
+.send-btn-enhanced:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(26, 26, 26, 0.2);
+  border-top: 2px solid var(--text-dark);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+/* 头像系统增强 */
+.message-avatar,
+.typing-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-mini {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-gold-alpha-20), var(--primary-gold-alpha-10));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  border: 2px solid var(--border-gold);
+  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.avatar-mini::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-light));
+  border-radius: var(--radius-full);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.typing-avatar .avatar-mini {
+  animation: avatarPulse 2s ease-in-out infinite;
+}
+
+.typing-avatar .avatar-mini::before {
+  opacity: 0.3;
+  animation: avatarGlow 2s ease-in-out infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes avatarGlow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* 响应式设计优化 */
+@media (max-width: 768px) {
+  .deity-showcase {
+    top: 70px;
+    padding: var(--space-md);
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-md);
+  }
+  
+  .messages-container-enhanced {
+    margin-top: 240px;
+    margin-bottom: 220px;
+  }
+  
+  .quick-suggestions-enhanced {
+    bottom: 200px;
+  }
+  
+  .input-area-enhanced {
+    padding: var(--space-md);
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  }
+  
+  .message-content-enhanced {
+    max-width: 85%;
+  }
+  
+  .suggestions-grid {
+    gap: var(--space-xs);
+  }
+  
+  .suggestion-pill {
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.75rem;
+  }
+
+  .deity-indicator-pills {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .deity-pill {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 1rem;
+    min-width: 44px;
+  }
+
+  .header-right {
+    gap: var(--space-xs);
+  }
+
+  .effect-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .deity-name {
+    font-size: 1.2rem;
+  }
+  
+  .deity-title {
+    font-size: 0.8rem;
+  }
+  
+  .deity-specialty {
+    font-size: 0.7rem;
+    padding: 2px var(--space-sm);
+  }
+  
+  .message-text {
+    font-size: 0.9rem;
+  }
+  
+  .input-container-enhanced {
+    gap: var(--space-sm);
+  }
+  
+  .send-btn-enhanced {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: rgba(0, 0, 0, 0.98);
+    --bg-secondary: rgba(10, 10, 20, 0.95);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  :root {
+    --border-light: rgba(255, 255, 255, 0.3);
+    --border-medium: rgba(255, 255, 255, 0.5);
+    --bg-glass: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* 减少动效模式支持 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 滚动条美化 */
+.messages-scroll-enhanced::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-scroll-enhanced::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+.messages-scroll-enhanced::-webkit-scrollbar-thumb {
+  background: var(--primary-gold-alpha-30);
+  border-radius: 3px;
+  transition: background var(--duration-normal) var(--ease-out);
+}
+
+.messages-scroll-enhanced::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-gold-alpha-30);
+}
+
+/* 语音交互动画 */
+@keyframes voicePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+.voice-btn.listening {
+  animation: voicePulse 1s ease-in-out infinite;
+}
+
+/* 消息交互动画增强 */
+.message-bubble {
+  cursor: pointer;
+}
+
+.message-bubble:hover .message-content-enhanced {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.message-bubble.user:hover .message-content-enhanced {
+  box-shadow: var(--shadow-gold-strong);
+}
+
+/* 快速建议交互增强 */
+.suggestion-pill {
+  position: relative;
+  overflow: hidden;
+}
+
+.suggestion-pill::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.suggestion-pill:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* 神仙切换动画增强 */
+.deity-pill {
+  overflow: hidden;
+}
+
+.deity-pill::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
+}
+
+.deity-pill:hover::after,
+.deity-pill.active::after {
+  width: 80px;
+  height: 80px;
+}
+
+/* 打字效果增强 */
+.typing-cursor {
+  color: var(--primary-gold);
+  font-weight: bold;
+  animation: cursorBlink 1s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 3D 变换效果 */
+.deity-image,
+.deity-fallback-enhanced {
+  transition: transform var(--duration-slower) var(--ease-out);
+}
+
+.deity-image:hover,
+.deity-fallback-enhanced:hover {
+  transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+}
+
+/* 磁性吸附效果 */
+.send-btn-enhanced {
+  position: relative;
+}
+
+.send-btn-enhanced::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-light));
+  border-radius: var(--radius-full);
+  z-index: -1;
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.send-btn-enhanced:hover::after {
+  opacity: 0.5;
+}
+
+/* 呼吸灯效果 */
+.online-status-enhanced::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: #10b981;
+  border-radius: var(--radius-full);
+  z-index: -1;
+  opacity: 0;
+  animation: breathingLight 3s ease-in-out infinite;
+}
+
+@keyframes breathingLight {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.5); }
+}
+
+/* 微交互反馈 */
+.effect-toggle,
+.nav-btn,
+.voice-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.effect-toggle::after,
+.nav-btn::after,
+.voice-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease;
+}
+
+.effect-toggle:active::after,
+.nav-btn:active::after,
+.voice-btn:active::after {
+  width: 60px;
+  height: 60px;
+}
+
+/* 粒子交互效果 */
+.particles-layer {
+  transition: 
+    opacity var(--duration-slow) var(--ease-out),
+    filter var(--duration-slow) var(--ease-out);
+}
+
+.particles-layer:hover {
+  opacity: 0.8;
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* 消息长按反馈 */
+@media (hover: none) and (pointer: coarse) {
+  .message-bubble {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  .message-bubble:active {
+    transform: scale(0.98);
+  }
+  
+  .suggestion-pill:active {
+    transform: scale(0.95);
+  }
+  
+  .deity-pill:active {
+    transform: scale(0.95);
+  }
+}
+
+/* 深度视差效果 */
+@media (prefers-reduced-motion: no-preference) {
+  .deity-showcase {
+    transform-style: preserve-3d;
+  }
+  
+  .deity-avatar-enhanced {
+    transform: translateZ(20px);
+  }
+  
+  .deity-info-enhanced {
+    transform: translateZ(10px);
+  }
+  
+  .particles-layer {
+    transform: translateZ(-10px);
+  }
+}
+
+/* 高刷新率优化 */
+@media (min-resolution: 120dpi) {
+  .message-bubble,
+  .typing-indicator-enhanced,
+  .suggestion-pill {
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+}
+
+/* 智能暗色模式适配 */
+@media (prefers-color-scheme: dark) and (prefers-contrast: high) {
+  :root {
+    --bg-glass: rgba(255, 255, 255, 0.2);
+    --border-light: rgba(255, 255, 255, 0.4);
+    --text-secondary: rgba(255, 255, 255, 0.95);
+  }
+  
+  .message-content-enhanced {
+    backdrop-filter: blur(16px) saturate(150%);
+  }
+}

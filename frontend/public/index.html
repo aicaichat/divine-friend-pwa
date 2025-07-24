@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#d4af37" />
+  <meta name="description" content="交个神仙朋友 - 东方禅意AI陪伴PWA应用，融合传统文化与现代科技" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  
+  <!-- 预加载字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="keywords" content="神仙朋友,八字,命理,NFC,手串,经典诵读,易经占卜,祝福,PWA,东方文化" />
+  <meta name="author" content="Divine Friend Team" />
+  <meta name="robots" content="index, follow" />
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="交个神仙朋友 - 东方禅意AI陪伴" />
+  <meta property="og:description" content="融合传统文化与现代科技，为您带来智慧与祝福" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://divine-friend.com" />
+  <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="交个神仙朋友" />
+  <meta name="twitter:description" content="东方禅意AI陪伴PWA应用" />
+  <meta name="twitter:image" content="%PUBLIC_URL%/logo512.png" />
+  
+  <!-- PWA Meta Tags -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="神仙朋友" />
+  <meta name="msapplication-TileColor" content="#d4af37" />
+  <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="%PUBLIC_URL%/sw.js" as="script" />
+  
+  <title>交个神仙朋友 - 东方禅意AI陪伴</title>
+  
+  <style>
+    /* 加载动画样式 */
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f8f9fa 0%, rgba(212, 175, 55, 0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .loading-spinner {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #8b7355);
+      padding: 4px;
+      animation: spin 2s linear infinite;
+    }
+    
+    .loading-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f8f9fa, #d4af37);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      animation: pulse 1.5s ease-in-out infinite alternate;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+    
+    .loading-text {
+      position: absolute;
+      bottom: 30%;
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: 500;
+      animation: fade 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes fade {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    /* 隐藏加载动画 */
+    .loading-hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    }
+    
+    /* 错误回退样式 */
+    .error-fallback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8f9fa 0%, rgba(212, 175, 55, 0.05) 100%);
+      color: #2c3e50;
+      text-align: center;
+    }
+    
+    .error-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    
+    .error-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .error-message {
+      font-size: 16px;
+      margin-bottom: 20px;
+      max-width: 400px;
+    }
+    
+    .error-button {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #d4af37, #8b7355);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .error-button:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <div class="error-fallback">
+      <div class="error-icon">⚠️</div>
+      <div class="error-title">需要启用JavaScript</div>
+      <div class="error-message">
+        交个神仙朋友需要JavaScript才能正常运行，请在浏览器设置中启用JavaScript后重新加载页面。
+      </div>
+    </div>
+  </noscript>
+  
+  <!-- 加载动画 -->
+  <div id="loading" class="loading-container">
+    <div>
+      <div class="loading-spinner">
+        <div class="loading-inner">
+          🧘‍♂️
+        </div>
+      </div>
+      <div class="loading-text">正在连接神仙朋友...</div>
+    </div>
+  </div>
+  
+  <!-- React应用挂载点 -->
+  <div id="root"></div>
+  
+  <!-- 错误回退 -->
+  <div id="error-fallback" class="error-fallback" style="display: none;">
+    <div class="error-icon">😔</div>
+    <div class="error-title">应用加载失败</div>
+    <div class="error-message">
+      神仙朋友暂时无法为您服务，请检查网络连接或稍后再试。
+    </div>
+    <button class="error-button" onclick="window.location.reload()">
+      重新加载
+    </button>
+  </div>
+  
+  <script>
+    // 隐藏加载动画
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          loading.classList.add('loading-hidden');
+          setTimeout(() => {
+            loading.style.display = 'none';
+          }, 500);
+        }
+      }, 1000);
+    });
+    
+    // 错误处理
+    window.addEventListener('error', function(event) {
+      console.error('Application error:', event.error);
+      const loading = document.getElementById('loading');
+      const errorFallback = document.getElementById('error-fallback');
+      
+      if (loading) {
+        loading.style.display = 'none';
+      }
+      if (errorFallback) {
+        errorFallback.style.display = 'flex';
+      }
+    });
+    
+    // 未处理的Promise拒绝
+    window.addEventListener('unhandledrejection', function(event) {
+      console.error('Unhandled promise rejection:', event.reason);
+    });
+    
+    // 检测PWA安装提示
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // 显示自定义安装提示（可选）
+      console.log('PWA安装提示已准备就绪');
+    });
+    
+    // PWA安装成功
+    window.addEventListener('appinstalled', () => {
+      console.log('PWA已成功安装');
+      deferredPrompt = null;
+    });
+    
+    // 检测在线状态
+    function updateOnlineStatus() {
+      const status = navigator.onLine ? '在线' : '离线';
+      console.log(`网络状态: ${status}`);
+    }
+    
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // 页面可见性变化
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        console.log('应用已切换到后台');
+      } else {
+        console.log('应用已切换到前台');
+      }
+    });
+  </script>
+</body>
+</html> 

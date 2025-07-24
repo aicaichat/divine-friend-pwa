@@ -1,0 +1,593 @@
+/* 
+ * 🌟 深度对话增强视觉系统 v3.0
+ * 世界级UI/UX设计 + AI对话体验优化
+ * 禅意东方美学 + 现代交互设计
+ */
+
+/* =================== 🎨 高级设计系统变量 =================== */
+:root {
+  /* 🌊 流体动画系统 */
+  --chat-animation-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --chat-animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --chat-animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* 🎭 情感色彩系统 */
+  --emotion-joy: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --emotion-wisdom: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --emotion-calm: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --emotion-mystery: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  
+  /* 🔮 神仙专属光环系统 */
+  --guanyin-aura: 0 0 30px rgba(255, 223, 186, 0.6);
+  --budongzun-aura: 0 0 30px rgba(255, 99, 99, 0.6);
+  --dashizhi-aura: 0 0 30px rgba(99, 179, 255, 0.6);
+  --wenshu-aura: 0 0 30px rgba(129, 255, 129, 0.6);
+  
+  /* 🌌 深度空间感 */
+  --chat-depth-1: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --chat-depth-2: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --chat-depth-3: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --chat-depth-divine: 0 12px 48px rgba(212, 175, 55, 0.3);
+  
+  /* 📱 响应式断点 */
+  --mobile-max: 768px;
+  --tablet-max: 1024px;
+}
+
+/* =================== 🌟 全新聊天容器 =================== */
+.chat-container-enhanced {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🌊 流体背景动画 */
+.chat-container-enhanced::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: floating-grid 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes floating-grid {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-50px, -50px) rotate(360deg); }
+}
+
+/* =================== 🧘‍♀️ 神仙头像系统升级 =================== */
+.deity-avatar-premium {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  padding: 4px;
+  box-shadow: var(--chat-depth-divine);
+  transition: all 0.6s var(--chat-animation-spring);
+}
+
+.deity-avatar-premium::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+  animation: deity-halo 4s linear infinite;
+  z-index: -1;
+}
+
+@keyframes deity-halo {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.deity-avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: all 0.4s ease;
+  transform-origin: center;
+}
+
+.deity-avatar-premium:hover .deity-avatar-image {
+  transform: scale(1.05);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* 🌟 神仙状态指示器 */
+.deity-status-indicator {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ff88, #00ccff);
+  border: 3px solid white;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+  animation: pulse-divine 2s ease-in-out infinite;
+}
+
+@keyframes pulse-divine {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* =================== 💬 智能消息气泡系统 =================== */
+.message-bubble-ai {
+  max-width: 85%;
+  margin: 16px 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  animation: message-slide-in 0.5s var(--chat-animation-spring);
+}
+
+@keyframes message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 🤖 AI消息样式 */
+.message-bubble-ai.ai-message {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.message-bubble-ai.ai-message .message-content {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%, 
+    rgba(255, 255, 255, 0.85) 100%);
+  color: #2c3e50;
+  border-radius: 20px 20px 20px 6px;
+  padding: 16px 20px;
+  box-shadow: var(--chat-depth-2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✨ AI消息光效 */
+.message-bubble-ai.ai-message .message-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent);
+  transition: left 0.6s ease;
+}
+
+.message-bubble-ai.ai-message .message-content:hover::before {
+  left: 100%;
+}
+
+/* 👤 用户消息样式 */
+.message-bubble-ai.user-message {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  margin-left: auto;
+}
+
+.message-bubble-ai.user-message .message-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px 20px 6px 20px;
+  padding: 16px 20px;
+  box-shadow: var(--chat-depth-2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🎭 情感识别指示器 */
+.emotion-indicator {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--emotion-joy);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  animation: emotion-pulse 2s ease-in-out infinite;
+}
+
+@keyframes emotion-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* =================== ⌨️ 智能打字效果 =================== */
+.typing-indicator-premium {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  animation: typing-fade-in 0.3s ease;
+}
+
+@keyframes typing-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.typing-bubble-premium {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.9) 0%, 
+    rgba(255, 255, 255, 0.7) 100%);
+  padding: 16px 24px;
+  border-radius: 20px 20px 20px 6px;
+  box-shadow: var(--chat-depth-1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.typing-dots-premium {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.typing-dots-premium span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  animation: typing-bounce 1.4s ease-in-out infinite;
+}
+
+.typing-dots-premium span:nth-child(1) { animation-delay: 0s; }
+.typing-dots-premium span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots-premium span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px); }
+}
+
+/* =================== 🎯 输入框增强系统 =================== */
+.input-container-premium {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 4px;
+  box-shadow: var(--chat-depth-2);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s var(--chat-animation-smooth);
+}
+
+.input-container-premium:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), var(--chat-depth-3);
+  transform: translateY(-2px);
+}
+
+.message-input-premium {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: #2c3e50;
+  resize: none;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.message-input-premium::placeholder {
+  color: rgba(44, 62, 80, 0.5);
+  font-style: italic;
+}
+
+/* 🎤 语音输入按钮 */
+.voice-input-btn {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b6b, #ffa500);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s var(--chat-animation-spring);
+  box-shadow: var(--chat-depth-1);
+}
+
+.voice-input-btn:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--chat-depth-2);
+}
+
+.voice-input-btn.recording {
+  animation: recording-pulse 1s ease-in-out infinite;
+  background: linear-gradient(135deg, #ff4757, #ff3838);
+}
+
+@keyframes recording-pulse {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.2); }
+}
+
+/* 📤 发送按钮增强 */
+.send-btn-premium {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s var(--chat-animation-spring);
+  box-shadow: var(--chat-depth-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-btn-premium:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.1) rotate(15deg);
+  box-shadow: var(--chat-depth-3);
+}
+
+.send-btn-premium:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* =================== 🚀 快捷建议系统 =================== */
+.suggestions-container {
+  padding: 16px 20px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.suggestions-container::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestion-chip {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.9) 0%, 
+    rgba(255, 255, 255, 0.7) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  color: #2c3e50;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s var(--chat-animation-smooth);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--chat-depth-1);
+}
+
+.suggestion-chip:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: var(--chat-depth-2);
+}
+
+/* =================== 🌊 智能滚动系统 =================== */
+.messages-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* 📱 自定义滚动条 */
+.messages-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.messages-scroll-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.messages-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5a67d8, #6b46c1);
+}
+
+/* =================== 🎨 AI情感状态指示 =================== */
+.ai-emotion-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    var(--emotion-calm) 0%, 
+    var(--emotion-wisdom) 50%, 
+    var(--emotion-joy) 100%);
+  animation: emotion-flow 3s ease-in-out infinite;
+}
+
+@keyframes emotion-flow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* =================== 📱 移动端优化 =================== */
+@media (max-width: 768px) {
+  .deity-avatar-premium {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .message-bubble-ai {
+    max-width: 90%;
+    margin: 12px 0;
+  }
+  
+  .message-content {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  
+  .input-container-premium {
+    margin: 16px;
+    border-radius: 20px;
+  }
+  
+  .message-input-premium {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+  
+  .send-btn-premium {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .voice-input-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    right: 50px;
+  }
+}
+
+/* =================== 🌟 微交互动画 =================== */
+.message-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.message-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent);
+  transition: left 0.5s ease;
+}
+
+.message-bubble-ai:hover .message-content::after {
+  left: 100%;
+}
+
+/* 🎭 情感反馈粒子效果 */
+.emotion-particles {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #ff6b6b, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 2s ease-out forwards;
+}
+
+@keyframes particle-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0);
+  }
+}
+
+/* =================== 🚀 性能优化 =================== */
+.chat-container-enhanced * {
+  will-change: transform, opacity;
+}
+
+.message-bubble-ai {
+  contain: layout style paint;
+}
+
+.deity-avatar-premium {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* =================== ♿ 无障碍优化 =================== */
+.message-content:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.send-btn-premium:focus,
+.voice-input-btn:focus,
+.suggestion-chip:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

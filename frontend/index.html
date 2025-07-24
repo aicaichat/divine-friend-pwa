@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  
+  <!-- PWA 支持 -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#d4af37" />
+  <meta name="background-color" content="#f5f4e8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="神仙朋友" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="交个神仙朋友" />
+  
+  <!-- iOS 图标 -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+  
+  <!-- 标准图标 -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" href="/favicon.ico" />
+  
+  <!-- Microsoft 瓦片 -->
+  <meta name="msapplication-TileColor" content="#d4af37" />
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+  
+  <!-- SEO 优化 -->
+  <title>交个神仙朋友 - 东方禅意的AI陪伴应用</title>
+  <meta name="description" content="融合传统文化与现代科技的智慧陪伴应用。与AI神仙对话、八字命理分析、NFC开光手串验证、经典诵读，体验五千年文化的数字化传承。" />
+  <meta name="keywords" content="AI神仙,八字分析,命理,开光手串,NFC验证,经典诵读,禅意,东方文化,传统文化,数字化,PWA" />
+  <meta name="author" content="交个神仙朋友团队" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://divine-friend.app/" />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="交个神仙朋友 - 东方禅意的AI陪伴应用" />
+  <meta property="og:description" content="融合传统文化与现代科技的智慧陪伴应用。体验AI神仙对话、八字分析、手串验证等功能。" />
+  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:url" content="https://divine-friend.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:site_name" content="交个神仙朋友" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="交个神仙朋友 - 东方禅意的AI陪伴应用" />
+  <meta name="twitter:description" content="融合传统文化与现代科技的智慧陪伴应用" />
+  <meta name="twitter:image" content="/twitter-image.png" />
+  
+  <!-- 性能优化 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  
+  <!-- 字体预加载 -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap"></noscript>
+  
+  <!-- 关键 CSS 内联 -->
+  <style>
+    /* 关键渲染路径 CSS */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { 
+      scroll-behavior: smooth; 
+      font-size: 16px; 
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      line-height: 1.8;
+      color: #2c2c2c;
+      background: linear-gradient(135deg, #f5f4e8 0%, #faf9f0 100%);
+      min-height: 100vh;
+      letter-spacing: 0.02em;
+      text-rendering: optimizeLegibility;
+    }
+    
+    /* 加载屏幕 */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f5f4e8 0%, #faf9f0 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .loading-content {
+      text-align: center;
+      color: #2c2c2c;
+    }
+    
+    .loading-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .loading-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #d4af37;
+      font-family: 'Ma Shan Zheng', serif;
+      font-weight: 400;
+    }
+    
+    .loading-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+    
+    .loading-progress {
+      width: 200px;
+      height: 3px;
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .loading-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #d4af37, #f4e4aa, #d4af37);
+      width: 0%;
+      border-radius: 2px;
+      animation: loading 2s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes loading {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+    
+    /* 隐藏加载屏幕 */
+    .loading-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    /* 应用容器 */
+    #root {
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    /* 无 JavaScript 回退 */
+    .no-js-message {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      margin: 1rem;
+    }
+  </style>
+  
+  <!-- Service Worker 注册 -->
+  <script>
+    // 环境检测和初始化
+    window.APP_ENV = {
+      isProduction: location.hostname !== 'localhost',
+      hasServiceWorker: 'serviceWorker' in navigator,
+      hasNotifications: 'Notification' in window,
+      hasGeolocation: 'geolocation' in navigator,
+      hasCrypto: 'crypto' in window && 'subtle' in crypto,
+      userAgent: navigator.userAgent,
+      language: navigator.language || navigator.userLanguage || 'zh-CN',
+      platform: navigator.platform,
+      cookieEnabled: navigator.cookieEnabled,
+      onLine: navigator.onLine
+    }
+    
+    // Service Worker 注册
+    if (window.APP_ENV.hasServiceWorker && window.APP_ENV.isProduction) {
+      window.addEventListener('load', async () => {
+        try {
+          const registration = await navigator.serviceWorker.register('/sw.js', {
+            scope: '/',
+            updateViaCache: 'none'
+          })
+          
+          console.log('🌟 Service Worker 注册成功:', registration.scope)
+          
+          // 监听更新
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // 新版本可用
+                showUpdateNotification()
+              }
+            })
+          })
+          
+        } catch (error) {
+          console.error('❌ Service Worker 注册失败:', error)
+        }
+      })
+    } else if (window.APP_ENV.hasServiceWorker) {
+      // 开发环境清理旧的 Service Worker
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => registration.unregister())
+      })
+    }
+    
+    // 更新通知
+    function showUpdateNotification() {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('交个神仙朋友', {
+          body: '应用有新版本可用，请刷新页面获取最新功能',
+          icon: '/icon-192x192.png',
+          tag: 'app-update',
+          actions: [
+            { action: 'refresh', title: '立即更新' },
+            { action: 'dismiss', title: '稍后更新' }
+          ]
+        })
+      }
+    }
+    
+    // 离线/在线状态监听
+    window.addEventListener('online', () => {
+      console.log('🌐 网络已连接')
+      document.body.classList.remove('offline')
+    })
+    
+    window.addEventListener('offline', () => {
+      console.log('📵 网络已断开')
+      document.body.classList.add('offline')
+    })
+    
+    // 页面可见性监听
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.log('👀 页面隐藏')
+      } else {
+        console.log('👁️ 页面可见')
+      }
+    })
+    
+    // 加载进度模拟
+    let loadingProgress = 0
+    const loadingBar = document.querySelector('.loading-bar')
+    const loadingInterval = setInterval(() => {
+      loadingProgress += Math.random() * 15
+      if (loadingProgress >= 100) {
+        loadingProgress = 100
+        clearInterval(loadingInterval)
+      }
+      if (loadingBar) {
+        loadingBar.style.width = loadingProgress + '%'
+      }
+    }, 100)
+    
+    // 应用加载完成后隐藏加载屏幕
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen')
+        if (loadingScreen) {
+          loadingScreen.classList.add('loading-hidden')
+          setTimeout(() => {
+            loadingScreen.style.display = 'none'
+          }, 500)
+        }
+      }, 1000)
+    })
+  </script>
+  
+  <!-- 错误处理 -->
+  <script>
+    window.addEventListener('error', (event) => {
+      console.error('🚨 页面错误:', event.error)
+      // 这里可以发送错误报告到服务器
+    })
+    
+    window.addEventListener('unhandledrejection', (event) => {
+      console.error('🚨 未处理的 Promise 拒绝:', event.reason)
+      // 这里可以发送错误报告到服务器
+    })
+  </script>
+</head>
+<body>
+  <!-- 无 JavaScript 回退 -->
+  <noscript>
+    <div class="no-js-message">
+      <h2>需要启用 JavaScript</h2>
+      <p>交个神仙朋友需要 JavaScript 才能正常运行。请在浏览器设置中启用 JavaScript 后刷新页面。</p>
+    </div>
+  </noscript>
+  
+  <!-- 加载屏幕 -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="loading-icon">🙏</div>
+      <h1 class="loading-title">交个神仙朋友</h1>
+      <p class="loading-subtitle">正在加载东方智慧...</p>
+      <div class="loading-progress">
+        <div class="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 应用根容器 -->
+  <div id="root"></div>
+  
+  <!-- 应用入口 -->
+  <script type="module" src="/src/main.tsx"></script>
+  
+  <!-- 性能监控 -->
+  <script>
+    // 性能指标收集
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const perfData = performance.getEntriesByType('navigation')[0]
+        const paintEntries = performance.getEntriesByType('paint')
+        
+        const metrics = {
+          // 页面加载指标
+          domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+          loadComplete: perfData.loadEventEnd - perfData.loadEventStart,
+          
+          // 渲染指标
+          firstPaint: paintEntries.find(entry => entry.name === 'first-paint')?.startTime || 0,
+          firstContentfulPaint: paintEntries.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
+          
+          // 网络指标
+          dnsLookup: perfData.domainLookupEnd - perfData.domainLookupStart,
+          tcpConnect: perfData.connectEnd - perfData.connectStart,
+          
+          // 用户体验指标
+          timeToInteractive: Date.now() - performance.timing.navigationStart
+        }
+        
+        console.log('📊 性能指标:', metrics)
+        
+        // 这里可以发送性能数据到分析服务
+        if (window.APP_ENV.isProduction) {
+          // sendAnalytics('performance', metrics)
+        }
+      }, 1000)
+    })
+  </script>
+  
+  <!-- 用户体验增强 -->
+  <script>
+    // 防止页面闪烁
+    document.documentElement.style.visibility = 'visible'
+    
+    // 触摸反馈优化
+    if ('ontouchstart' in window) {
+      document.body.classList.add('touch-enabled')
+    }
+    
+    // 深色模式检测
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark-mode-preferred')
+    }
+    
+    // 减少动画偏好检测
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.body.classList.add('reduced-motion')
+    }
+    
+    // 屏幕方向变化处理
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 100)
+    })
+  </script>
+</body>
+</html>

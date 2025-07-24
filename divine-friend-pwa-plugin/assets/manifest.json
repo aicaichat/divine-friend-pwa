@@ -1,0 +1,139 @@
+{
+  "name": "交个神仙朋友",
+  "short_name": "神仙朋友",
+  "description": "东方禅意的AI陪伴应用 - 融合传统文化与现代科技",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f4e8",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "categories": ["lifestyle", "spirituality", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "神仙对话",
+      "short_name": "对话",
+      "description": "与智慧神仙对话获得指引",
+      "url": "/?page=deity-friend",
+      "icons": [{ "src": "/shortcut-deity.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "八字分析",
+      "short_name": "八字",
+      "description": "深度解析您的命理八字",
+      "url": "/?page=bazi-analysis",
+      "icons": [{ "src": "/shortcut-bazi.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "手串验证",
+      "short_name": "手串",
+      "description": "验证开光手串真伪",
+      "url": "/?page=nfc-bracelet",
+      "icons": [{ "src": "/shortcut-bracelet.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "经典诵读",
+      "short_name": "诵经",
+      "description": "聆听经典智慧音频",
+      "url": "/?page=sutra-reading",
+      "icons": [{ "src": "/shortcut-sutra.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile-1.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "首页展示东方美学设计"
+    },
+    {
+      "src": "/screenshot-mobile-2.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "神仙对话功能界面"
+    },
+    {
+      "src": "/screenshot-desktop-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "桌面端完整体验"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+divinefriend",
+      "url": "/share?url=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+} 
+ 
+ 

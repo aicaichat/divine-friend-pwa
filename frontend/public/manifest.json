@@ -1,0 +1,250 @@
+{
+  "name": "神仙朋友 - 八字命理PWA",
+  "short_name": "神仙朋友",
+  "description": "一款基于八字分析的智能神仙朋友PWA应用，提供个性化的命理指导和心灵陪伴",
+  "version": "1.0.0",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#667eea",
+  "background_color": "#f5f4e8",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96x96.png", 
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "/screenshots/home-mobile.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "mobile",
+      "label": "首页 - 移动端"
+    },
+    {
+      "src": "/screenshots/chat-mobile.png", 
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "mobile",
+      "label": "神仙对话 - 移动端"
+    },
+    {
+      "src": "/screenshots/bazi-mobile.png",
+      "sizes": "375x812", 
+      "type": "image/png",
+      "platform": "mobile",
+      "label": "八字分析 - 移动端"
+    },
+    {
+      "src": "/screenshots/home-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png", 
+      "platform": "wide",
+      "label": "首页 - 桌面端"
+    }
+  ],
+  
+  "categories": [
+    "lifestyle",
+    "entertainment", 
+    "personalization",
+    "health",
+    "spirituality"
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "八字分析",
+      "short_name": "八字",
+      "description": "快速进行八字命理分析",
+      "url": "/bazi-analysis",
+      "icons": [
+        {
+          "src": "/icons/shortcut-bazi.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "神仙对话",
+      "short_name": "对话", 
+      "description": "与您的神仙朋友进行对话",
+      "url": "/chat",
+      "icons": [
+        {
+          "src": "/icons/shortcut-chat.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "今日运势",
+      "short_name": "运势",
+      "description": "查看今日运势指导",
+      "url": "/daily-fortune",
+      "icons": [
+        {
+          "src": "/icons/shortcut-fortune.png",
+          "sizes": "96x96", 
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "手串验证",
+      "short_name": "手串",
+      "description": "验证和管理您的佛珠手串",
+      "url": "/bracelet",
+      "icons": [
+        {
+          "src": "/icons/shortcut-bracelet.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "images",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+divine",
+      "url": "/?handler=%s"
+    }
+  ],
+  
+  "file_handlers": [
+    {
+      "action": "/open-bazi",
+      "accept": {
+        "application/json": [".bazi", ".json"]
+      }
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.divinefriend.app",
+      "id": "com.divinefriend.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/divine-friend/id123456789"
+    }
+  ],
+  
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  
+  "handle_links": "preferred",
+  
+  "scope_extensions": [
+    {
+      "origin": "https://divine-friend.com"
+    }
+  ],
+  
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui",
+    "standalone",
+    "browser"
+  ],
+  
+  "id": "divine-friend-pwa-v1",
+  
+  "captures": [
+    {
+      "media": "image/*",
+      "icon": {
+        "src": "/icons/capture-image.png",
+        "sizes": "48x48"
+      },
+      "label": "导入八字图片"
+    }
+  ]
+} 
+ 
+ 

@@ -1,0 +1,744 @@
+/* 交个神仙朋友 - 移动端优化样式 v3.0 */
+/* 专为移动设备设计的最佳用户体验 */
+
+:root {
+  /* 🎨 功能色彩系统 */
+  --color-excellent: #22c55e;    /* 大吉 - 翠绿 */
+  --color-good: #3b82f6;         /* 吉 - 蓝色 */
+  --color-normal: #f59e0b;       /* 平 - 橙色 */
+  --color-challenging: #ef4444;  /* 需谨慎 - 红色 */
+  
+  /* 移动端触摸优化 */
+  --touch-target-min: 44px;      /* iOS人机界面指南推荐最小触摸目标 */
+  --touch-target-comfortable: 56px; /* 舒适的触摸目标大小 */
+  --mobile-padding: 16px;        /* 移动端标准内边距 */
+  --mobile-margin: 12px;         /* 移动端标准外边距 */
+  
+  /* 移动端字体系统 */
+  --font-title-mobile: 24px;     /* 移动端标题字体 */
+  --font-subtitle-mobile: 18px;  /* 移动端副标题 */
+  --font-body-mobile: 16px;      /* 移动端正文 */
+  --font-caption-mobile: 14px;   /* 移动端说明文字 */
+  --font-small-mobile: 12px;     /* 移动端小字 */
+  
+  /* 移动端间距系统 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-xxl: 24px;
+  --space-xxxl: 32px;
+  
+  /* 移动端圆角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  /* 移动端阴影 */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --shadow-divine: 0 4px 20px rgba(255, 215, 0, 0.2);
+}
+
+/* 📱 移动端优先基础容器 */
+.home-optimized {
+  min-height: 100vh;
+  background: var(--gradient-primary);
+  padding: var(--space-lg);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* iOS滑动优化 */
+}
+
+/* 🎯 时间问候区 - 移动端优化 */
+.hero-section {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.time-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.greeting-text {
+  font-size: var(--font-subtitle-mobile);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.current-time {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  font-size: var(--font-title-mobile);
+  font-weight: 700;
+  color: var(--color-primary-action);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* 💬 神仙对话预览区 - 移动端重新设计 */
+.deity-conversation-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: var(--space-lg);
+}
+
+.deity-conversation-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+.conversation-header {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* 神仙头像区域 - 移动端优化 */
+.deity-avatar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-divine);
+  border: 3px solid rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+}
+
+.guanyin-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%; /* 重要：确保显示头部区域 */
+  transition: opacity 0.3s ease;
+  transform: scale(1.1); /* 轻微放大，确保面部清晰 */
+}
+
+.guanyin-avatar.loading {
+  opacity: 0.7;
+}
+
+.guanyin-avatar.loaded {
+  opacity: 1;
+}
+
+.guanyin-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 神仙切换按钮 - 移动端触摸优化 */
+.deity-switch-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+  pointer-events: none;
+}
+
+.deity-switch-btn {
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-medium);
+  pointer-events: all;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.deity-switch-btn:active {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* 神仙信息区域 - 移动端优化 */
+.conversation-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.deity-info-header {
+  text-align: center;
+}
+
+.deity-name {
+  font-size: var(--font-title-mobile);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xs) 0;
+  line-height: 1.2;
+}
+
+.deity-title {
+  font-size: var(--font-caption-mobile);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-sm) 0;
+  line-height: 1.3;
+}
+
+.deity-specialty {
+  font-size: var(--font-caption-mobile);
+  color: var(--color-primary-action);
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* 今日运势卡片 - 移动端重新设计 */
+.today-fortune-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+}
+
+.fortune-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.fortune-label {
+  font-size: var(--font-body-mobile);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fortune-score-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.fortune-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-caption-mobile);
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+}
+
+.fortune-score {
+  font-size: var(--font-subtitle-mobile);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fortune-message {
+  font-size: var(--font-body-mobile);
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--color-primary-action);
+}
+
+/* 运势指引展开区域 */
+.fortune-guidance {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-md);
+}
+
+.guidance-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--font-body-mobile);
+  font-weight: 500;
+  padding: var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+  -webkit-tap-highlight-color: transparent;
+  min-height: var(--touch-target-min);
+}
+
+.guidance-toggle:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+  font-size: var(--font-caption-mobile);
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.guidance-list {
+  padding: var(--space-md) 0 0;
+  margin: 0;
+}
+
+.guidance-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.guidance-bullet {
+  color: var(--color-primary-action);
+  font-weight: bold;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.guidance-text {
+  font-size: var(--font-body-mobile);
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* 消息元数据 */
+.message-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.message-time {
+  font-size: var(--font-small-mobile);
+  color: var(--text-secondary);
+}
+
+.deity-indicator {
+  font-size: var(--font-small-mobile);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+/* 操作按钮区域 - 移动端优化 */
+.chat-action-area {
+  padding: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.primary-chat-btn {
+  width: 100%;
+  height: var(--touch-target-comfortable);
+  background: linear-gradient(135deg, var(--color-primary-action), #ff6b35);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: var(--font-body-mobile);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-medium);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primary-chat-btn:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-soft);
+}
+
+.quick-fortune-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: space-between;
+}
+
+.quick-action-small {
+  flex: 1;
+  height: var(--touch-target-min);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-caption-mobile);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quick-action-small:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.95);
+}
+
+/* 手串状态指示器 - 移动端优化 */
+.bracelet-status {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: all 0.2s ease;
+}
+
+.bracelet-status.connected {
+  border-color: rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.status-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.status-text {
+  flex: 1;
+}
+
+.connection-text {
+  font-size: var(--font-body-mobile);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.energy-text {
+  font-size: var(--font-caption-mobile);
+  color: var(--text-secondary);
+}
+
+.energy-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.energy-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+}
+
+
+
+
+
+/* 今日运势详情折叠样式 */
+.fortune-details {
+  margin-top: var(--space-md);
+}
+
+.details-toggle {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  borderRadius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-primary);
+  font-size: var(--font-body-mobile);
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.details-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.details-toggle:active {
+  transform: scale(0.98);
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+  color: var(--color-primary-action);
+  font-size: 0.8rem;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.fortune-breakdown-list {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(0, 0, 0, 0.2);
+  borderRadius: var(--radius-md);
+  border: 1px solid rgba(255, 215, 0, 0.1);
+  animation: fadeInSlideDown 0.3s ease-out;
+}
+
+@keyframes fadeInSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fortune-category-item {
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fortune-category-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.category-icon {
+  font-size: 1.1rem;
+  margin-right: var(--space-sm);
+}
+
+.category-name {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-body-mobile);
+}
+
+.category-score {
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  borderRadius: var(--radius-sm);
+  min-width: 32px;
+  text-align: center;
+  color: white;
+}
+
+.category-score.excellent {
+  background: var(--color-success);
+}
+
+.category-score.good {
+  background: var(--color-primary-action);
+}
+
+.category-score.average {
+  background: var(--color-warning);
+}
+
+.category-desc {
+  color: var(--text-secondary);
+  font-size: var(--font-small-mobile);
+  line-height: 1.4;
+  opacity: 0.9;
+  margin-left: calc(1.1rem + var(--space-sm));
+}
+
+.today-guidance {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.guidance-title {
+  color: var(--color-primary-action);
+  font-size: var(--font-body-mobile);
+  font-weight: 600;
+  margin: 0 0 var(--space-sm) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.guidance-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.guidance-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  line-height: 1.4;
+}
+
+.guidance-bullet {
+  color: var(--color-primary-action);
+  font-weight: bold;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.guidance-text {
+  color: var(--text-secondary);
+  font-size: var(--font-small-mobile);
+  flex: 1;
+}
+
+/* 移动端优化 */
+@media (max-width: 480px) {
+  .fortune-breakdown-list {
+    padding: var(--space-sm);
+  }
+  
+  .category-score {
+    font-size: 0.8rem;
+    padding: 1px 6px;
+    min-width: 28px;
+  }
+  
+  .category-desc {
+    font-size: 0.75rem;
+  }
+  
+  .guidance-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* 移动端性能优化 */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 滚动优化 */
+.home-optimized {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* 动画优化 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .home-optimized {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+  
+  .hero-section, .deity-conversation-card, .bracelet-status {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+} 

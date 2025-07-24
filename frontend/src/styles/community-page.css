@@ -1,0 +1,1198 @@
+/* 神仙圈子页面样式 */
+
+.community-page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: #f0f0f0;
+  padding-bottom: 120px;
+}
+
+/* 加载状态 */
+.community-loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.loading-spinner {
+  text-align: center;
+  color: #ffd700;
+}
+
+.spinner-icon {
+  font-size: 3rem;
+  animation: pulse 2s infinite;
+  margin-bottom: 1rem;
+}
+
+/* 页面头部 */
+.community-header {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-button {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: translateX(-2px);
+}
+
+.header-title {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ffd700, #ffed4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 5px 0 0 0;
+  font-weight: 300;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.user-avatar {
+  font-size: 1.5rem;
+}
+
+.user-level {
+  font-size: 0.8rem;
+  color: #ffd700;
+  font-weight: 500;
+}
+
+/* 标签导航 */
+.community-tabs {
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  padding: 15px 0;
+  position: sticky;
+  top: 88px;
+  z-index: 99;
+  backdrop-filter: blur(10px);
+}
+
+.tabs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+.tab-button.active {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.4);
+  color: #ffd700;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+}
+
+.tab-button:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+/* 主内容区域 */
+.community-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* 通用样式 */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-desc {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.space-y-4 > * + * {
+  margin-top: 16px;
+}
+
+/* 动态流页面样式 */
+.community-feed {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.create-post-section {
+  margin-bottom: 30px;
+}
+
+.create-post-btn {
+  width: 100%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 215, 0, 0.3);
+  border-radius: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.create-post-btn:hover {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.5);
+  color: #ffd700;
+}
+
+.create-icon {
+  font-size: 1.2rem;
+}
+
+/* 分类过滤 */
+.category-filters {
+  margin-bottom: 30px;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filter-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-tab {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filter-tab.active {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.4);
+  color: #ffd700;
+}
+
+.filter-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 帖子卡片 */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.post-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-avatar {
+  font-size: 2rem;
+}
+
+.author-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-weight: 600;
+  color: #ffd700;
+  font-size: 1rem;
+}
+
+.author-title {
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.7);
+  margin: 2px 0;
+}
+
+.post-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.post-category {
+  display: flex;
+  align-items: center;
+}
+
+.category-badge {
+  padding: 4px 12px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #ffd700;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin-bottom: 10px;
+}
+
+.post-content {
+  margin-bottom: 15px;
+}
+
+.post-content p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.post-mood {
+  margin-bottom: 15px;
+}
+
+.mood-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.9);
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.post-actions {
+  display: flex;
+  gap: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.action-btn.liked {
+  background: rgba(255, 75, 75, 0.15);
+  border-color: rgba(255, 75, 75, 0.3);
+  color: #ff4b4b;
+}
+
+.action-btn.blessing {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+}
+
+.action-icon {
+  font-size: 1rem;
+}
+
+.action-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* 圈子页面样式 */
+.community-circles {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.circles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.circle-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.circle-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.circle-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.circle-avatar {
+  font-size: 2.5rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.circle-info {
+  flex: 1;
+}
+
+.circle-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin: 0 0 8px 0;
+}
+
+.circle-desc {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.circle-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.stat-icon {
+  font-size: 1rem;
+}
+
+.stat-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.circle-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.circle-action {
+  text-align: center;
+}
+
+.btn-join, .btn-joined {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+}
+
+.btn-join {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+}
+
+.btn-join:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.btn-joined {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: rgba(76, 175, 80, 0.3);
+  color: #4caf50;
+  cursor: default;
+}
+
+/* 祝福页面样式 */
+.community-blessings {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.blessing-exchange-section {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.send-blessing-btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 237, 74, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 25px;
+  color: #ffd700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.send-blessing-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 237, 74, 0.2));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.blessing-icon {
+  font-size: 1.2rem;
+}
+
+.blessings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.blessing-card {
+  background: rgba(255, 215, 0, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.blessing-card:hover {
+  background: rgba(255, 215, 0, 0.08);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.blessing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.blessing-type {
+  padding: 4px 12px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #ffd700;
+}
+
+.blessing-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.blessing-content {
+  margin-bottom: 15px;
+}
+
+.blessing-content p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+.blessing-deities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.deity-blessing {
+  padding: 4px 10px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.9);
+}
+
+.blessing-actions {
+  text-align: right;
+}
+
+.reciprocate-btn {
+  padding: 8px 16px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 15px;
+  color: #ffd700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.reciprocate-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+/* 智慧页面样式 */
+.community-wisdom {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.wisdom-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.wisdom-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s ease;
+}
+
+.wisdom-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.wisdom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.wisdom-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin: 0;
+}
+
+.wisdom-category {
+  padding: 4px 12px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #ffd700;
+}
+
+.wisdom-content {
+  margin-bottom: 20px;
+}
+
+.wisdom-quote {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+  padding: 20px;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 4px solid rgba(255, 215, 0, 0.5);
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+}
+
+.wisdom-source {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+  color: rgba(255, 215, 0, 0.8);
+  margin-bottom: 15px;
+  font-style: normal;
+}
+
+.wisdom-translation {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.wisdom-translation strong {
+  color: #ffd700;
+}
+
+.wisdom-commentary {
+  background: rgba(255, 215, 0, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.wisdom-commentary strong {
+  color: #ffd700;
+}
+
+.wisdom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.wisdom-stats {
+  display: flex;
+  gap: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* 冥想页面样式 */
+.community-meditations {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.meditations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.meditation-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.meditation-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.meditation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.host-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.host-avatar {
+  font-size: 2rem;
+}
+
+.host-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.host-name {
+  font-weight: 600;
+  color: #ffd700;
+  font-size: 1rem;
+}
+
+.host-title {
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.7);
+  margin-top: 2px;
+}
+
+.session-type {
+  padding: 4px 12px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: #ffd700;
+}
+
+.meditation-content {
+  margin-bottom: 20px;
+}
+
+.session-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin: 0 0 10px 0;
+}
+
+.session-desc {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.session-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.detail-icon {
+  font-size: 1rem;
+}
+
+.session-technique {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.session-technique strong {
+  color: #ffd700;
+}
+
+.meditation-action {
+  text-align: center;
+}
+
+.btn-join:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+/* 发布帖子模态框 */
+.create-post-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 1.3rem;
+  color: #ffd700;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.post-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  color: #f0f0f0;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.post-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.post-textarea:focus {
+  outline: none;
+  border-color: rgba(255, 215, 0, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.post-options {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.post-type-select {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+}
+
+.post-type-select:focus {
+  outline: none;
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+.modal-actions {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-publish {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 237, 74, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 20px;
+  color: #ffd700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-publish:hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 237, 74, 0.2));
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .community-page-container {
+    padding-bottom: 140px;
+  }
+  
+  .community-content {
+    padding: 20px 15px;
+  }
+  
+  .header-content {
+    padding: 0 15px;
+  }
+  
+  .tabs-container {
+    padding: 0 15px;
+  }
+  
+  .circles-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .session-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .post-actions {
+    gap: 15px;
+  }
+  
+  .circle-stats {
+    gap: 15px;
+  }
+  
+  .wisdom-stats {
+    gap: 15px;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .tab-button {
+    padding: 10px 15px;
+    font-size: 0.8rem;
+  }
+  
+  .modal-content {
+    margin: 10px;
+    max-width: none;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .author-info {
+    gap: 10px;
+  }
+  
+  .author-avatar {
+    font-size: 1.5rem;
+  }
+  
+  .circle-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .circle-avatar {
+    align-self: center;
+  }
+  
+  .meditation-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .post-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .category-badge {
+    align-self: flex-start;
+  }
+  
+  .user-info {
+    display: none; /* 在小屏幕隐藏用户信息 */
+  }
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.community-feed > *,
+.community-circles > *,
+.community-blessings > *,
+.community-wisdom > *,
+.community-meditations > * {
+  animation: slideInUp 0.6s ease forwards;
+}
+
+.post-card,
+.circle-card,
+.blessing-card,
+.wisdom-card,
+.meditation-card {
+  animation: slideInUp 0.4s ease forwards;
+}
+
+.post-card:nth-child(2) { animation-delay: 0.1s; }
+.post-card:nth-child(3) { animation-delay: 0.2s; }
+.post-card:nth-child(4) { animation-delay: 0.3s; }
+
+.circle-card:nth-child(2) { animation-delay: 0.1s; }
+.circle-card:nth-child(3) { animation-delay: 0.2s; }
+.circle-card:nth-child(4) { animation-delay: 0.3s; }

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清理Service Worker</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: linear-gradient(135deg, #f8f9fa 0%, rgba(212, 175, 55, 0.05) 100%);
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 1rem; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            background: #d4af37; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px;
+        }
+        button:hover { background: #b8860b; }
+        .status { 
+            margin: 20px 0; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Service Worker 清理工具</h1>
+        <p>如果您遇到缓存问题，请使用此工具清理Service Worker</p>
+        
+        <div id="status" class="status info">
+            准备清理Service Worker...
+        </div>
+        
+        <button onclick="clearServiceWorkers()">清理Service Worker</button>
+        <button onclick="clearCache()">清理缓存</button>
+        <button onclick="clearAll()">全部清理</button>
+        <button onclick="goToApp()">返回应用</button>
+        
+        <div id="log" style="margin-top: 20px; text-align: left; font-family: monospace; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+        }
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+
+        async function clearServiceWorkers() {
+            log('开始清理Service Worker...');
+            updateStatus('正在清理Service Worker...', 'info');
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    log(`找到 ${registrations.length} 个Service Worker注册`);
+                    
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        log('已卸载Service Worker: ' + registration.scope);
+                    }
+                    
+                    updateStatus('Service Worker清理完成！', 'success');
+                    log('所有Service Worker已清理完成');
+                } else {
+                    updateStatus('浏览器不支持Service Worker', 'error');
+                    log('浏览器不支持Service Worker');
+                }
+            } catch (error) {
+                updateStatus('清理Service Worker时出错: ' + error.message, 'error');
+                log('错误: ' + error.message);
+            }
+        }
+
+        async function clearCache() {
+            log('开始清理缓存...');
+            updateStatus('正在清理缓存...', 'info');
+            
+            try {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    log(`找到 ${cacheNames.length} 个缓存`);
+                    
+                    for (let cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        log('已删除缓存: ' + cacheName);
+                    }
+                    
+                    updateStatus('缓存清理完成！', 'success');
+                    log('所有缓存已清理完成');
+                } else {
+                    updateStatus('浏览器不支持Cache API', 'error');
+                    log('浏览器不支持Cache API');
+                }
+            } catch (error) {
+                updateStatus('清理缓存时出错: ' + error.message, 'error');
+                log('错误: ' + error.message);
+            }
+        }
+
+        async function clearAll() {
+            log('开始全面清理...');
+            await clearServiceWorkers();
+            await clearCache();
+            
+            // 清理localStorage和sessionStorage
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                log('已清理本地存储');
+            } catch (error) {
+                log('清理本地存储时出错: ' + error.message);
+            }
+            
+            updateStatus('全面清理完成！请刷新页面或返回应用', 'success');
+            log('全面清理完成');
+        }
+
+        function goToApp() {
+            window.location.href = '/';
+        }
+
+        // 页面加载时自动检查
+        window.addEventListener('load', async () => {
+            log('页面加载完成，检查当前状态...');
+            
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                log(`当前有 ${registrations.length} 个Service Worker注册`);
+                
+                if (registrations.length > 0) {
+                    updateStatus(`发现 ${registrations.length} 个Service Worker，建议清理`, 'error');
+                } else {
+                    updateStatus('没有发现Service Worker注册', 'success');
+                }
+            }
+            
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                log(`当前有 ${cacheNames.length} 个缓存`);
+            }
+        });
+    </script>
+</body>
+</html> 
+ 
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清理Service Worker</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: linear-gradient(135deg, #f8f9fa 0%, rgba(212, 175, 55, 0.05) 100%);
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 1rem; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            background: #d4af37; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 10px;
+        }
+        button:hover { background: #b8860b; }
+        .status { 
+            margin: 20px 0; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Service Worker 清理工具</h1>
+        <p>如果您遇到缓存问题，请使用此工具清理Service Worker</p>
+        
+        <div id="status" class="status info">
+            准备清理Service Worker...
+        </div>
+        
+        <button onclick="clearServiceWorkers()">清理Service Worker</button>
+        <button onclick="clearCache()">清理缓存</button>
+        <button onclick="clearAll()">全部清理</button>
+        <button onclick="goToApp()">返回应用</button>
+        
+        <div id="log" style="margin-top: 20px; text-align: left; font-family: monospace; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+        }
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+
+        async function clearServiceWorkers() {
+            log('开始清理Service Worker...');
+            updateStatus('正在清理Service Worker...', 'info');
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    log(`找到 ${registrations.length} 个Service Worker注册`);
+                    
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        log('已卸载Service Worker: ' + registration.scope);
+                    }
+                    
+                    updateStatus('Service Worker清理完成！', 'success');
+                    log('所有Service Worker已清理完成');
+                } else {
+                    updateStatus('浏览器不支持Service Worker', 'error');
+                    log('浏览器不支持Service Worker');
+                }
+            } catch (error) {
+                updateStatus('清理Service Worker时出错: ' + error.message, 'error');
+                log('错误: ' + error.message);
+            }
+        }
+
+        async function clearCache() {
+            log('开始清理缓存...');
+            updateStatus('正在清理缓存...', 'info');
+            
+            try {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    log(`找到 ${cacheNames.length} 个缓存`);
+                    
+                    for (let cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        log('已删除缓存: ' + cacheName);
+                    }
+                    
+                    updateStatus('缓存清理完成！', 'success');
+                    log('所有缓存已清理完成');
+                } else {
+                    updateStatus('浏览器不支持Cache API', 'error');
+                    log('浏览器不支持Cache API');
+                }
+            } catch (error) {
+                updateStatus('清理缓存时出错: ' + error.message, 'error');
+                log('错误: ' + error.message);
+            }
+        }
+
+        async function clearAll() {
+            log('开始全面清理...');
+            await clearServiceWorkers();
+            await clearCache();
+            
+            // 清理localStorage和sessionStorage
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                log('已清理本地存储');
+            } catch (error) {
+                log('清理本地存储时出错: ' + error.message);
+            }
+            
+            updateStatus('全面清理完成！请刷新页面或返回应用', 'success');
+            log('全面清理完成');
+        }
+
+        function goToApp() {
+            window.location.href = '/';
+        }
+
+        // 页面加载时自动检查
+        window.addEventListener('load', async () => {
+            log('页面加载完成，检查当前状态...');
+            
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                log(`当前有 ${registrations.length} 个Service Worker注册`);
+                
+                if (registrations.length > 0) {
+                    updateStatus(`发现 ${registrations.length} 个Service Worker，建议清理`, 'error');
+                } else {
+                    updateStatus('没有发现Service Worker注册', 'success');
+                }
+            }
+            
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                log(`当前有 ${cacheNames.length} 个缓存`);
+            }
+        });
+    </script>
+</body>
+</html> 
+ 
+ 
+ 
+ 

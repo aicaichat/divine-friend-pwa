@@ -1,0 +1,123 @@
+version: '3.8'
+
+services:
+  # 前端应用 - 静态文件服务
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: divine-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - frontend_dist:/usr/share/nginx/html
+    networks:
+      - divine-network
+
+  # Python Flask后端
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: divine-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///data/divine_friend.db
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-change-this-secret-key}
+      - CORS_ORIGINS=https://divine-friend.com,https://www.divine-friend.com
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - divine-network
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: divine-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+      - ./devops/redis/redis-prod.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - divine-network
+
+  # Nginx反向代理
+  nginx:
+    image: nginx:alpine
+    container_name: divine-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - frontend_dist:/usr/share/nginx/html
+      - ./devops/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./devops/nginx/ssl:/etc/nginx/ssl
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - divine-network
+
+  # 监控 - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: divine-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./devops/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - divine-network
+
+  # 监控 - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: divine-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./devops/monitoring/grafana:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - divine-network
+
+volumes:
+  frontend_dist:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  divine-network:
+    driver: bridge

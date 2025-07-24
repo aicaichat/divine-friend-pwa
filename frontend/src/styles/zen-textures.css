@@ -1,0 +1,1098 @@
+/* 交个神仙朋友 PWA - 传统工艺质感系统 v3.0 */
+/* 宣纸墨韵 · 丝绸光泽 · 青铜古韵 · 玉石温润 */
+
+/* =================== 📜 宣纸质感系统 - 古典文房四宝的数字化 =================== */
+
+/* === 基础宣纸纹理 === */
+.texture-paper {
+  background-image: 
+    /* 纸张纤维纹理 */
+    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.02) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(139, 69, 19, 0.01) 0%, transparent 25%),
+    radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.015) 0%, transparent 35%),
+    radial-gradient(circle at 70% 20%, rgba(139, 69, 19, 0.008) 0%, transparent 40%),
+    /* 纸张水印效果 */
+    linear-gradient(45deg, transparent 48%, rgba(255, 215, 0, 0.008) 49%, rgba(255, 215, 0, 0.008) 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(139, 69, 19, 0.005) 49%, rgba(139, 69, 19, 0.005) 51%, transparent 52%);
+  background-size: 
+    200px 200px, 
+    150px 150px, 
+    300px 300px, 
+    180px 180px,
+    20px 20px,
+    25px 25px;
+  background-position: 
+    0 0, 
+    50px 50px, 
+    100px 100px, 
+    25px 75px,
+    0 0,
+    12px 12px;
+  position: relative;
+}
+
+/* === 古籍宣纸 - 带有岁月痕迹 === */
+.texture-ancient-paper {
+  background: 
+    /* 古籍黄化效果 */
+    linear-gradient(135deg, #fffef7 0%, #faf9f0 30%, #f5f4e8 70%, #f0efe0 100%),
+    /* 古代纸张斑点 */
+    radial-gradient(circle at 15% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 85% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 25%),
+    radial-gradient(circle at 45% 60%, rgba(205, 133, 63, 0.015) 0%, transparent 30%);
+  background-size: 100% 100%, 400px 400px, 300px 300px, 500px 500px;
+  position: relative;
+}
+
+.texture-ancient-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* 古籍装订线 */
+    linear-gradient(to right, transparent 48%, rgba(139, 69, 19, 0.1) 49%, rgba(139, 69, 19, 0.1) 51%, transparent 52%);
+  background-size: 100px 100%;
+  background-position: 0 0;
+  pointer-events: none;
+}
+
+/* === 书法宣纸 - 适合文字书写 === */
+.texture-calligraphy-paper {
+  background: 
+    var(--paper-ancient),
+    /* 宣纸纤维纹理 */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      rgba(255, 215, 0, 0.008) 1px,
+      rgba(255, 215, 0, 0.008) 2px,
+      transparent 3px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.005) 1px,
+      rgba(139, 69, 19, 0.005) 2px,
+      transparent 3px,
+      transparent 12px
+    );
+  position: relative;
+}
+
+/* =================== 🌸 丝绸质感系统 - 华贵丝绸的光泽流动 =================== */
+
+/* === 基础丝绸光泽 === */
+.texture-silk {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 215, 0, 0.05) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 215, 0, 0.03) 75%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+  position: relative;
+  overflow: hidden;
+}
+
+.texture-silk::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+  animation: silk-shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes silk-shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* === 锦缎纹理 - 华丽的织锦效果 === */
+.texture-brocade {
+  background-image: 
+    /* 锦缎基础纹理 */
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 215, 0, 0.1) 0px,
+      rgba(255, 215, 0, 0.05) 2px,
+      transparent 4px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(139, 69, 19, 0.08) 0px,
+      rgba(139, 69, 19, 0.04) 2px,
+      transparent 4px,
+      transparent 8px
+    ),
+    /* 锦缎花纹 */
+    radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  background-size: 8px 8px, 12px 12px, 100px 100px, 80px 80px;
+  background-position: 0 0, 0 0, 0 0, 50px 50px;
+}
+
+/* =================== 🏺 青铜质感系统 - 古代青铜器的沧桑美感 =================== */
+
+/* === 基础青铜纹理 === */
+.texture-bronze {
+  background: 
+    /* 青铜基色 */
+    linear-gradient(135deg, #cd7f32 0%, #b8860b 30%, #8b7355 70%, #654321 100%),
+    /* 青铜氧化斑点 */
+    radial-gradient(circle at 20% 30%, rgba(0, 100, 0, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(0, 128, 0, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 45% 80%, rgba(46, 125, 50, 0.1) 0%, transparent 45%);
+  background-size: 100% 100%, 150px 150px, 200px 200px, 180px 180px;
+  position: relative;
+  border: 2px solid rgba(139, 69, 19, 0.3);
+}
+
+.texture-bronze::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* 青铜器纹饰 */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.1) 2px,
+      rgba(139, 69, 19, 0.1) 4px,
+      transparent 6px,
+      transparent 12px
+    );
+  pointer-events: none;
+}
+
+/* === 古鼎纹理 - 三足鼎立的威严 === */
+.texture-ancient-cauldron {
+  background: 
+    /* 古鼎基色 */
+    radial-gradient(ellipse at center, #8b7355 0%, #654321 70%, #2f1b14 100%),
+    /* 鼎身纹饰 */
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(255, 215, 0, 0.1) 30deg,
+      transparent 60deg,
+      rgba(139, 69, 19, 0.08) 90deg,
+      transparent 120deg
+    );
+  background-size: 100% 100%, 200px 200px;
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.3),
+    0 5px 15px rgba(139, 69, 19, 0.4);
+}
+
+/* =================== 💎 玉石质感系统 - 温润如玉的典雅美感 =================== */
+
+/* === 基础玉石纹理 === */
+.texture-jade {
+  background: 
+    /* 玉石基色 */
+    linear-gradient(135deg, 
+      rgba(144, 238, 144, 0.8) 0%, 
+      rgba(152, 251, 152, 0.9) 30%, 
+      rgba(144, 238, 144, 0.85) 70%, 
+      rgba(143, 188, 143, 0.9) 100%
+    ),
+    /* 玉石内部纹理 */
+    radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+    /* 玉石天然纹路 */
+    linear-gradient(45deg, 
+      transparent 40%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      transparent 60%
+    );
+  background-size: 100% 100%, 200px 200px, 150px 150px, 300px 300px;
+  border: 1px solid rgba(144, 238, 144, 0.3);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(144, 238, 144, 0.2);
+  position: relative;
+}
+
+/* === 羊脂白玉 - 最高品质的玉石 === */
+.texture-white-jade {
+  background: 
+    /* 羊脂白玉基色 */
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.95) 0%, 
+      rgba(255, 248, 220, 0.9) 30%, 
+      rgba(255, 255, 255, 0.92) 70%, 
+      rgba(250, 240, 230, 0.9) 100%
+    ),
+    /* 内部光泽 */
+    radial-gradient(ellipse at 40% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 70%),
+    radial-gradient(ellipse at 60% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+  background-size: 100% 100%, 300px 300px, 250px 250px;
+  box-shadow: 
+    inset 0 2px 5px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.05),
+    0 3px 12px rgba(255, 215, 0, 0.15);
+}
+
+/* =================== 🌲 木质纹理系统 - 天然木材的生命纹理 =================== */
+
+/* === 基础木纹 === */
+.texture-wood {
+  background: 
+    /* 木材基色 */
+    linear-gradient(90deg, 
+      #daa520 0%, 
+      #cd853f 20%, 
+      #d2691e 40%, 
+      #cd853f 60%, 
+      #daa520 80%, 
+      #b8860b 100%
+    ),
+    /* 木材年轮 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.1) 3px,
+      rgba(139, 69, 19, 0.1) 6px,
+      transparent 9px,
+      transparent 15px
+    ),
+    /* 木材纹理 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(160, 82, 45, 0.05) 1px,
+      rgba(160, 82, 45, 0.05) 2px,
+      transparent 3px,
+      transparent 8px
+    );
+  background-size: 100% 100%, 30px 100%, 12px 100%;
+}
+
+/* === 紫檀木质感 - 名贵木材的深沉 === */
+.texture-rosewood {
+  background: 
+    /* 紫檀基色 */
+    linear-gradient(90deg, 
+      #4a0e0e 0%, 
+      #5c1a1a 25%, 
+      #6b2737 50%, 
+      #5c1a1a 75%, 
+      #4a0e0e 100%
+    ),
+    /* 紫檀特有纹理 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255, 215, 0, 0.05) 2px,
+      rgba(255, 215, 0, 0.05) 4px,
+      transparent 6px,
+      transparent 20px
+    );
+  background-size: 100% 100%, 40px 100%;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* =================== 🏛️ 石材质感系统 - 古建筑石材的厚重感 =================== */
+
+/* === 基础石材纹理 === */
+.texture-stone {
+  background: 
+    /* 石材基色 */
+    linear-gradient(135deg, #a0a0a0 0%, #808080 30%, #696969 70%, #555555 100%),
+    /* 石材纹理 */
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 0, 0, 0.1) 0%, transparent 40%),
+    /* 石材颗粒 */
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      rgba(255, 255, 255, 0.03) 1px,
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 3px,
+      transparent 8px
+    );
+  background-size: 100% 100%, 200px 200px, 150px 150px, 20px 20px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* === 大理石纹理 - 高贵的天然石材 === */
+.texture-marble {
+  background: 
+    /* 大理石基色 */
+    linear-gradient(135deg, #f8f8ff 0%, #f0f8ff 30%, #e6e6fa 70%, #dcdcdc 100%),
+    /* 大理石纹路 */
+    linear-gradient(45deg, 
+      transparent 30%, 
+      rgba(128, 128, 128, 0.1) 40%, 
+      rgba(128, 128, 128, 0.2) 45%, 
+      rgba(128, 128, 128, 0.1) 50%, 
+      transparent 60%
+    ),
+    linear-gradient(-45deg, 
+      transparent 25%, 
+      rgba(169, 169, 169, 0.08) 35%, 
+      rgba(169, 169, 169, 0.15) 40%, 
+      rgba(169, 169, 169, 0.08) 45%, 
+      transparent 55%
+    );
+  background-size: 100% 100%, 300px 300px, 250px 250px;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* =================== 🎨 材质组合类 - 预设的质感组合 =================== */
+
+/* === 文房四宝组合 === */
+.study-materials {
+  background: 
+    var(--paper-ancient),
+    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.1) 0%, transparent 30%);
+  border: 2px solid var(--earth-golden);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 215, 0, 0.2),
+    0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+/* === 宫廷华贵组合 === */
+.imperial-luxury {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 215, 0, 0.2) 0%, 
+      rgba(255, 140, 0, 0.15) 50%, 
+      rgba(255, 215, 0, 0.1) 100%
+    );
+  border: 3px solid var(--earth-golden);
+  box-shadow: 
+    inset 0 2px 5px rgba(255, 215, 0, 0.3),
+    0 5px 15px rgba(255, 215, 0, 0.4);
+  position: relative;
+}
+
+.imperial-luxury::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(
+    from 0deg,
+    var(--earth-golden),
+    var(--fire-phoenix),
+    var(--earth-golden),
+    var(--fire-sunset),
+    var(--earth-golden)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  animation: imperial-glow 4s linear infinite;
+}
+
+@keyframes imperial-glow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* === 禅意简约组合 === */
+.zen-simplicity {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(248, 248, 248, 0.95) 100%
+    );
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* =================== 🌈 动态质感效果 - 质感的生命律动 =================== */
+
+/* === 质感呼吸效果 === */
+.texture-breathe {
+  animation: texture-pulse 4s ease-in-out infinite;
+}
+
+@keyframes texture-pulse {
+  0%, 100% { 
+    filter: brightness(1) contrast(1);
+    transform: scale(1);
+  }
+  50% { 
+    filter: brightness(1.05) contrast(1.1);
+    transform: scale(1.01);
+  }
+}
+
+/* === 质感光泽流动 === */
+.texture-flow {
+  position: relative;
+  overflow: hidden;
+}
+
+.texture-flow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: texture-shine 3s ease-in-out infinite;
+}
+
+@keyframes texture-shine {
+  0% { left: -100%; }
+  50% { left: 0%; }
+  100% { left: 100%; }
+}
+
+/* =================== 📱 响应式质感优化 =================== */
+
+/* === 移动端质感简化 === */
+@media (max-width: 768px) {
+  .texture-bronze::before,
+  .texture-silk::before,
+  .imperial-luxury::before {
+    display: none; /* 移动端移除复杂的伪元素效果 */
+  }
+  
+  .texture-flow::after {
+    animation-duration: 2s; /* 减少动画时长 */
+  }
+}
+
+/* === 低性能设备优化 === */
+@media (max-width: 480px) {
+  .texture-breathe,
+  .texture-flow {
+    animation: none; /* 禁用动态效果 */
+  }
+  
+  .texture-brocade,
+  .texture-ancient-cauldron {
+    background-image: none; /* 简化复杂纹理 */
+    background-color: var(--earth-essence);
+  }
+}
+
+/* =================== ♿ 无障碍质感支持 =================== */
+
+/* === 高对比度模式 === */
+@media (prefers-contrast: high) {
+  .texture-paper,
+  .texture-silk,
+  .texture-jade {
+    background-image: none;
+    background-color: var(--paper-modern);
+    border: 2px solid var(--ink-concentrated);
+  }
+  
+  .texture-bronze {
+    background-image: none;
+    background-color: #8b7355;
+    border: 2px solid var(--ink-concentrated);
+  }
+}
+
+/* === 减少视觉效果偏好 === */
+@media (prefers-reduced-motion: reduce) {
+  .texture-breathe,
+  .texture-flow,
+  .imperial-luxury::before {
+    animation: none !important;
+  }
+}
+
+/* =================== 🎨 结语 =================== */
+
+/*
+这个质感系统将中国传统工艺之美数字化：
+
+1. 宣纸墨韵 - 文房四宝的书香气息
+2. 丝绸光泽 - 华贵织物的流光溢彩  
+3. 青铜古韵 - 青铜器的沧桑厚重
+4. 玉石温润 - 美玉的典雅内敛
+5. 木石质感 - 天然材质的生命纹理
+
+每一种质感都承载着工匠精神，
+每一处细节都体现着文化传承。
+
+—— 世界级传统工艺质感系统 v3.0 ——
+*/ 
+ 
+/* 宣纸墨韵 · 丝绸光泽 · 青铜古韵 · 玉石温润 */
+
+/* =================== 📜 宣纸质感系统 - 古典文房四宝的数字化 =================== */
+
+/* === 基础宣纸纹理 === */
+.texture-paper {
+  background-image: 
+    /* 纸张纤维纹理 */
+    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.02) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(139, 69, 19, 0.01) 0%, transparent 25%),
+    radial-gradient(circle at 40% 80%, rgba(255, 215, 0, 0.015) 0%, transparent 35%),
+    radial-gradient(circle at 70% 20%, rgba(139, 69, 19, 0.008) 0%, transparent 40%),
+    /* 纸张水印效果 */
+    linear-gradient(45deg, transparent 48%, rgba(255, 215, 0, 0.008) 49%, rgba(255, 215, 0, 0.008) 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(139, 69, 19, 0.005) 49%, rgba(139, 69, 19, 0.005) 51%, transparent 52%);
+  background-size: 
+    200px 200px, 
+    150px 150px, 
+    300px 300px, 
+    180px 180px,
+    20px 20px,
+    25px 25px;
+  background-position: 
+    0 0, 
+    50px 50px, 
+    100px 100px, 
+    25px 75px,
+    0 0,
+    12px 12px;
+  position: relative;
+}
+
+/* === 古籍宣纸 - 带有岁月痕迹 === */
+.texture-ancient-paper {
+  background: 
+    /* 古籍黄化效果 */
+    linear-gradient(135deg, #fffef7 0%, #faf9f0 30%, #f5f4e8 70%, #f0efe0 100%),
+    /* 古代纸张斑点 */
+    radial-gradient(circle at 15% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 85% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 25%),
+    radial-gradient(circle at 45% 60%, rgba(205, 133, 63, 0.015) 0%, transparent 30%);
+  background-size: 100% 100%, 400px 400px, 300px 300px, 500px 500px;
+  position: relative;
+}
+
+.texture-ancient-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* 古籍装订线 */
+    linear-gradient(to right, transparent 48%, rgba(139, 69, 19, 0.1) 49%, rgba(139, 69, 19, 0.1) 51%, transparent 52%);
+  background-size: 100px 100%;
+  background-position: 0 0;
+  pointer-events: none;
+}
+
+/* === 书法宣纸 - 适合文字书写 === */
+.texture-calligraphy-paper {
+  background: 
+    var(--paper-ancient),
+    /* 宣纸纤维纹理 */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      rgba(255, 215, 0, 0.008) 1px,
+      rgba(255, 215, 0, 0.008) 2px,
+      transparent 3px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.005) 1px,
+      rgba(139, 69, 19, 0.005) 2px,
+      transparent 3px,
+      transparent 12px
+    );
+  position: relative;
+}
+
+/* =================== 🌸 丝绸质感系统 - 华贵丝绸的光泽流动 =================== */
+
+/* === 基础丝绸光泽 === */
+.texture-silk {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 215, 0, 0.05) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 215, 0, 0.03) 75%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+  position: relative;
+  overflow: hidden;
+}
+
+.texture-silk::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+  animation: silk-shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes silk-shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* === 锦缎纹理 - 华丽的织锦效果 === */
+.texture-brocade {
+  background-image: 
+    /* 锦缎基础纹理 */
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 215, 0, 0.1) 0px,
+      rgba(255, 215, 0, 0.05) 2px,
+      transparent 4px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(139, 69, 19, 0.08) 0px,
+      rgba(139, 69, 19, 0.04) 2px,
+      transparent 4px,
+      transparent 8px
+    ),
+    /* 锦缎花纹 */
+    radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  background-size: 8px 8px, 12px 12px, 100px 100px, 80px 80px;
+  background-position: 0 0, 0 0, 0 0, 50px 50px;
+}
+
+/* =================== 🏺 青铜质感系统 - 古代青铜器的沧桑美感 =================== */
+
+/* === 基础青铜纹理 === */
+.texture-bronze {
+  background: 
+    /* 青铜基色 */
+    linear-gradient(135deg, #cd7f32 0%, #b8860b 30%, #8b7355 70%, #654321 100%),
+    /* 青铜氧化斑点 */
+    radial-gradient(circle at 20% 30%, rgba(0, 100, 0, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(0, 128, 0, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 45% 80%, rgba(46, 125, 50, 0.1) 0%, transparent 45%);
+  background-size: 100% 100%, 150px 150px, 200px 200px, 180px 180px;
+  position: relative;
+  border: 2px solid rgba(139, 69, 19, 0.3);
+}
+
+.texture-bronze::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* 青铜器纹饰 */
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.1) 2px,
+      rgba(139, 69, 19, 0.1) 4px,
+      transparent 6px,
+      transparent 12px
+    );
+  pointer-events: none;
+}
+
+/* === 古鼎纹理 - 三足鼎立的威严 === */
+.texture-ancient-cauldron {
+  background: 
+    /* 古鼎基色 */
+    radial-gradient(ellipse at center, #8b7355 0%, #654321 70%, #2f1b14 100%),
+    /* 鼎身纹饰 */
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(255, 215, 0, 0.1) 30deg,
+      transparent 60deg,
+      rgba(139, 69, 19, 0.08) 90deg,
+      transparent 120deg
+    );
+  background-size: 100% 100%, 200px 200px;
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.3),
+    0 5px 15px rgba(139, 69, 19, 0.4);
+}
+
+/* =================== 💎 玉石质感系统 - 温润如玉的典雅美感 =================== */
+
+/* === 基础玉石纹理 === */
+.texture-jade {
+  background: 
+    /* 玉石基色 */
+    linear-gradient(135deg, 
+      rgba(144, 238, 144, 0.8) 0%, 
+      rgba(152, 251, 152, 0.9) 30%, 
+      rgba(144, 238, 144, 0.85) 70%, 
+      rgba(143, 188, 143, 0.9) 100%
+    ),
+    /* 玉石内部纹理 */
+    radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+    /* 玉石天然纹路 */
+    linear-gradient(45deg, 
+      transparent 40%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      transparent 60%
+    );
+  background-size: 100% 100%, 200px 200px, 150px 150px, 300px 300px;
+  border: 1px solid rgba(144, 238, 144, 0.3);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(144, 238, 144, 0.2);
+  position: relative;
+}
+
+/* === 羊脂白玉 - 最高品质的玉石 === */
+.texture-white-jade {
+  background: 
+    /* 羊脂白玉基色 */
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.95) 0%, 
+      rgba(255, 248, 220, 0.9) 30%, 
+      rgba(255, 255, 255, 0.92) 70%, 
+      rgba(250, 240, 230, 0.9) 100%
+    ),
+    /* 内部光泽 */
+    radial-gradient(ellipse at 40% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 70%),
+    radial-gradient(ellipse at 60% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 60%);
+  background-size: 100% 100%, 300px 300px, 250px 250px;
+  box-shadow: 
+    inset 0 2px 5px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.05),
+    0 3px 12px rgba(255, 215, 0, 0.15);
+}
+
+/* =================== 🌲 木质纹理系统 - 天然木材的生命纹理 =================== */
+
+/* === 基础木纹 === */
+.texture-wood {
+  background: 
+    /* 木材基色 */
+    linear-gradient(90deg, 
+      #daa520 0%, 
+      #cd853f 20%, 
+      #d2691e 40%, 
+      #cd853f 60%, 
+      #daa520 80%, 
+      #b8860b 100%
+    ),
+    /* 木材年轮 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.1) 3px,
+      rgba(139, 69, 19, 0.1) 6px,
+      transparent 9px,
+      transparent 15px
+    ),
+    /* 木材纹理 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(160, 82, 45, 0.05) 1px,
+      rgba(160, 82, 45, 0.05) 2px,
+      transparent 3px,
+      transparent 8px
+    );
+  background-size: 100% 100%, 30px 100%, 12px 100%;
+}
+
+/* === 紫檀木质感 - 名贵木材的深沉 === */
+.texture-rosewood {
+  background: 
+    /* 紫檀基色 */
+    linear-gradient(90deg, 
+      #4a0e0e 0%, 
+      #5c1a1a 25%, 
+      #6b2737 50%, 
+      #5c1a1a 75%, 
+      #4a0e0e 100%
+    ),
+    /* 紫檀特有纹理 */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255, 215, 0, 0.05) 2px,
+      rgba(255, 215, 0, 0.05) 4px,
+      transparent 6px,
+      transparent 20px
+    );
+  background-size: 100% 100%, 40px 100%;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* =================== 🏛️ 石材质感系统 - 古建筑石材的厚重感 =================== */
+
+/* === 基础石材纹理 === */
+.texture-stone {
+  background: 
+    /* 石材基色 */
+    linear-gradient(135deg, #a0a0a0 0%, #808080 30%, #696969 70%, #555555 100%),
+    /* 石材纹理 */
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 0, 0, 0.1) 0%, transparent 40%),
+    /* 石材颗粒 */
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      rgba(255, 255, 255, 0.03) 1px,
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 3px,
+      transparent 8px
+    );
+  background-size: 100% 100%, 200px 200px, 150px 150px, 20px 20px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* === 大理石纹理 - 高贵的天然石材 === */
+.texture-marble {
+  background: 
+    /* 大理石基色 */
+    linear-gradient(135deg, #f8f8ff 0%, #f0f8ff 30%, #e6e6fa 70%, #dcdcdc 100%),
+    /* 大理石纹路 */
+    linear-gradient(45deg, 
+      transparent 30%, 
+      rgba(128, 128, 128, 0.1) 40%, 
+      rgba(128, 128, 128, 0.2) 45%, 
+      rgba(128, 128, 128, 0.1) 50%, 
+      transparent 60%
+    ),
+    linear-gradient(-45deg, 
+      transparent 25%, 
+      rgba(169, 169, 169, 0.08) 35%, 
+      rgba(169, 169, 169, 0.15) 40%, 
+      rgba(169, 169, 169, 0.08) 45%, 
+      transparent 55%
+    );
+  background-size: 100% 100%, 300px 300px, 250px 250px;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* =================== 🎨 材质组合类 - 预设的质感组合 =================== */
+
+/* === 文房四宝组合 === */
+.study-materials {
+  background: 
+    var(--paper-ancient),
+    radial-gradient(circle at 20% 80%, rgba(0, 0, 0, 0.1) 0%, transparent 30%);
+  border: 2px solid var(--earth-golden);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 215, 0, 0.2),
+    0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+/* === 宫廷华贵组合 === */
+.imperial-luxury {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 215, 0, 0.2) 0%, 
+      rgba(255, 140, 0, 0.15) 50%, 
+      rgba(255, 215, 0, 0.1) 100%
+    );
+  border: 3px solid var(--earth-golden);
+  box-shadow: 
+    inset 0 2px 5px rgba(255, 215, 0, 0.3),
+    0 5px 15px rgba(255, 215, 0, 0.4);
+  position: relative;
+}
+
+.imperial-luxury::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(
+    from 0deg,
+    var(--earth-golden),
+    var(--fire-phoenix),
+    var(--earth-golden),
+    var(--fire-sunset),
+    var(--earth-golden)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  animation: imperial-glow 4s linear infinite;
+}
+
+@keyframes imperial-glow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* === 禅意简约组合 === */
+.zen-simplicity {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.9) 0%, 
+      rgba(248, 248, 248, 0.95) 100%
+    );
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* =================== 🌈 动态质感效果 - 质感的生命律动 =================== */
+
+/* === 质感呼吸效果 === */
+.texture-breathe {
+  animation: texture-pulse 4s ease-in-out infinite;
+}
+
+@keyframes texture-pulse {
+  0%, 100% { 
+    filter: brightness(1) contrast(1);
+    transform: scale(1);
+  }
+  50% { 
+    filter: brightness(1.05) contrast(1.1);
+    transform: scale(1.01);
+  }
+}
+
+/* === 质感光泽流动 === */
+.texture-flow {
+  position: relative;
+  overflow: hidden;
+}
+
+.texture-flow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: texture-shine 3s ease-in-out infinite;
+}
+
+@keyframes texture-shine {
+  0% { left: -100%; }
+  50% { left: 0%; }
+  100% { left: 100%; }
+}
+
+/* =================== 📱 响应式质感优化 =================== */
+
+/* === 移动端质感简化 === */
+@media (max-width: 768px) {
+  .texture-bronze::before,
+  .texture-silk::before,
+  .imperial-luxury::before {
+    display: none; /* 移动端移除复杂的伪元素效果 */
+  }
+  
+  .texture-flow::after {
+    animation-duration: 2s; /* 减少动画时长 */
+  }
+}
+
+/* === 低性能设备优化 === */
+@media (max-width: 480px) {
+  .texture-breathe,
+  .texture-flow {
+    animation: none; /* 禁用动态效果 */
+  }
+  
+  .texture-brocade,
+  .texture-ancient-cauldron {
+    background-image: none; /* 简化复杂纹理 */
+    background-color: var(--earth-essence);
+  }
+}
+
+/* =================== ♿ 无障碍质感支持 =================== */
+
+/* === 高对比度模式 === */
+@media (prefers-contrast: high) {
+  .texture-paper,
+  .texture-silk,
+  .texture-jade {
+    background-image: none;
+    background-color: var(--paper-modern);
+    border: 2px solid var(--ink-concentrated);
+  }
+  
+  .texture-bronze {
+    background-image: none;
+    background-color: #8b7355;
+    border: 2px solid var(--ink-concentrated);
+  }
+}
+
+/* === 减少视觉效果偏好 === */
+@media (prefers-reduced-motion: reduce) {
+  .texture-breathe,
+  .texture-flow,
+  .imperial-luxury::before {
+    animation: none !important;
+  }
+}
+
+/* =================== 🎨 结语 =================== */
+
+/*
+这个质感系统将中国传统工艺之美数字化：
+
+1. 宣纸墨韵 - 文房四宝的书香气息
+2. 丝绸光泽 - 华贵织物的流光溢彩  
+3. 青铜古韵 - 青铜器的沧桑厚重
+4. 玉石温润 - 美玉的典雅内敛
+5. 木石质感 - 天然材质的生命纹理
+
+每一种质感都承载着工匠精神，
+每一处细节都体现着文化传承。
+
+—— 世界级传统工艺质感系统 v3.0 ——
+*/ 
+ 
+ 
+ 
+ 

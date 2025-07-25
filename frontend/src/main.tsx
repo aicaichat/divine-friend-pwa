@@ -33,5 +33,3 @@ if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
     }
   });
 } 
-  });
-} 

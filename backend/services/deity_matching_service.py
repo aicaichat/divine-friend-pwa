@@ -7,6 +7,10 @@ from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from enum import Enum
 import json
+from datetime import datetime
+
+# 导入太岁大将数据库
+from .taisui_database import taisui_database, TaisuiGeneral, WuxingElement as TaisuiElement
 
 
 class WuxingElement(Enum):
@@ -44,6 +48,17 @@ class Deity:
 
 
 @dataclass
+class TaisuiMatch:
+    """太岁大将匹配结果"""
+    general: TaisuiGeneral
+    compatibility_score: float
+    match_reasons: List[str]
+    personalized_blessings: List[str]
+    guidance_suggestions: List[str]
+    is_birth_year_taisui: bool = False  # 是否为本命太岁
+
+
+@dataclass
 class DeityMatch:
     """神仙匹配结果"""
     deity: Deity
@@ -59,6 +74,9 @@ class DeityRecommendation:
     primary_match: DeityMatch
     secondary_matches: List[DeityMatch]
     seasonal_recommendation: Optional[DeityMatch]
+    # 新增太岁大将相关字段
+    birth_year_taisui: Optional[TaisuiMatch]  # 本命太岁
+    compatible_taisui: List[TaisuiMatch]  # 兼容太岁列表
     explanation: str
 
 
@@ -187,7 +205,7 @@ class DeityMatchingService:
             )
         ]
     
-    def match_deities(self, bazi_analysis: Dict[str, Any], user_preferences: Optional[Dict] = None) -> DeityRecommendation:
+    def match_deities(self, bazi_analysis: Dict[str, Any], user_preferences: Optional[Dict] = None, birth_year: Optional[int] = None) -> DeityRecommendation:
         """匹配神仙"""
         matches = []
         
@@ -215,13 +233,18 @@ class DeityMatchingService:
         # 获取季节性推荐
         seasonal_recommendation = self._get_seasonal_recommendation(matches)
         
+        # 获取太岁大将匹配
+        birth_year_taisui, compatible_taisui = self._match_taisui_generals(bazi_analysis, birth_year)
+        
         # 生成解释
-        explanation = self._generate_explanation(primary_match, bazi_analysis)
+        explanation = self._generate_explanation(primary_match, bazi_analysis, birth_year_taisui)
         
         return DeityRecommendation(
             primary_match=primary_match,
             secondary_matches=secondary_matches,
             seasonal_recommendation=seasonal_recommendation,
+            birth_year_taisui=birth_year_taisui,
+            compatible_taisui=compatible_taisui,
             explanation=explanation
         )
     
@@ -458,7 +481,228 @@ class DeityMatchingService:
         # 简化实现，返回第一个匹配
         return matches[0] if matches else None
     
-    def _generate_explanation(self, primary_match: DeityMatch, bazi_analysis: Dict) -> str:
+    def _match_taisui_generals(self, bazi_analysis: Dict, birth_year: Optional[int]) -> tuple[Optional[TaisuiMatch], List[TaisuiMatch]]:
+        """匹配太岁大将"""
+        birth_year_taisui = None
+        compatible_taisui = []
+        
+        try:
+            # 获取本命太岁（如果提供了出生年份）
+            if birth_year:
+                birth_year_general = taisui_database.get_general_by_year(birth_year)
+                compatibility_score = self._calculate_taisui_compatibility(birth_year_general, bazi_analysis, is_birth_year=True)
+                
+                birth_year_taisui = TaisuiMatch(
+                    general=birth_year_general,
+                    compatibility_score=compatibility_score,
+                    match_reasons=self._get_taisui_match_reasons(birth_year_general, bazi_analysis, is_birth_year=True),
+                    personalized_blessings=self._get_taisui_blessings(birth_year_general, bazi_analysis),
+                    guidance_suggestions=self._get_taisui_guidance(birth_year_general, bazi_analysis),
+                    is_birth_year_taisui=True
+                )
+            
+            # 获取兼容的太岁大将（基于八字五行）
+            bazi_elements = bazi_analysis.get('bazi_chart', {}).get('elements', {})
+            day_master_element = self._get_day_master_element(bazi_analysis)
+            
+            # 找出五行相生相克最匹配的太岁大将
+            all_generals = taisui_database.get_all_generals()
+            taisui_matches = []
+            
+            for general in all_generals:
+                # 跳过本命太岁（已单独处理）
+                if birth_year and general.jiazi_position == (birth_year - 4) % 60:
+                    continue
+                
+                compatibility_score = self._calculate_taisui_compatibility(general, bazi_analysis)
+                
+                if compatibility_score > 70:  # 只保留高匹配度的太岁
+                    taisui_match = TaisuiMatch(
+                        general=general,
+                        compatibility_score=compatibility_score,
+                        match_reasons=self._get_taisui_match_reasons(general, bazi_analysis),
+                        personalized_blessings=self._get_taisui_blessings(general, bazi_analysis),
+                        guidance_suggestions=self._get_taisui_guidance(general, bazi_analysis),
+                        is_birth_year_taisui=False
+                    )
+                    taisui_matches.append(taisui_match)
+            
+            # 按匹配度排序，取前5个
+            taisui_matches.sort(key=lambda x: x.compatibility_score, reverse=True)
+            compatible_taisui = taisui_matches[:5]
+            
+        except Exception as e:
+            print(f"太岁匹配出错: {e}")
+        
+        return birth_year_taisui, compatible_taisui
+    
+    def _calculate_taisui_compatibility(self, general: TaisuiGeneral, bazi_analysis: Dict, is_birth_year: bool = False) -> float:
+        """计算太岁大将匹配度"""
+        score = 50.0  # 基础分
+        
+        # 本命太岁有额外加分
+        if is_birth_year:
+            score += 30
+        
+        # 五行匹配
+        bazi_elements = bazi_analysis.get('bazi_chart', {}).get('elements', {})
+        day_master_element = self._get_day_master_element(bazi_analysis)
+        
+        # 太岁五行与日主的关系
+        general_element = general.element.value
+        if general_element == day_master_element:
+            score += 20  # 同类相助
+        elif self._is_generating_element(general_element, day_master_element):
+            score += 25  # 相生扶助
+        elif self._can_control_excessive(general_element, bazi_elements):
+            score += 15  # 制衡过旺
+        
+        # 缺失五行补充
+        weak_elements = [elem for elem, count in bazi_elements.items() if count <= 1]
+        if general_element in weak_elements:
+            score += 20
+        
+        # 专长匹配
+        analysis = bazi_analysis.get('analysis', {})
+        if self._has_matching_specialties(general, analysis):
+            score += 15
+        
+        # 性格匹配
+        personality_score = self._calculate_taisui_personality_match(general, analysis)
+        score += personality_score * 10
+        
+        return min(score, 100.0)
+    
+    def _is_generating_element(self, source: str, target: str) -> bool:
+        """判断五行相生关系"""
+        generating_relations = {
+            'wood': 'fire',
+            'fire': 'earth',
+            'earth': 'metal',
+            'metal': 'water',
+            'water': 'wood'
+        }
+        return generating_relations.get(source) == target
+    
+    def _can_control_excessive(self, element: str, bazi_elements: Dict) -> bool:
+        """判断是否能制衡过旺的五行"""
+        controlling_relations = {
+            'wood': 'earth',
+            'earth': 'water',
+            'water': 'fire',
+            'fire': 'metal',
+            'metal': 'wood'
+        }
+        
+        controlled_element = controlling_relations.get(element)
+        if controlled_element and bazi_elements.get(controlled_element, 0) >= 3:
+            return True
+        return False
+    
+    def _has_matching_specialties(self, general: TaisuiGeneral, analysis: Dict) -> bool:
+        """检查专长匹配"""
+        # 检查用户是否需要太岁的专长
+        needs = []
+        if analysis.get('career'):
+            needs.extend(['事业发展', '促进事业', '官运亨通'])
+        if analysis.get('wealth'):
+            needs.extend(['招财进宝', '财富积累'])
+        if analysis.get('health'):
+            needs.extend(['健康养生', '守护健康'])
+        
+        return any(need in ' '.join(general.specialties) for need in needs)
+    
+    def _calculate_taisui_personality_match(self, general: TaisuiGeneral, analysis: Dict) -> float:
+        """计算太岁性格匹配度"""
+        user_personality = analysis.get('personality', [])
+        if not user_personality:
+            return 0.5
+        
+        match_count = 0
+        total_traits = len(general.personality)
+        
+        for trait in general.personality:
+            if any(trait in up for up in user_personality):
+                match_count += 1
+        
+        return match_count / total_traits if total_traits > 0 else 0.5
+    
+    def _get_taisui_match_reasons(self, general: TaisuiGeneral, bazi_analysis: Dict, is_birth_year: bool = False) -> List[str]:
+        """获取太岁匹配原因"""
+        reasons = []
+        
+        if is_birth_year:
+            reasons.append(f"{general.name}是您的本命太岁，天生与您有缘")
+        
+        # 五行匹配原因
+        day_master_element = self._get_day_master_element(bazi_analysis)
+        general_element = general.element.value
+        
+        if general_element == day_master_element:
+            reasons.append(f"太岁五行{general_element}与您日主相同，能够增强您的本命力量")
+        elif self._is_generating_element(general_element, day_master_element):
+            reasons.append(f"太岁五行{general_element}能够生扶您的日主{day_master_element}")
+        
+        # 专长匹配原因
+        if '招财进宝' in general.specialties:
+            reasons.append(f"{general.name}擅长招财进宝，能够提升您的财运")
+        if '消灾解厄' in general.specialties:
+            reasons.append(f"{general.name}具有消灾解厄的神力，能够化解您的困难")
+        
+        # 保护领域匹配
+        if general.protection_areas:
+            reasons.append(f"{general.name}专门保护{general.protection_areas[0]}，正是您所需要的")
+        
+        return reasons
+    
+    def _get_taisui_blessings(self, general: TaisuiGeneral, bazi_analysis: Dict) -> List[str]:
+        """获取太岁个性化祝福"""
+        blessings = list(general.blessings)  # 复制基础祝福
+        
+        # 根据八字分析添加特定祝福
+        analysis = bazi_analysis.get('analysis', {})
+        
+        if analysis.get('career'):
+            blessings.append(f"愿{general.name}护佑您事业步步高升")
+        if analysis.get('wealth'):
+            blessings.append(f"愿{general.name}赐您财源滚滚，富贵满堂")
+        if analysis.get('health'):
+            blessings.append(f"愿{general.name}保佑您身强体健，福寿绵长")
+        
+        return blessings[:6]  # 返回前6个祝福
+    
+    def _get_taisui_guidance(self, general: TaisuiGeneral, bazi_analysis: Dict) -> List[str]:
+        """获取太岁指导建议"""
+        guidance = []
+        
+        # 基础修行建议
+        guidance.append(f"每日向{general.name}虔诚祈祷，获得太岁护佑")
+        guidance.append(f"在{general.year_stem}{general.year_branch}年要特别注意太岁方位")
+        
+        # 根据太岁专长给出建议
+        if '招财进宝' in general.specialties:
+            guidance.append("可在家中或办公室供奉太岁符，增强财运")
+        if '消灾解厄' in general.specialties:
+            guidance.append("遇到困难时默念太岁圣号，获得化解")
+        if '保佑平安' in general.specialties:
+            guidance.append("出行前祈求太岁保佑，确保平安顺利")
+        
+        # 根据五行给出生活建议
+        element = general.element.value
+        if element == 'wood':
+            guidance.append("多接触绿色植物，与太岁木德相应")
+        elif element == 'fire':
+            guidance.append("适当晒太阳，接受太岁火德加持")
+        elif element == 'earth':
+            guidance.append("脚踏实地，体现太岁土德稳重")
+        elif element == 'metal':
+            guidance.append("坚持原则，发挥太岁金德正义")
+        elif element == 'water':
+            guidance.append("保持智慧清净，契合太岁水德")
+        
+        return guidance[:5]  # 返回前5个建议
+    
+    def _generate_explanation(self, primary_match: DeityMatch, bazi_analysis: Dict, birth_year_taisui: Optional[TaisuiMatch] = None) -> str:
         """生成匹配解释"""
         deity = primary_match.deity
         score = primary_match.compatibility_score
@@ -471,6 +715,10 @@ class DeityMatchingService:
             explanation += f"{deity.name}与您有良好的缘分，可以成为您的重要神仙朋友。"
         else:
             explanation += f"虽然匹配度一般，但{deity.name}的慈悲智慧仍然可以为您提供帮助。"
+        
+        # 添加太岁大将的说明
+        if birth_year_taisui:
+            explanation += f"\n\n同时，{birth_year_taisui.general.name}是您的本命太岁大将军，与您有天生的缘分。建议您在修行中既要亲近佛菩萨，也要礼敬太岁大将军，获得全方位的护佑。"
         
         return explanation
 

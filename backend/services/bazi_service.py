@@ -67,8 +67,21 @@ class BaziService:
     
     def calculate_bazi(self, request: BaziRequest) -> Dict[str, Any]:
         """计算八字"""
-        # 解析出生信息
-        datetime_obj = datetime.strptime(request.birthdate, '%Y-%m-%dT%H:%M')
+        # 解析出生信息 - 支持多种格式
+        try:
+            # 尝试完整格式
+            datetime_obj = datetime.strptime(request.birthdate, '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            try:
+                # 尝试简化格式
+                datetime_obj = datetime.strptime(request.birthdate, '%Y-%m-%dT%H:%M')
+            except ValueError:
+                try:
+                    # 尝试只有日期的格式
+                    datetime_obj = datetime.strptime(request.birthdate, '%Y-%m-%d')
+                except ValueError:
+                    # 最后尝试
+                    datetime_obj = datetime.strptime(request.birthdate, '%Y-%m-%d %H:%M:%S')
         
         year = datetime_obj.year
         month = datetime_obj.month

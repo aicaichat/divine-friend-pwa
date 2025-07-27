@@ -1,14 +1,14 @@
 {
-  "name": "神仙朋友 - 八字命理PWA",
+  "name": "神仙朋友 - 智慧修行伴侣",
   "short_name": "神仙朋友",
-  "description": "一款基于八字分析的智能神仙朋友PWA应用，提供个性化的命理指导和心灵陪伴",
-  "version": "1.0.0",
+  "description": "专业的佛道文化修行指导应用，融合传统智慧与现代科技，提供个性化的心灵成长陪伴",
+  "version": "2.0.0",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#667eea",
-  "background_color": "#f5f4e8",
+  "theme_color": "#D4AF37",
+  "background_color": "#F8F6F0",
   "lang": "zh-CN",
   "dir": "ltr",
   
@@ -101,60 +101,74 @@
   
   "categories": [
     "lifestyle",
-    "entertainment", 
+    "spirituality",
+    "wellness", 
+    "education",
     "personalization",
-    "health",
-    "spirituality"
+    "meditation"
   ],
   
   "shortcuts": [
     {
-      "name": "八字分析",
-      "short_name": "八字",
-      "description": "快速进行八字命理分析",
-      "url": "/bazi-analysis",
+      "name": "今日指引",
+      "short_name": "今日",
+      "description": "获得专业的每日修行指导",
+      "url": "/today",
       "icons": [
         {
-          "src": "/icons/shortcut-bazi.png",
+          "src": "/icons/shortcut-today.png",
           "sizes": "96x96",
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "神仙对话",
-      "short_name": "对话", 
-      "description": "与您的神仙朋友进行对话",
-      "url": "/chat",
+      "name": "法宝管理",
+      "short_name": "法宝", 
+      "description": "管理您的修行法器与功德",
+      "url": "/treasure",
       "icons": [
         {
-          "src": "/icons/shortcut-chat.png",
+          "src": "/icons/shortcut-treasure.png",
           "sizes": "96x96",
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "今日运势",
-      "short_name": "运势",
-      "description": "查看今日运势指导",
-      "url": "/daily-fortune",
+      "name": "智慧问答",
+      "short_name": "问仙",
+      "description": "与法师进行专业修行咨询",
+      "url": "/oracle",
       "icons": [
         {
-          "src": "/icons/shortcut-fortune.png",
+          "src": "/icons/shortcut-oracle.png",
           "sizes": "96x96", 
           "type": "image/png"
         }
       ]
     },
     {
-      "name": "手串验证",
-      "short_name": "手串",
-      "description": "验证和管理您的佛珠手串",
-      "url": "/bracelet",
+      "name": "修行成长",
+      "short_name": "成长",
+      "description": "系统化的佛道文化学习",
+      "url": "/growth",
       "icons": [
         {
-          "src": "/icons/shortcut-bracelet.png",
+          "src": "/icons/shortcut-growth.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "个人中心",
+      "short_name": "我的",
+      "description": "修行档案与个人设置",
+      "url": "/profile",
+      "icons": [
+        {
+          "src": "/icons/shortcut-profile.png",
           "sizes": "96x96",
           "type": "image/png"
         }
@@ -232,6 +246,34 @@
     "standalone",
     "browser"
   ],
+  
+  "permissions": [
+    "notifications",
+    "background-sync",
+    "vibrate"
+  ],
+  
+  "notification_options": {
+    "badge": "/icons/notification-badge-72x72.png",
+    "tag": "divine-friend",
+    "silent": false,
+    "vibrate": [200, 100, 200],
+    "renotify": false,
+    "requireInteraction": false,
+    "image": "/icons/notification-image-512x256.png",
+    "actions": [
+      {
+        "action": "view",
+        "title": "查看详情",
+        "icon": "/icons/action-view.png"
+      },
+      {
+        "action": "dismiss",
+        "title": "稍后提醒",
+        "icon": "/icons/action-dismiss.png"
+      }
+    ]
+  },
   
   "id": "divine-friend-pwa-v1",
   

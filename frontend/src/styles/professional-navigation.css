@@ -1,0 +1,367 @@
+/**
+ * 专业级底部导航栏设计系统
+ * 融合佛教文化与现代设计美学
+ */
+
+:root {
+  /* 专业色彩系统 */
+  --nav-primary: #2C1810;         /* 深檀木色 */
+  --nav-secondary: #8B4513;       /* 檀香色 */
+  --nav-accent: #D4AF37;          /* 金刚色 */
+  --nav-surface: #F8F6F0;         /* 宣纸色 */
+  --nav-on-surface: #3C3C3C;      /* 墨色 */
+  --nav-muted: #9E9E9E;           /* 禅灰 */
+  
+  /* 渐变色彩 */
+  --nav-gradient-primary: linear-gradient(135deg, #2C1810 0%, #5D4037 100%);
+  --nav-gradient-secondary: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  --nav-gradient-accent: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+  --nav-gradient-surface: linear-gradient(135deg, #F8F6F0 0%, #FFFFFF 100%);
+  
+  /* 阴影系统 */
+  --nav-shadow-subtle: 0 2px 8px rgba(44, 24, 16, 0.08);
+  --nav-shadow-medium: 0 4px 16px rgba(44, 24, 16, 0.12);
+  --nav-shadow-strong: 0 8px 32px rgba(44, 24, 16, 0.16);
+  
+  /* 边框半径 */
+  --nav-radius-sm: 8px;
+  --nav-radius-md: 12px;
+  --nav-radius-lg: 20px;
+  --nav-radius-xl: 32px;
+  
+  /* 间距系统 */
+  --nav-space-xs: 4px;
+  --nav-space-sm: 8px;
+  --nav-space-md: 16px;
+  --nav-space-lg: 24px;
+  --nav-space-xl: 32px;
+  
+  /* 过渡动画 */
+  --nav-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-transition-medium: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 专业底部导航容器 */
+.professional-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  
+  /* 背景和边框 */
+  background: var(--nav-gradient-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(44, 24, 16, 0.1);
+  
+  /* 阴影 */
+  box-shadow: 
+    var(--nav-shadow-strong),
+    0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+  
+  /* 安全区域适配 */
+  padding-bottom: env(safe-area-inset-bottom);
+  
+  /* 性能优化 */
+  contain: layout style paint;
+  will-change: transform;
+}
+
+/* 导航内容容器 */
+.professional-nav__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: var(--nav-space-md) var(--nav-space-lg);
+  max-width: 768px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 导航项 */
+.professional-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: var(--nav-space-sm);
+  border-radius: var(--nav-radius-md);
+  transition: all var(--nav-transition-medium);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  min-width: 64px;
+  min-height: 64px;
+  
+  /* 触摸优化 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 导航项悬停状态 */
+.professional-nav__item:hover {
+  transform: translateY(-2px);
+  background: rgba(44, 24, 16, 0.04);
+}
+
+/* 导航项活跃状态 */
+.professional-nav__item--active {
+  background: var(--nav-gradient-accent);
+  color: white;
+  transform: translateY(-4px);
+  box-shadow: 
+    var(--nav-shadow-medium),
+    0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.professional-nav__item--active:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    var(--nav-shadow-strong),
+    0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+/* 图标容器 */
+.professional-nav__icon {
+  position: relative;
+  margin-bottom: var(--nav-space-xs);
+  transition: all var(--nav-transition-medium);
+}
+
+/* 图标样式 */
+.professional-nav__icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--nav-muted);
+  transition: all var(--nav-transition-medium);
+}
+
+/* 活跃状态图标 */
+.professional-nav__item--active .professional-nav__icon svg {
+  color: white;
+  transform: scale(1.1);
+}
+
+/* 图标发光效果 */
+.professional-nav__item--active .professional-nav__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: iconGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes iconGlow {
+  from { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* 标签文本 */
+.professional-nav__label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--nav-muted);
+  transition: all var(--nav-transition-medium);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+/* 活跃状态标签 */
+.professional-nav__item--active .professional-nav__label {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 活跃指示器 */
+.professional-nav__indicator {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: var(--nav-gradient-accent);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all var(--nav-transition-medium);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+/* 活跃状态指示器 */
+.professional-nav__item--active .professional-nav__indicator {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+  animation: indicatorPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% { 
+    transform: translateX(-50%) translateY(-4px) scale(1);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+  }
+  50% { 
+    transform: translateX(-50%) translateY(-4px) scale(1.5);
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.8);
+  }
+}
+
+/* 波纹效果 */
+.professional-nav__ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.2);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--nav-transition-slow);
+}
+
+.professional-nav__item:active .professional-nav__ripple {
+  width: 80px;
+  height: 80px;
+  opacity: 1;
+  transition: all var(--nav-transition-fast);
+}
+
+/* 导航装饰元素 */
+.professional-nav__decoration {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--nav-gradient-accent);
+  border-radius: 0 0 var(--nav-radius-sm) var(--nav-radius-sm);
+  opacity: 0;
+  transition: all var(--nav-transition-medium);
+}
+
+.professional-nav__item--active ~ .professional-nav__decoration {
+  opacity: 1;
+}
+
+/* 通知徽章 */
+.professional-nav__badge {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  min-width: 16px;
+  height: 16px;
+  background: #FF4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0 4px;
+  border: 2px solid var(--nav-surface);
+  box-shadow: var(--nav-shadow-subtle);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .professional-nav__content {
+    padding: var(--nav-space-sm) var(--nav-space-md);
+  }
+  
+  .professional-nav__item {
+    min-width: 56px;
+    min-height: 56px;
+    padding: var(--nav-space-xs);
+  }
+  
+  .professional-nav__icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .professional-nav__label {
+    font-size: 10px;
+  }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 768px) {
+  .professional-nav__item {
+    min-width: 72px;
+    min-height: 72px;
+    padding: var(--nav-space-md);
+  }
+  
+  .professional-nav__icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .professional-nav__label {
+    font-size: 12px;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --nav-surface: #1A1A1A;
+    --nav-on-surface: #E0E0E0;
+    --nav-muted: #999999;
+    --nav-gradient-surface: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+  }
+  
+  .professional-nav {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .professional-nav__item:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* 无障碍设计 */
+@media (prefers-reduced-motion: reduce) {
+  .professional-nav__item,
+  .professional-nav__icon,
+  .professional-nav__label,
+  .professional-nav__indicator,
+  .professional-nav__ripple {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .professional-nav {
+    border-top: 2px solid var(--nav-primary);
+  }
+  
+  .professional-nav__item--active {
+    border: 2px solid var(--nav-accent);
+  }
+  
+  .professional-nav__label {
+    font-weight: 600;
+  }
+}

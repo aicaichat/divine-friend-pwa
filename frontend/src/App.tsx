@@ -28,32 +28,45 @@ const App: React.FC = () => {
 
   // 解析URL参数并设置初始页面
   useEffect(() => {
+    // 检查查询字符串参数
+    const urlParams = new URLSearchParams(window.location.search)
+    const pageParam = urlParams.get('page')
+    
+    // 也检查hash参数（向后兼容）
     const hash = window.location.hash
-    if (hash.includes('page=free-chat')) {
+    
+    if (pageParam === 'today' || pageParam === 'home') {
+      setCurrentPage('home')
+    } else if (pageParam === 'free-chat' || hash.includes('page=free-chat')) {
       setCurrentPage('free-chat')
-    } else if (hash.includes('page=chat')) {
+    } else if (pageParam === 'chat' || hash.includes('page=chat')) {
       setCurrentPage('chat')
-    } else if (hash.includes('page=bracelet')) {
+    } else if (pageParam === 'bracelet' || hash.includes('page=bracelet')) {
       setCurrentPage('bracelet')
-    } else if (hash.includes('page=growth')) {
+    } else if (pageParam === 'growth' || hash.includes('page=growth')) {
       setCurrentPage('growth')
-    } else if (hash.includes('page=community')) {
+    } else if (pageParam === 'community' || hash.includes('page=community')) {
       setCurrentPage('community')
-    } else if (hash.includes('page=settings')) {
+    } else if (pageParam === 'settings' || hash.includes('page=settings')) {
       setCurrentPage('settings')
-    } else if (hash.includes('page=test')) {
+    } else if (pageParam === 'test' || hash.includes('page=test')) {
       setCurrentPage('test')
-    } else if (hash.includes('page=bazi-demo')) {
+    } else if (pageParam === 'bazi-demo' || hash.includes('page=bazi-demo')) {
       setCurrentPage('bazi-demo')
-    } else if (hash.includes('page=dayun-demo')) {
+    } else if (pageParam === 'dayun-demo' || hash.includes('page=dayun-demo')) {
       setCurrentPage('dayun-demo')
+    } else {
+      // 默认显示首页
+      setCurrentPage('home')
     }
   }, [])
 
   const handleNavigate = (page: AppPage) => {
     setCurrentPage(page)
-    // 更新URL hash
-    window.location.hash = `?page=${page}`
+    // 更新URL查询字符串
+    const url = new URL(window.location.href)
+    url.searchParams.set('page', page)
+    window.history.pushState({}, '', url.toString())
   }
 
   const renderPage = () => {

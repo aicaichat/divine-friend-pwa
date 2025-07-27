@@ -1,1 +1,1 @@
-export type AppPage = 'home' | 'chat' | 'free-chat' | 'deepseek-demo' | 'bracelet' | 'growth' | 'community' | 'settings' | 'test' | 'bazi-demo' | 'dayun-demo' | 'daily-fortune-demo' 
+export type AppPage = 'home' | 'chat' | 'free-chat' | 'deepseek-demo' | 'bracelet' | 'growth' | 'community' | 'settings' | 'test' | 'bazi-demo' | 'dayun-demo' | 'daily-fortune-demo' | 'daily-fortune' | 'deity-chat' | 'bazi-analysis' 

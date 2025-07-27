@@ -48,7 +48,7 @@ export class APIClient {
   /**
    * 匹配神仙
    */
-  static async matchDeities(baziAnalysis: any): Promise<BaziResponse> {
+  static async matchDeities(baziAnalysis: any, birthYear?: number, userPreferences?: any): Promise<BaziResponse> {
     try {
       const response = await fetch(`${this.baseURL}/match-deities`, {
         method: 'POST',
@@ -56,7 +56,9 @@ export class APIClient {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          bazi_analysis: baziAnalysis
+          bazi_analysis: baziAnalysis,
+          birth_year: birthYear,
+          user_preferences: userPreferences
         }),
       })
 
@@ -129,6 +131,142 @@ export class APIClient {
       }
     } catch (error) {
       console.error('健康检查失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取太岁大将信息
+   */
+  static async getTaisuiGenerals(params?: {
+    year?: number
+    element?: string
+    search?: string
+  }): Promise<BaziResponse> {
+    try {
+      const queryParams = new URLSearchParams()
+      if (params?.year) queryParams.append('year', params.year.toString())
+      if (params?.element) queryParams.append('element', params.element)
+      if (params?.search) queryParams.append('search', params.search)
+
+      const response = await fetch(`${this.baseURL}/get-taisui-generals?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('太岁大将API调用失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取本命太岁大将
+   */
+  static async getBirthYearTaisui(birthYear: number, baziAnalysis?: any): Promise<BaziResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/get-birth-year-taisui`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          birth_year: birthYear,
+          bazi_analysis: baziAnalysis
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('本命太岁API调用失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取本命佛信息
+   */
+  static async getBenmingBuddhas(params?: {
+    year?: number
+    zodiac?: string
+    element?: string
+    search?: string
+  }): Promise<BaziResponse> {
+    try {
+      const queryParams = new URLSearchParams()
+      if (params?.year) queryParams.append('year', params.year.toString())
+      if (params?.zodiac) queryParams.append('zodiac', params.zodiac)
+      if (params?.element) queryParams.append('element', params.element)
+      if (params?.search) queryParams.append('search', params.search)
+
+      const response = await fetch(`${this.baseURL}/get-benming-buddhas?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('本命佛API调用失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取本命佛
+   */
+  static async getBirthYearBuddha(birthYear: number, baziAnalysis?: any): Promise<BaziResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/get-birth-year-buddha`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          birth_year: birthYear,
+          bazi_analysis: baziAnalysis
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('本命佛API调用失败:', error)
       return {
         success: false,
         error: error instanceof Error ? error.message : '未知错误'

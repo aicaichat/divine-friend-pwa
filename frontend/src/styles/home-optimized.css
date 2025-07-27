@@ -1,744 +1,358 @@
-/* 交个神仙朋友 - 移动端优化样式 v3.0 */
-/* 专为移动设备设计的最佳用户体验 */
+/* 
+ * 🌟 优化版首页样式系统 v2.0
+ * 世界顶级视觉设计 + 现代交互体验
+ * 专注于简洁、优雅、高效的用户界面
+ */
 
+/* =================== 🎨 设计系统根变量 =================== */
 :root {
-  /* 🎨 功能色彩系统 */
-  --color-excellent: #22c55e;    /* 大吉 - 翠绿 */
-  --color-good: #3b82f6;         /* 吉 - 蓝色 */
-  --color-normal: #f59e0b;       /* 平 - 橙色 */
-  --color-challenging: #ef4444;  /* 需谨慎 - 红色 */
+  /* 🎯 核心颜色系统 */
+  --color-primary: #D4AF37;
+  --color-primary-light: rgba(212, 175, 55, 0.8);
+  --color-primary-ultra-light: rgba(212, 175, 55, 0.1);
   
-  /* 移动端触摸优化 */
-  --touch-target-min: 44px;      /* iOS人机界面指南推荐最小触摸目标 */
-  --touch-target-comfortable: 56px; /* 舒适的触摸目标大小 */
-  --mobile-padding: 16px;        /* 移动端标准内边距 */
-  --mobile-margin: 12px;         /* 移动端标准外边距 */
+  /* 🌊 渐变背景系统 */
+  --gradient-background: linear-gradient(135deg, #0F1419 0%, #1A1B26 50%, #2D2E3F 100%);
+  --gradient-card: rgba(255, 255, 255, 0.08);
+  --gradient-accent: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
   
-  /* 移动端字体系统 */
-  --font-title-mobile: 24px;     /* 移动端标题字体 */
-  --font-subtitle-mobile: 18px;  /* 移动端副标题 */
-  --font-body-mobile: 16px;      /* 移动端正文 */
-  --font-caption-mobile: 14px;   /* 移动端说明文字 */
-  --font-small-mobile: 12px;     /* 移动端小字 */
+  /* 📝 文字颜色层次 */
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.6);
   
-  /* 移动端间距系统 */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 16px;
-  --space-xl: 20px;
-  --space-xxl: 24px;
-  --space-xxxl: 32px;
+  /* 🔮 阴影系统 */
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
   
-  /* 移动端圆角 */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  /* 🌀 动画曲线 */
+  --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --easing-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   
-  /* 移动端阴影 */
-  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
-  --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.2);
-  --shadow-divine: 0 4px 20px rgba(255, 215, 0, 0.2);
+  /* ⏱️ 时间系统 */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.6s;
+  --duration-ultra-slow: 1.2s;
 }
 
-/* 📱 移动端优先基础容器 */
+/* =================== 🎯 全局样式重置 =================== */
+.home-optimized * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .home-optimized {
-  min-height: 100vh;
-  background: var(--gradient-primary);
-  padding: var(--space-lg);
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch; /* iOS滑动优化 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* 🎯 时间问候区 - 移动端优化 */
-.hero-section {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  margin-bottom: var(--space-md);
-  box-shadow: var(--shadow-soft);
-  text-align: center;
-}
-
-.time-greeting {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.greeting-text {
-  font-size: var(--font-subtitle-mobile);
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.4;
-  margin: 0;
-}
-
-.current-time {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-  font-size: var(--font-title-mobile);
-  font-weight: 700;
-  color: var(--color-primary-action);
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-  letter-spacing: 0.05em;
-  margin: 0;
-}
-
-/* 💬 神仙对话预览区 - 移动端重新设计 */
-.deity-conversation-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-medium);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-bottom: var(--space-lg);
-}
-
-.deity-conversation-card:active {
-  transform: scale(0.98);
-  transition: transform 0.1s ease;
-}
-
-.conversation-header {
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-/* 神仙头像区域 - 移动端优化 */
-.deity-avatar {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: var(--space-md);
-}
-
-.avatar-container {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: var(--shadow-divine);
-  border: 3px solid rgba(255, 215, 0, 0.4);
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
-}
-
-.guanyin-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%; /* 重要：确保显示头部区域 */
-  transition: opacity 0.3s ease;
-  transform: scale(1.1); /* 轻微放大，确保面部清晰 */
-}
-
-.guanyin-avatar.loading {
-  opacity: 0.7;
-}
-
-.guanyin-avatar.loaded {
-  opacity: 1;
-}
-
-.guanyin-fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 50px;
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-}
-
-.online-indicator {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  background: #22c55e;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 神仙切换按钮 - 移动端触摸优化 */
-.deity-switch-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  padding: 0 var(--space-md);
-  pointer-events: none;
-}
-
-.deity-switch-btn {
-  width: var(--touch-target-min);
-  height: var(--touch-target-min);
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-medium);
-  pointer-events: all;
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.deity-switch-btn:active {
-  transform: scale(0.9);
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* 神仙信息区域 - 移动端优化 */
-.conversation-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.deity-info-header {
-  text-align: center;
-}
-
-.deity-name {
-  font-size: var(--font-title-mobile);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0 0 var(--space-xs) 0;
-  line-height: 1.2;
-}
-
-.deity-title {
-  font-size: var(--font-caption-mobile);
-  color: var(--text-secondary);
-  margin: 0 0 var(--space-sm) 0;
-  line-height: 1.3;
-}
-
-.deity-specialty {
-  font-size: var(--font-caption-mobile);
-  color: var(--color-primary-action);
-  font-weight: 500;
-  margin: 0;
-  line-height: 1.3;
-}
-
-/* 今日运势卡片 - 移动端重新设计 */
-.today-fortune-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
-  padding: var(--space-lg);
-  margin: var(--space-md) 0;
-}
-
-.fortune-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-md);
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.fortune-label {
-  font-size: var(--font-body-mobile);
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.fortune-score-container {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.fortune-badge {
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-caption-mobile);
-  font-weight: 600;
-  color: white;
-  white-space: nowrap;
-}
-
-.fortune-score {
-  font-size: var(--font-subtitle-mobile);
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.fortune-message {
-  font-size: var(--font-body-mobile);
-  color: var(--text-primary);
-  line-height: 1.5;
-  margin-bottom: var(--space-md);
-  padding: var(--space-md);
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-sm);
-  border-left: 4px solid var(--color-primary-action);
-}
-
-/* 运势指引展开区域 */
-.fortune-guidance {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--space-md);
-}
-
-.guidance-toggle {
-  width: 100%;
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-size: var(--font-body-mobile);
-  font-weight: 500;
-  padding: var(--space-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: var(--radius-sm);
-  -webkit-tap-highlight-color: transparent;
-  min-height: var(--touch-target-min);
-}
-
-.guidance-toggle:active {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.toggle-icon {
-  transition: transform 0.3s ease;
-  font-size: var(--font-caption-mobile);
-}
-
-.toggle-icon.rotated {
-  transform: rotate(180deg);
-}
-
-.guidance-list {
-  padding: var(--space-md) 0 0;
-  margin: 0;
-}
-
-.guidance-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-  padding: var(--space-sm);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-sm);
-}
-
-.guidance-bullet {
-  color: var(--color-primary-action);
-  font-weight: bold;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.guidance-text {
-  font-size: var(--font-body-mobile);
-  color: var(--text-primary);
-  line-height: 1.4;
-}
-
-/* 消息元数据 */
-.message-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 var(--space-md);
-  margin-top: var(--space-sm);
-}
-
-.message-time {
-  font-size: var(--font-small-mobile);
-  color: var(--text-secondary);
-}
-
-.deity-indicator {
-  font-size: var(--font-small-mobile);
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.1);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
-}
-
-/* 操作按钮区域 - 移动端优化 */
-.chat-action-area {
-  padding: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.primary-chat-btn {
-  width: 100%;
-  height: var(--touch-target-comfortable);
-  background: linear-gradient(135deg, var(--color-primary-action), #ff6b35);
-  border: none;
-  border-radius: var(--radius-md);
-  color: white;
-  font-size: var(--font-body-mobile);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  box-shadow: var(--shadow-medium);
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.primary-chat-btn:active {
-  transform: scale(0.98);
-  box-shadow: var(--shadow-soft);
-}
-
-.quick-fortune-actions {
-  display: flex;
-  gap: var(--space-sm);
-  justify-content: space-between;
-}
-
-.quick-action-small {
-  flex: 1;
-  height: var(--touch-target-min);
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: var(--font-caption-mobile);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.quick-action-small:active {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(0.95);
-}
-
-/* 手串状态指示器 - 移动端优化 */
-.bracelet-status {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  transition: all 0.2s ease;
-}
-
-.bracelet-status.connected {
-  border-color: rgba(34, 197, 94, 0.3);
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.status-icon {
-  font-size: 32px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.status-text {
-  flex: 1;
-}
-
-.connection-text {
-  font-size: var(--font-body-mobile);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.energy-text {
-  font-size: var(--font-caption-mobile);
-  color: var(--text-secondary);
-}
-
-.energy-bar {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-.energy-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  border-radius: 4px;
-  transition: width 0.5s ease;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
-}
-
-
-
-
-
-/* 今日运势详情折叠样式 */
-.fortune-details {
-  margin-top: var(--space-md);
-}
-
-.details-toggle {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 215, 0, 0.2);
-  borderRadius: var(--radius-md);
-  padding: var(--space-sm) var(--space-md);
-  color: var(--text-primary);
-  font-size: var(--font-body-mobile);
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.3s ease;
-}
-
-.details-toggle:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 215, 0, 0.4);
-}
-
-.details-toggle:active {
-  transform: scale(0.98);
-}
-
-.toggle-icon {
-  transition: transform 0.3s ease;
-  color: var(--color-primary-action);
-  font-size: 0.8rem;
-}
-
-.toggle-icon.rotated {
-  transform: rotate(180deg);
-}
-
-.fortune-breakdown-list {
-  margin-top: var(--space-md);
-  padding: var(--space-md);
-  background: rgba(0, 0, 0, 0.2);
-  borderRadius: var(--radius-md);
-  border: 1px solid rgba(255, 215, 0, 0.1);
-  animation: fadeInSlideDown 0.3s ease-out;
-}
+/* =================== 📱 响应式设计系统 =================== */
 
-@keyframes fadeInSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+/* 小屏幕优化 (iPhone SE) */
+@media (max-width: 375px) {
+  .home-optimized .container {
+    padding: 1.5rem 1rem;
   }
-  to {
+  
+  .home-optimized .greeting-title {
+    font-size: 1.5rem;
+  }
+  
+  .home-optimized .fortune-card {
+    padding: 1.5rem;
+  }
+  
+  .home-optimized .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* 中等屏幕优化 (iPhone 12/13/14) */
+@media (min-width: 376px) and (max-width: 428px) {
+  .home-optimized .container {
+    padding: 2rem 1.25rem;
+  }
+  
+  .home-optimized .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* 大屏幕优化 (iPad mini/Air) */
+@media (min-width: 768px) {
+  .home-optimized .container {
+    max-width: 500px;
+    padding: 3rem 2rem;
+  }
+  
+  .home-optimized .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .home-optimized .fortune-card {
+    padding: 2.5rem;
+  }
+}
+
+/* =================== 🎭 高级动画效果 =================== */
+
+/* 🌊 流体脉动效果 */
+@keyframes fluid-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-.fortune-category-item {
-  margin-bottom: var(--space-md);
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.fortune-category-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.category-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-xs);
-}
-
-.category-icon {
-  font-size: 1.1rem;
-  margin-right: var(--space-sm);
-}
-
-.category-name {
-  flex: 1;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: var(--font-body-mobile);
-}
-
-.category-score {
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding: 2px 8px;
-  borderRadius: var(--radius-sm);
-  min-width: 32px;
-  text-align: center;
-  color: white;
-}
-
-.category-score.excellent {
-  background: var(--color-success);
-}
-
-.category-score.good {
-  background: var(--color-primary-action);
-}
-
-.category-score.average {
-  background: var(--color-warning);
-}
-
-.category-desc {
-  color: var(--text-secondary);
-  font-size: var(--font-small-mobile);
-  line-height: 1.4;
-  opacity: 0.9;
-  margin-left: calc(1.1rem + var(--space-sm));
-}
-
-.today-guidance {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid rgba(255, 215, 0, 0.2);
-}
-
-.guidance-title {
-  color: var(--color-primary-action);
-  font-size: var(--font-body-mobile);
-  font-weight: 600;
-  margin: 0 0 var(--space-sm) 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.guidance-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.guidance-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  line-height: 1.4;
-}
-
-.guidance-bullet {
-  color: var(--color-primary-action);
-  font-weight: bold;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.guidance-text {
-  color: var(--text-secondary);
-  font-size: var(--font-small-mobile);
-  flex: 1;
-}
-
-/* 移动端优化 */
-@media (max-width: 480px) {
-  .fortune-breakdown-list {
-    padding: var(--space-sm);
+/* ✨ 神圣发光效果 */
+@keyframes divine-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
   }
-  
-  .category-score {
-    font-size: 0.8rem;
-    padding: 1px 6px;
-    min-width: 28px;
-  }
-  
-  .category-desc {
-    font-size: 0.75rem;
-  }
-  
-  .guidance-text {
-    font-size: 0.75rem;
+  50% {
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
   }
 }
 
-/* 移动端性能优化 */
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+/* 🌟 星光闪烁效果 */
+@keyframes starlight-twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
 }
 
-input, textarea {
-  -webkit-user-select: text;
-  -khtml-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
+/* 💫 粒子浮动效果 */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-30px) translateX(5px);
+  }
 }
 
-/* 滚动优化 */
-.home-optimized {
-  scroll-behavior: smooth;
-  overscroll-behavior: contain;
+/* =================== 🎨 组件样式系统 =================== */
+
+/* 📊 状态指示器 */
+.home-optimized .status-indicator {
+  animation: fluid-pulse 2s ease-in-out infinite;
 }
 
-/* 动画优化 */
+/* 🎯 交互式卡片 */
+.home-optimized .interactive-card {
+  transition: all var(--duration-normal) var(--easing-smooth);
+  cursor: pointer;
+}
+
+.home-optimized .interactive-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+}
+
+.home-optimized .interactive-card:active {
+  transform: translateY(-4px) scale(1.01);
+  transition: all var(--duration-fast) var(--easing-smooth);
+}
+
+/* 🌟 主要行动按钮 */
+.home-optimized .primary-action {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border: 1px solid var(--color-primary);
+  box-shadow: var(--shadow-glow);
+  transition: all var(--duration-normal) var(--easing-elastic);
+}
+
+.home-optimized .primary-action:hover {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+}
+
+/* 🎭 图标动画 */
+.home-optimized .animated-icon {
+  transition: all var(--duration-normal) var(--easing-bounce);
+}
+
+.home-optimized .animated-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 0 8px var(--color-primary-light));
+}
+
+/* =================== 🌐 可访问性增强 =================== */
+
+/* 减少动画偏好支持 */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  .home-optimized * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-/* 暗色模式支持 */
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .home-optimized {
+    --text-primary: #FFFFFF;
+    --text-secondary: #E5E5E5;
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* 深色模式优化 */
 @media (prefers-color-scheme: dark) {
   .home-optimized {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --gradient-background: linear-gradient(135deg, #000000 0%, #1A1A1A 50%, #2D2D2D 100%);
+    --gradient-card: rgba(255, 255, 255, 0.12);
   }
-  
-  .hero-section, .deity-conversation-card, .bracelet-status {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* =================== 🎯 性能优化 =================== */
+
+/* GPU 硬件加速 */
+.home-optimized .gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 图层分离优化 */
+.home-optimized .layered-element {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* =================== 🌈 视觉增强效果 =================== */
+
+/* 磨砂玻璃效果 */
+.home-optimized .glass-effect {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 渐变边框效果 */
+.home-optimized .gradient-border {
+  position: relative;
+  background: var(--gradient-card);
+}
+
+.home-optimized .gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-primary), transparent, var(--color-primary));
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+}
+
+/* =================== 🎪 特殊效果 =================== */
+
+/* 水波纹点击效果 */
+.home-optimized .ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-optimized .ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.home-optimized .ripple-effect:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* 磁力吸引效果 */
+.home-optimized .magnetic-effect {
+  transition: all var(--duration-normal) var(--easing-elastic);
+}
+
+.home-optimized .magnetic-effect:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* =================== 🚀 优化类名 =================== */
+
+.home-optimized .fade-in {
+  animation: fadeIn var(--duration-slow) var(--easing-smooth) forwards;
+}
+
+.home-optimized .slide-up {
+  animation: slideUp var(--duration-slow) var(--easing-smooth) forwards;
+}
+
+.home-optimized .bounce-in {
+  animation: bounceIn var(--duration-slow) var(--easing-bounce) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 } 

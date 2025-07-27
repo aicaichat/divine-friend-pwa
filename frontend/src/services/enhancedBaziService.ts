@@ -74,13 +74,13 @@ export class EnhancedBaziService {
   /**
    * 使用真实API匹配神仙
    */
-  static async matchDeitiesWithAPI(baziAnalysis: any): Promise<{
+  static async matchDeitiesWithAPI(baziAnalysis: any, birthYear?: number, userPreferences?: any): Promise<{
     success: boolean
     data?: any
     error?: string
   }> {
     try {
-      const response = await APIClient.matchDeities(baziAnalysis)
+      const response = await APIClient.matchDeities(baziAnalysis, birthYear, userPreferences)
       
       if (response.success && response.data) {
         // 保存神仙匹配结果
@@ -213,6 +213,91 @@ export class EnhancedBaziService {
   }
 
   /**
+   * 获取太岁大将信息
+   */
+  static async getTaisuiGenerals(params?: {
+    year?: number
+    element?: string
+    search?: string
+  }): Promise<{
+    success: boolean
+    data?: any
+    error?: string
+  }> {
+    try {
+      const response = await APIClient.getTaisuiGenerals(params)
+      return response
+    } catch (error) {
+      console.error('获取太岁大将失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取本命太岁大将
+   */
+  static async getBirthYearTaisui(birthYear: number, baziAnalysis?: any): Promise<{
+    success: boolean
+    data?: any
+    error?: string
+  }> {
+    try {
+      const response = await APIClient.getBirthYearTaisui(birthYear, baziAnalysis)
+      
+      if (response.success && response.data) {
+        // 保存本命太岁信息
+        this.saveBirthYearTaisui(response.data)
+        return response
+      } else {
+        return {
+          success: false,
+          error: response.error || '获取本命太岁失败'
+        }
+      }
+    } catch (error) {
+      console.error('获取本命太岁失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 保存本命太岁信息到本地存储
+   */
+  private static saveBirthYearTaisui(taisuiData: any): void {
+    try {
+      const data = {
+        taisuiData,
+        timestamp: new Date().toISOString()
+      }
+      localStorage.setItem(`${this.STORAGE_PREFIX}-birth-taisui`, JSON.stringify(data))
+    } catch (error) {
+      console.error('保存本命太岁信息失败:', error)
+    }
+  }
+
+  /**
+   * 获取保存的本命太岁信息
+   */
+  static getSavedBirthYearTaisui(): {
+    taisuiData?: any
+    timestamp?: string
+  } | null {
+    try {
+      const data = localStorage.getItem(`${this.STORAGE_PREFIX}-birth-taisui`)
+      return data ? JSON.parse(data) : null
+    } catch (error) {
+      console.error('获取保存的本命太岁信息失败:', error)
+      return null
+    }
+  }
+
+  /**
    * 检查API连接状态
    */
   static async checkAPIStatus(): Promise<boolean> {
@@ -222,6 +307,106 @@ export class EnhancedBaziService {
     } catch (error) {
       console.error('API状态检查失败:', error)
       return false
+    }
+  }
+
+  /**
+   * 获取本命佛信息
+   */
+  static async getBenmingBuddhas(params?: {
+    year?: number
+    zodiac?: string
+    element?: string
+    search?: string
+  }): Promise<{
+    success: boolean
+    data?: any
+    error?: string
+  }> {
+    try {
+      const response = await APIClient.getBenmingBuddhas(params)
+      return response
+    } catch (error) {
+      console.error('获取本命佛失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 获取本命佛
+   */
+  static async getBirthYearBuddha(birthYear: number, baziAnalysis?: any): Promise<{
+    success: boolean
+    data?: any
+    error?: string
+  }> {
+    try {
+      const response = await APIClient.getBirthYearBuddha(birthYear, baziAnalysis)
+      
+      if (response.success && response.data) {
+        // 保存本命佛信息
+        this.saveBirthYearBuddha(response.data)
+        return response
+      } else {
+        return {
+          success: false,
+          error: response.error || '获取本命佛失败'
+        }
+      }
+    } catch (error) {
+      console.error('获取本命佛失败:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : '未知错误'
+      }
+    }
+  }
+
+  /**
+   * 保存本命佛信息到本地存储
+   */
+  private static saveBirthYearBuddha(buddhaData: any): void {
+    try {
+      const data = {
+        buddhaData,
+        timestamp: new Date().toISOString()
+      }
+      localStorage.setItem(`${this.STORAGE_PREFIX}-birth-buddha`, JSON.stringify(data))
+    } catch (error) {
+      console.error('保存本命佛信息失败:', error)
+    }
+  }
+
+  /**
+   * 获取保存的本命佛信息
+   */
+  static getSavedBirthYearBuddha(): {
+    buddhaData?: any
+    timestamp?: string
+  } | null {
+    try {
+      const data = localStorage.getItem(`${this.STORAGE_PREFIX}-birth-buddha`)
+      return data ? JSON.parse(data) : null
+    } catch (error) {
+      console.error('获取保存的本命佛信息失败:', error)
+      return null
+    }
+  }
+
+  /**
+   * 清除所有保存的数据（包括太岁大将和本命佛数据）
+   */
+  static clearAllSavedData(): void {
+    try {
+      localStorage.removeItem(`${this.STORAGE_PREFIX}-bazi`)
+      localStorage.removeItem(`${this.STORAGE_PREFIX}-deity`)
+      localStorage.removeItem(`${this.STORAGE_PREFIX}-birth-taisui`)
+      localStorage.removeItem(`${this.STORAGE_PREFIX}-birth-buddha`)
+    } catch (error) {
+      console.error('清除保存数据失败:', error)
     }
   }
 } 

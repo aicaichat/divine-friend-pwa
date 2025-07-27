@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经文阅读测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-button {
+            background: #4F46E5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #4338CA;
+        }
+        .result {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>📖 经文阅读功能测试</h1>
+        
+        <button class="test-button" onclick="testScriptureLoading()">
+            测试经文数据加载
+        </button>
+        
+        <button class="test-button" onclick="testTTS()">
+            测试TTS功能
+        </button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const result = document.getElementById('result');
+            result.textContent += message + '\n';
+        }
+
+        async function testScriptureLoading() {
+            log('🧪 开始测试经文数据加载...');
+            
+            try {
+                const response = await fetch('/src/data/scriptures/diamond-sutra.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ 经文数据加载成功');
+                    log(`📚 标题: ${data.title}`);
+                    log(`📝 段落数: ${data.content?.fullText?.length || 0}`);
+                    log(`📊 总字符数: ${data.metadata?.totalCharacters || 0}`);
+                } else {
+                    log('❌ 经文数据加载失败: ' + response.status);
+                }
+            } catch (error) {
+                log('❌ 经文数据加载错误: ' + error.message);
+            }
+        }
+
+        function testTTS() {
+            log('🧪 开始测试TTS功能...');
+            
+            if ('speechSynthesis' in window) {
+                log('✅ Web Speech API 支持');
+                
+                const utterance = new SpeechSynthesisUtterance('南无阿弥陀佛');
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.9;
+                
+                utterance.onstart = () => log('🎤 TTS开始播放');
+                utterance.onend = () => log('✅ TTS播放完成');
+                utterance.onerror = (event) => log('❌ TTS播放错误: ' + event.error);
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                log('❌ 浏览器不支持Web Speech API');
+            }
+        }
+
+        // 页面加载时自动测试
+        window.addEventListener('load', () => {
+            log('🚀 页面加载完成，开始自动测试...');
+            setTimeout(testScriptureLoading, 1000);
+        });
+    </script>
+</body>
+</html> 

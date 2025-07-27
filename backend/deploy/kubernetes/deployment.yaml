@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: divine-friend-backend
+  namespace: divine-friend
+  labels:
+    app: divine-friend-backend
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: divine-friend-backend
+  template:
+    metadata:
+      labels:
+        app: divine-friend-backend
+        version: v1.0.0
+    spec:
+      containers:
+      - name: divine-friend-backend
+        image: divine-friend/backend:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5001
+          name: http
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: divine-friend-secrets
+              key: redis-url
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: divine-friend-secrets
+              key: secret-key
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 5001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        volumeMounts:
+        - name: logs
+          mountPath: /var/log/divine-friend
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+      volumes:
+      - name: logs
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: divine-friend-config
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - divine-friend-backend
+              topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: divine-friend-backend-service
+  namespace: divine-friend
+  labels:
+    app: divine-friend-backend
+spec:
+  selector:
+    app: divine-friend-backend
+  ports:
+  - port: 80
+    targetPort: 5001
+    protocol: TCP
+    name: http
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: divine-friend-config
+  namespace: divine-friend
+data:
+  app.conf: |
+    LOG_LEVEL=INFO
+    WORKERS=4
+    MAX_CONTENT_LENGTH=16777216
+    REQUEST_TIMEOUT=30
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: divine-friend-secrets
+  namespace: divine-friend
+type: Opaque
+data:
+  # Base64编码的值 - 在实际部署时替换
+  secret-key: <base64-encoded-secret-key>
+  redis-url: <base64-encoded-redis-url> 

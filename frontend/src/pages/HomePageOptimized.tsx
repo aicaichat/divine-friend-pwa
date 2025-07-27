@@ -1,618 +1,533 @@
-import React, { useState, useEffect, useRef } from 'react'
-import type { AppPage } from '../types'
-import { apiService, type DailyFortuneAPIResponse } from '../services/apiService'
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { apiService } from '../services/apiService';
+import type { AppPage } from '../types';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 interface HomePageOptimizedProps {
-  onNavigate: (page: AppPage) => void
+  onNavigate: (page: AppPage) => void;
 }
 
-interface DeityInfo {
-  id: string
-  name: string
-  title: string
-  imageUrl: string
-  fallbackEmoji: string
-  specialty: string
-  todayMessage: string
-  fortuneType: 'excellent' | 'good' | 'normal' | 'challenging'
-  fortuneScore: number
-  guidance: string[]
+interface UserInfo {
+  name?: string;
+  birthdate?: string;
+  gender?: string;
 }
+
+interface DailyFortune {
+  overall_score: number;
+  overall_level: string;
+  overall_description: string;
+}
+
+// 🎨 优雅的设计系统
+const designSystem = {
+  colors: {
+    primary: '#D4AF37',
+    background: 'linear-gradient(135deg, #0F1419 0%, #1A1B26 50%, #2D2E3F 100%)',
+    card: 'rgba(255, 255, 255, 0.08)',
+    textPrimary: '#FFFFFF',
+    textSecondary: 'rgba(255, 255, 255, 0.8)',
+    textMuted: 'rgba(255, 255, 255, 0.6)'
+  },
+  shadows: {
+    card: '0 8px 32px rgba(0, 0, 0, 0.3)',
+    glow: '0 0 20px rgba(212, 175, 55, 0.3)'
+  }
+};
 
 const HomePageOptimized: React.FC<HomePageOptimizedProps> = ({ onNavigate }) => {
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [userName] = useState('道友')
-  const [braceletConnected] = useState(true)
-  const [blessingEnergy] = useState(98)
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [imageError, setImageError] = useState(false)
-  const [currentDeityIndex, setCurrentDeityIndex] = useState(0)
-  const [showFortuneDetails, setShowFortuneDetails] = useState(false)
-  const [todayFortune, setTodayFortune] = useState<DailyFortuneAPIResponse['data'] | null>(null)
-  const [isLoadingFortune, setIsLoadingFortune] = useState(false)
-  const [fortuneError, setFortuneError] = useState<string | null>(null)
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [dailyFortune, setDailyFortune] = useState<DailyFortune | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentTime, setCurrentTime] = useState(new Date());
   
-  // 移动端触摸优化
-  const [touchStart, setTouchStart] = useState({ x: 0, y: 0 })
-  const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 })
-  const conversationCardRef = useRef<HTMLDivElement>(null)
+  // 📊 分析追踪
+  const analytics = useAnalytics();
 
-  // 神仙信息数据库
-  const deities: DeityInfo[] = [
-    {
-      id: 'guanyin',
-      name: '观音菩萨',
-      title: '大慈大悲救苦救难',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E5%8D%83%E6%89%8B%E8%A7%82%E9%9F%B3.jpg',
-      fallbackEmoji: '🧘‍♀️',
-      specialty: '慈悲智慧 • 情感疗愈',
-      todayMessage: '今日水逆散去，您的慈悲心将为您带来意外的贵人相助',
-      fortuneType: 'excellent',
-      fortuneScore: 89,
-      guidance: ['保持善念，助人为乐', '适合处理人际关系', '晚间诵经效果佳']
-    },
-    {
-      id: 'budongzun',
-      name: '不动尊菩萨',
-      title: '降魔护法明王',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E4%B8%8D%E5%8A%A8%E5%B0%8A%E8%8F%A9%E8%90%A8.jpg',
-      fallbackEmoji: '⚔️',
-      specialty: '破除障碍 • 坚定意志',
-      todayMessage: '今日宜坚定决心，排除万难，您的毅力将战胜一切挑战',
-      fortuneType: 'good',
-      fortuneScore: 85,
-      guidance: ['面对困难不退缩', '适合做重要决定', '练习专注冥想']
-    },
-    {
-      id: 'dashizhi',
-      name: '大势至菩萨',
-      title: '智慧光明遍照',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E5%A4%A7%E5%8A%BF%E8%87%B3%E8%8F%A9%E8%90%A8.jpg',
-      fallbackEmoji: '💡',
-      specialty: '智慧开启 • 学业事业',
-      todayMessage: '智慧之光照耀前程，今日学习工作将有重大突破',
-      fortuneType: 'excellent',
-      fortuneScore: 92,
-      guidance: ['专注学习新知识', '适合规划未来', '多与智者交流']
-    },
-    {
-      id: 'dairiruiai',
-      name: '大日如来',
-      title: '法界体性智',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E5%A4%A7%E6%97%A5%E5%A6%82%E6%9D%A5.jpg',
-      fallbackEmoji: '☀️',
-      specialty: '光明普照 • 消除业障',
-      todayMessage: '法界光明遍照十方，今日是消除业障的绝佳时机',
-      fortuneType: 'good',
-      fortuneScore: 88,
-      guidance: ['早起修行效果佳', '适合忏悔净化', '沐浴阳光冥想']
-    },
-    {
-      id: 'wenshu',
-      name: '文殊菩萨',
-      title: '大智文殊师利',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E6%96%87%E6%AE%8A%E8%8F%A9%E8%90%A8.jpg',
-      fallbackEmoji: '📚',
-      specialty: '智慧第一 • 学问精进',
-      todayMessage: '智慧剑斩断无明，今日思维清晰，适合深度思考',
-      fortuneType: 'excellent',
-      fortuneScore: 94,
-      guidance: ['阅读经典著作', '思考人生哲理', '分享智慧给他人']
-    },
-    {
-      id: 'xukong',
-      name: '虚空藏菩萨',
-      title: '福智如虚空',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E8%99%9A%E7%A9%BA%E8%8F%A9%E8%90%A8.jpg',
-      fallbackEmoji: '🌌',
-      specialty: '财富智慧 • 心愿成就',
-      todayMessage: '虚空藏纳万物，今日心愿易成，财运亨通',
-      fortuneType: 'good',
-      fortuneScore: 86,
-      guidance: ['许下美好心愿', '适合投资理财', '感恩现有福报']
-    },
-    {
-      id: 'amitabha',
-      name: '阿弥陀佛',
-      title: '无量光无量寿',
-      imageUrl: 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/%E9%98%BF%E5%BC%A5%E9%99%80%E4%BD%9B.jpg',
-      fallbackEmoji: '🙏',
-      specialty: '净土往生 • 慈悲接引',
-      todayMessage: '无量光明照耀众生，今日宜念佛修行，心得安宁',
-      fortuneType: 'excellent',
-      fortuneScore: 91,
-      guidance: ['念佛修心', '放下执着', '慈悲对待万物']
-    }
-  ]
-
-  const currentDeity = deities[currentDeityIndex]
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  // 加载今日运势
-  const loadTodayFortune = async () => {
-    if (isLoadingFortune) return
-    
-    setIsLoadingFortune(true)
-    setFortuneError(null)
-    
-    try {
-      // 使用默认用户信息（实际应用中应该从用户设置获取）
-      const request = {
-        birthdate: '1990-01-01T12:00',
-        name: '道友',
-        gender: 'male',
-        target_date: new Date().toISOString().split('T')[0]
-      }
-      
-      const response = await apiService.calculateDailyFortune(request)
-      
-      if (response.success) {
-        setTodayFortune(response.data)
-      } else {
-        setFortuneError('运势计算失败')
-      }
-    } catch (error) {
-      console.error('加载运势失败:', error)
-      setFortuneError('网络连接失败，使用默认运势')
-    } finally {
-      setIsLoadingFortune(false)
-    }
-  }
-
-  // 组件加载时获取运势
-  useEffect(() => {
-    loadTodayFortune()
-  }, [])
-
-  // 预加载当前神仙图片
-  useEffect(() => {
-    const img = new Image()
-    img.src = currentDeity.imageUrl
-    img.onload = () => setImageLoaded(true)
-    img.onerror = () => setImageError(true)
-  }, [currentDeity.imageUrl])
-
-  // 每30秒自动切换神仙（可选）
-  useEffect(() => {
-    const deityRotation = setInterval(() => {
-      setCurrentDeityIndex((prev) => (prev + 1) % deities.length)
-      setImageLoaded(false) // 重置加载状态
-    }, 30000) // 30秒切换一次
-    
-    return () => clearInterval(deityRotation)
-  }, [deities.length])
-
+  // 🕐 智能时间问候
   const getTimeGreeting = () => {
-    const hour = currentTime.getHours()
-    if (hour < 6) return '夜深了，菩萨与您同在'
-    if (hour < 12) return `早安，${userName} 🌅`
-    if (hour < 18) return `午安，${userName} ☀️`
-    return `晚安，${userName} 🌙`
-  }
+    const hour = currentTime.getHours();
+    if (hour < 6) return '夜深了，菩萨与您同在';
+    if (hour < 9) return '晨光初现，新的一天开始了';
+    if (hour < 12) return '上午好，愿您今日顺遂';
+    if (hour < 14) return '午时已至，稍作休憩';
+    if (hour < 18) return '下午好，继续加油';
+    if (hour < 22) return '夜幕降临，愿您安康';
+    return '夜深人静，祝您安眠';
+  };
 
-  const formatTime = () => {
-    return currentTime.toLocaleTimeString('zh-CN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    })
-  }
-
-  const getFortuneColor = (type: DeityInfo['fortuneType']) => {
-    const colors = {
-      excellent: 'var(--color-excellent)',
-      good: 'var(--color-good)', 
-      normal: 'var(--color-normal)',
-      challenging: 'var(--color-challenging)'
+  // 🌟 运势等级颜色映射
+  const getFortuneColor = (level: string) => {
+    switch (level) {
+      case '极好': return '#10B981';
+      case '很好': return '#3B82F6';
+      case '好': return '#8B5CF6';
+      case '一般': return '#F59E0B';
+      case '差': return '#EF4444';
+      default: return '#6B7280';
     }
-    return colors[type]
-  }
+  };
 
-  const getFortuneText = (type: DeityInfo['fortuneType']) => {
-    const texts = {
-      excellent: '大吉',
-      good: '吉',
-      normal: '平',
-      challenging: '需谨慎'
-    }
-    return texts[type]
-  }
+  // 📊 数据加载
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // 追踪页面加载
+        analytics.trackEvent('page_load', { page: 'home' });
+        
+        const savedUserInfo = localStorage.getItem('userInfo');
+        if (savedUserInfo) {
+          const info = JSON.parse(savedUserInfo);
+          setUserInfo(info);
 
-  const handleDeitySwitch = (direction: 'prev' | 'next') => {
-    // 触觉反馈
-    if ('vibrate' in navigator) {
-      navigator.vibrate(50)
-    }
-    
-    if (direction === 'next') {
-      setCurrentDeityIndex((prev) => (prev + 1) % deities.length)
-    } else {
-      setCurrentDeityIndex((prev) => (prev - 1 + deities.length) % deities.length)
-    }
-    setImageLoaded(false)
-  }
-
-  // 移动端滑动手势处理
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    })
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    })
-  }
-
-  const handleTouchEnd = () => {
-    if (!touchStart.x || !touchEnd.x) return
-    
-    const deltaX = touchStart.x - touchEnd.x
-    const deltaY = Math.abs(touchStart.y - touchEnd.y)
-    
-    // 只有水平滑动距离大于50px且垂直滑动小于100px才触发切换
-    if (Math.abs(deltaX) > 50 && deltaY < 100) {
-      if (deltaX > 0) {
-        // 向左滑动，切换到下一个
-        handleDeitySwitch('next')
-      } else {
-        // 向右滑动，切换到上一个
-        handleDeitySwitch('prev')
+          if (info.birthdate) {
+            const fortuneResponse = await apiService.calculateDailyFortune({
+              birthdate: info.birthdate,
+              name: info.name,
+              gender: info.gender
+            });
+            
+            if (fortuneResponse.success) {
+              setDailyFortune(fortuneResponse.data);
+              // 追踪运势加载成功
+              analytics.trackEvent('fortune_loaded', { 
+                hasUserInfo: true,
+                fortuneLevel: fortuneResponse.data.overall_level 
+              });
+            }
+          }
+        } else {
+          // 追踪新用户访问
+          analytics.trackEvent('new_user_visit');
+        }
+              } catch (error) {
+          console.error('数据加载失败:', error);
+          if (error instanceof Error) {
+            analytics.trackError(error, 'home_page_data_load');
+          }
+        } finally {
+        setLoading(false);
       }
-    }
-    
-    // 重置触摸状态
-    setTouchStart({ x: 0, y: 0 })
-    setTouchEnd({ x: 0, y: 0 })
-  }
+    };
 
-  // 触觉反馈辅助函数
-  const hapticFeedback = (pattern: number | number[] = 50) => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(pattern)
-    }
-  }
-
-  const handleChatClick = () => {
-    hapticFeedback([50, 50, 50]) // 三次短震动
-    onNavigate('chat')
-  }
-
-  const handleQuickAction = (action: string) => {
-    hapticFeedback(30) // 短震动
-    console.log(action)
-  }
+    loadData();
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, [analytics]);
 
   return (
-    <div className="home-optimized">
-      {/* 🌟 时间问候区 */}
-      <div className="hero-section">
-        <div className="time-greeting">
-          <div className="greeting-text">{getTimeGreeting()}</div>
-          <div className="current-time">{formatTime()}</div>
-        </div>
-      </div>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: designSystem.colors.background,
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      {/* 🌌 优雅的背景装饰 */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%)',
+        zIndex: -1
+      }} />
 
-      {/* 💬 神仙对话预览区 - 核心功能 */}
-      <div 
-        className="deity-conversation-card priority-hero"
-        ref={conversationCardRef}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="conversation-header">
-          <div className="deity-avatar">
-            <div className="avatar-container">
-              {!imageError ? (
-                <img 
-                  src={currentDeity.imageUrl}
-                  alt={currentDeity.name}
-                  className={`guanyin-avatar ${imageLoaded ? 'loaded' : 'loading'} deity-${currentDeity.id}`}
-                  loading="lazy"
-                  onLoad={() => setImageLoaded(true)}
-                  onError={() => setImageError(true)}
-                />
+      {/* ✨ 微妙的粒子系统 */}
+      {[...Array(8)].map((_, i) => (
+        <motion.div
+          key={i}
+          style={{
+            position: 'absolute',
+            width: '2px',
+            height: '2px',
+            background: designSystem.colors.primary,
+            borderRadius: '50%',
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: 0.4
+          }}
+          animate={{
+            y: [-20, 20],
+            opacity: [0.2, 0.6, 0.2],
+            scale: [0.8, 1.2, 0.8]
+          }}
+          transition={{
+            duration: 8 + i * 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.5
+          }}
+        />
+      ))}
+
+      <div style={{
+        padding: '2rem 1.5rem',
+        maxWidth: '400px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {/* 📱 顶部状态栏 */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '2rem',
+            color: designSystem.colors.textSecondary,
+            fontSize: '0.875rem',
+            fontWeight: '500'
+          }}
+        >
+          <div>{currentTime.toLocaleDateString('zh-CN', { 
+            month: 'long', 
+            day: 'numeric',
+            weekday: 'short' 
+          })}</div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <div style={{
+              width: '8px',
+              height: '8px',
+              background: '#10B981',
+              borderRadius: '50%'
+            }} />
+            在线
+          </div>
+        </motion.div>
+
+        {/* 🙏 主要问候区域 */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          style={{
+            textAlign: 'center',
+            marginBottom: '3rem'
+          }}
+        >
+          <motion.div
+            style={{
+              fontSize: '3rem',
+              marginBottom: '1rem',
+              filter: 'drop-shadow(0 0 10px rgba(212, 175, 55, 0.4))'
+            }}
+            animate={{
+              scale: [1, 1.05, 1],
+              filter: [
+                'drop-shadow(0 0 10px rgba(212, 175, 55, 0.4))',
+                'drop-shadow(0 0 20px rgba(212, 175, 55, 0.6))',
+                'drop-shadow(0 0 10px rgba(212, 175, 55, 0.4))'
+              ]
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            🙏
+          </motion.div>
+          
+          <h1 style={{
+            fontSize: '1.75rem',
+            fontWeight: '600',
+            color: designSystem.colors.textPrimary,
+            marginBottom: '0.5rem',
+            letterSpacing: '0.025em'
+          }}>
+            {getTimeGreeting()}
+          </h1>
+          
+          <p style={{
+            color: designSystem.colors.textSecondary,
+            fontSize: '1rem',
+            margin: 0
+          }}>
+            {userInfo?.name ? `${userInfo.name}，` : ''}菩萨在此护佑您
+          </p>
+        </motion.div>
+
+        {/* 🔮 今日运势卡片 */}
+        <AnimatePresence>
+          {!loading && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              style={{
+                background: designSystem.colors.card,
+                backdropFilter: 'blur(16px) saturate(180%)',
+                borderRadius: '24px',
+                padding: '2rem',
+                marginBottom: '2rem',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: designSystem.shadows.card,
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                if (dailyFortune) {
+                  analytics.trackUserAction('fortune_card_click', { 
+                    fortuneLevel: dailyFortune.overall_level,
+                    fortuneScore: dailyFortune.overall_score 
+                  });
+                } else {
+                  analytics.trackUserAction('fortune_card_click', { 
+                    hasFortune: false 
+                  });
+                }
+                onNavigate('daily-fortune');
+              }}
+            >
+              {dailyFortune ? (
+                <>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <div>
+                      <h3 style={{
+                        fontSize: '1.25rem',
+                        fontWeight: '600',
+                        color: designSystem.colors.textPrimary,
+                        margin: '0 0 0.25rem 0'
+                      }}>
+                        今日运势
+                      </h3>
+                      <p style={{
+                        color: designSystem.colors.textMuted,
+                        fontSize: '0.875rem',
+                        margin: 0
+                      }}>
+                        大势至菩萨
+                      </p>
+                    </div>
+                    <div style={{
+                      width: '60px',
+                      height: '60px',
+                      background: `linear-gradient(135deg, ${getFortuneColor(dailyFortune.overall_level)} 0%, ${getFortuneColor(dailyFortune.overall_level)}AA 100%)`,
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontSize: '1.5rem',
+                      fontWeight: '700',
+                      boxShadow: `0 8px 24px ${getFortuneColor(dailyFortune.overall_level)}40`
+                    }}>
+                      {dailyFortune.overall_score}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    color: designSystem.colors.textSecondary,
+                    fontSize: '1rem',
+                    lineHeight: '1.6',
+                    marginBottom: '1.5rem'
+                  }}>
+                    "{dailyFortune.overall_description?.substring(0, 60)}..."
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(4, 1fr)',
+                    gap: '0.75rem'
+                  }}>
+                    {[
+                      { label: '财运', icon: '💰', value: '★★★★☆' },
+                      { label: '健康', icon: '🏥', value: '★★★☆☆' },
+                      { label: '事业', icon: '💼', value: '★★★★★' },
+                      { label: '感情', icon: '💕', value: '★★★☆☆' }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={item.label}
+                        style={{
+                          textAlign: 'center',
+                          padding: '0.75rem 0.5rem',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          borderRadius: '12px',
+                          border: '1px solid rgba(255, 255, 255, 0.1)'
+                        }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 + index * 0.1 }}
+                      >
+                        <div style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>
+                          {item.icon}
+                        </div>
+                        <div style={{
+                          fontSize: '0.75rem',
+                          color: designSystem.colors.textMuted,
+                          marginBottom: '0.25rem'
+                        }}>
+                          {item.label}
+                        </div>
+                        <div style={{
+                          fontSize: '0.625rem',
+                          color: designSystem.colors.primary
+                        }}>
+                          {item.value}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </>
               ) : (
-                <div className="guanyin-fallback">
-                  {currentDeity.fallbackEmoji}
+                <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✨</div>
+                  <h3 style={{
+                    color: designSystem.colors.textPrimary,
+                    marginBottom: '0.5rem'
+                  }}>
+                    开启您的神仙之旅
+                  </h3>
+                  <p style={{
+                    color: designSystem.colors.textSecondary,
+                    fontSize: '0.875rem'
+                  }}>
+                    完善信息，获取专属运势指引
+                  </p>
                 </div>
               )}
-              <div className="online-indicator animate-pulse"></div>
-            </div>
-            
-            {/* 神仙切换按钮 */}
-            <div className="deity-switch-controls">
-              <button 
-                className="deity-switch-btn prev"
-                onClick={() => handleDeitySwitch('prev')}
-                onTouchStart={(e) => e.stopPropagation()}
-                title="上一位神仙"
-                aria-label="切换到上一位神仙"
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* 🎯 功能快捷入口 */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '1rem',
+            marginBottom: '2rem'
+          }}
+        >
+          {[
+            { icon: '💬', title: '与神对话', desc: '智慧指引', action: () => {
+              analytics.trackUserAction('feature_click', { feature: 'deity-chat', title: '与神对话' });
+              onNavigate('deity-chat');
+            }, primary: true },
+            { icon: '📿', title: '手串状态', desc: '功德进度', action: () => {
+              analytics.trackUserAction('feature_click', { feature: 'bracelet', title: '手串状态' });
+              onNavigate('bracelet');
+            } },
+            { icon: '📊', title: '命理分析', desc: '八字解读', action: () => {
+              analytics.trackUserAction('feature_click', { feature: 'bazi-analysis', title: '命理分析' });
+              onNavigate('bazi-analysis');
+            } },
+            { icon: '⚙️', title: '个人设置', desc: '偏好配置', action: () => {
+              analytics.trackUserAction('feature_click', { feature: 'settings', title: '个人设置' });
+              onNavigate('settings');
+            } }
+          ].map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={feature.action}
+              style={{
+                background: feature.primary 
+                  ? `linear-gradient(135deg, ${designSystem.colors.primary}20 0%, ${designSystem.colors.primary}10 100%)`
+                  : designSystem.colors.card,
+                backdropFilter: 'blur(16px) saturate(180%)',
+                borderRadius: '20px',
+                padding: '1.5rem',
+                textAlign: 'center',
+                cursor: 'pointer',
+                border: feature.primary 
+                  ? `1px solid ${designSystem.colors.primary}40`
+                  : '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: feature.primary 
+                  ? designSystem.shadows.glow
+                  : designSystem.shadows.card
+              }}
+            >
+              <motion.div
+                style={{
+                  fontSize: '2rem',
+                  marginBottom: '0.75rem',
+                  filter: feature.primary 
+                    ? `drop-shadow(0 0 8px ${designSystem.colors.primary}60)`
+                    : 'none'
+                }}
+                whileHover={{ scale: 1.1, rotate: 5 }}
               >
-                ◀
-              </button>
-              <button 
-                className="deity-switch-btn next"
-                onClick={() => handleDeitySwitch('next')}
-                onTouchStart={(e) => e.stopPropagation()}
-                title="下一位神仙"
-                aria-label="切换到下一位神仙"
-              >
-                ▶
-              </button>
-            </div>
+                {feature.icon}
+              </motion.div>
+              
+              <h4 style={{
+                fontSize: '1rem',
+                fontWeight: '600',
+                color: designSystem.colors.textPrimary,
+                margin: '0 0 0.25rem 0'
+              }}>
+                {feature.title}
+              </h4>
+              
+              <p style={{
+                fontSize: '0.875rem',
+                color: designSystem.colors.textMuted,
+                margin: 0
+              }}>
+                {feature.desc}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* 📈 每日提醒 */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          style={{
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            textAlign: 'center'
+          }}
+        >
+          <div style={{
+            fontSize: '1.5rem',
+            marginBottom: '0.75rem'
+          }}>
+            🌸
           </div>
           
-          <div className="conversation-content">
-            <div className="deity-info-header">
-              <h2 className="deity-name">{currentDeity.name}</h2>
-              <div className="deity-title">{currentDeity.title}</div>
-              <div className="deity-specialty">{currentDeity.specialty}</div>
-            </div>
-
-            {/* 今日运势核心信息 */}
-            <div className="today-fortune-card">
-              <div className="fortune-header">
-                <span className="fortune-label">今日运势</span>
-                <div className="fortune-score-container">
-                  <span 
-                    className="fortune-badge"
-                    style={{ backgroundColor: getFortuneColor(currentDeity.fortuneType) }}
-                  >
-                    {getFortuneText(currentDeity.fortuneType)}
-                  </span>
-                  <span className="fortune-score">{todayFortune?.overall_score || currentDeity.fortuneScore}分</span>
-                </div>
-              </div>
-              
-              <div className="fortune-message">
-                "{todayFortune?.overall_description || currentDeity.todayMessage}"
-              </div>
-
-              {/* 今日五行和方位 */}
-              {todayFortune && (
-                <div className="fortune-mystical-info">
-                  <div className="mystical-row">
-                    <div className="mystical-item">
-                      <span className="mystical-label">今日五行:</span>
-                      <span 
-                        className="mystical-value wuxing-display"
-                        style={{ 
-                          color: '#22c55e',
-                          textShadow: `0 0 8px #22c55e30`
-                        }}
-                      >
-                        {todayFortune.lucky_colors[0] || '木'}
-                      </span>
-                    </div>
-                    <div className="mystical-item">
-                      <span className="mystical-label">幸运方位:</span>
-                      <span 
-                        className="mystical-value direction-display"
-                        style={{ 
-                          color: '#3b82f6',
-                          textShadow: `0 0 8px #3b82f630`
-                        }}
-                      >
-                        {todayFortune.lucky_directions[0] || '东'}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="mystical-row">
-                    <div className="mystical-item">
-                      <span className="mystical-label">运势等级:</span>
-                      <span className="mystical-value">{todayFortune.overall_level}</span>
-                    </div>
-                    <div className="mystical-item">
-                      <span className="mystical-label">幸运数字:</span>
-                      <span className="mystical-value">{todayFortune.lucky_numbers.join(', ')}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 可展开的详细运势 */}
-              <div className={`fortune-details ${showFortuneDetails ? 'expanded' : ''}`}>
-                <button 
-                  className="details-toggle"
-                  onClick={() => {
-                    hapticFeedback(30)
-                    setShowFortuneDetails(!showFortuneDetails)
-                  }}
-                  aria-expanded={showFortuneDetails}
-                  aria-label={showFortuneDetails ? '收起运势详情' : '展开运势详情'}
-                >
-                  <span>详细运势</span>
-                  <span className={`toggle-icon ${showFortuneDetails ? 'rotated' : ''}`}>▼</span>
-                </button>
-                
-                {showFortuneDetails && todayFortune && (
-                  <div className="fortune-breakdown-list">
-                    {/* 今日宜忌 */}
-                    <div className="today-auspicious-taboos">
-                      <div className="auspicious-section">
-                        <h4 className="section-title" style={{ color: '#22c55e' }}>✅ 今日宜</h4>
-                        <div className="auspicious-list">
-                          {todayFortune.recommended_activities.map((item: string, index: number) => (
-                            <span key={index} className="auspicious-tag">{item}</span>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div className="taboos-section">
-                        <h4 className="section-title" style={{ color: '#ef4444' }}>❌ 今日忌</h4>
-                        <div className="taboos-list">
-                          {todayFortune.avoid_activities.map((item: string, index: number) => (
-                            <span key={index} className="taboo-tag">{item}</span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* 个性化建议 */}
-                    <div className="personalized-advice">
-                      <h4 className="advice-title">🌟 个性化建议</h4>
-                      
-                      {todayFortune.career_fortune.advice.length > 0 && (
-                        <div className="advice-category">
-                          <span className="advice-icon">💼</span>
-                          <span className="advice-label">事业:</span>
-                          <span className="advice-text">{todayFortune.career_fortune.advice[0]}</span>
-                        </div>
-                      )}
-                      
-                      {todayFortune.wealth_fortune.advice.length > 0 && (
-                        <div className="advice-category">
-                          <span className="advice-icon">💰</span>
-                          <span className="advice-label">财运:</span>
-                          <span className="advice-text">{todayFortune.wealth_fortune.advice[0]}</span>
-                        </div>
-                      )}
-                      
-                      {todayFortune.relationship_fortune.advice.length > 0 && (
-                        <div className="advice-category">
-                          <span className="advice-icon">💕</span>
-                          <span className="advice-label">感情:</span>
-                          <span className="advice-text">{todayFortune.relationship_fortune.advice[0]}</span>
-                        </div>
-                      )}
-                      
-                      {todayFortune.health_fortune.advice.length > 0 && (
-                        <div className="advice-category">
-                          <span className="advice-icon">🏥</span>
-                          <span className="advice-label">健康:</span>
-                          <span className="advice-text">{todayFortune.health_fortune.advice[0]}</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* 今日指引 - 保留神仙特定指引 */}
-                    <div className="today-guidance">
-                      <h4 className="guidance-title">💫 神仙指引</h4>
-                      <div className="guidance-list" role="list">
-                        {currentDeity.guidance.map((guide, index) => (
-                          <div key={index} className="guidance-item" role="listitem">
-                            <span className="guidance-bullet">•</span>
-                            <span className="guidance-text">{guide}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="message-meta">
-              <span className="message-time">2分钟前</span>
-              <span className="deity-indicator">
-                {currentDeityIndex + 1}/{deities.length}
-              </span>
-            </div>
-          </div>
-
-          <div className="chat-action-area">
-            <button 
-              className="primary-chat-btn mobile-haptic-feedback"
-              onClick={handleChatClick}
-              aria-label="开始与神仙深度对话"
-            >
-              💬 开始深度对话
-            </button>
-            
-            <div className="quick-fortune-actions" role="group" aria-label="快速功能操作">
-              <button 
-                className="quick-action-small"
-                onClick={() => handleQuickAction('求签')}
-                aria-label="快速求签"
-              >
-                🎯 求签
-              </button>
-              <button 
-                className="quick-action-small"
-                onClick={() => {
-                  hapticFeedback(30)
-                  setShowFortuneDetails(!showFortuneDetails)
-                }}
-                aria-label="查看今日宜忌"
-              >
-                📅 宜忌
-              </button>
-              <button 
-                className="quick-action-small"
-                onClick={() => handleQuickAction('分享运势')}
-                aria-label="分享今日运势"
-              >
-                🔗 分享
-              </button>
-              <button 
-                className="quick-action-small"
-                onClick={() => onNavigate('deepseek-demo')}
-                aria-label="测试DeepSeek API"
-                style={{ backgroundColor: 'rgba(34, 197, 94, 0.2)' }}
-              >
-                🤖 AI测试
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 📿 手串状态指示器 - 简化版 */}
-      <div className={`bracelet-status priority-high ${braceletConnected ? 'connected' : 'disconnected'}`}>
-        <div className="status-indicator">
-          <span className="status-icon" role="img" aria-label="沉香手串">📿</span>
-          <div className="status-text">
-            <div className="connection-text">
-              {braceletConnected ? '沉香手串已连接' : '手串未连接'}
-            </div>
-            <div className="energy-text">开光能量：{blessingEnergy}%</div>
-          </div>
-        </div>
-        
-        <div className="energy-bar" role="progressbar" aria-valuenow={blessingEnergy} aria-valuemin={0} aria-valuemax={100}>
-          <div 
-            className="energy-fill"
-            style={{ width: `${blessingEnergy}%` }}
-          />
-        </div>
-      </div>
-
-
-
-
-
-      {/* 移动端滑动提示 - 首次访问显示 */}
-      <div className="mobile-gesture-hint" style={{ 
-        position: 'fixed',
-        bottom: '120px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: 'rgba(0, 0, 0, 0.7)',
-        color: 'white',
-        padding: '8px 16px',
-        borderRadius: '20px',
-        fontSize: '12px',
-        opacity: '0',
-        pointerEvents: 'none',
-        transition: 'opacity 0.3s ease',
-        zIndex: '1000'
-      }}>
-        👆 左右滑动切换神仙朋友
+          <h4 style={{
+            color: designSystem.colors.textPrimary,
+            fontSize: '1rem',
+            fontWeight: '600',
+            marginBottom: '0.5rem'
+          }}>
+            今日修行提醒
+          </h4>
+          
+          <p style={{
+            color: designSystem.colors.textSecondary,
+            fontSize: '0.875rem',
+            lineHeight: '1.5',
+            margin: 0
+          }}>
+            静心念佛，感恩生活中的每一个美好瞬间
+          </p>
+        </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePageOptimized 
+export default HomePageOptimized; 

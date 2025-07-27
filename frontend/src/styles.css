@@ -1,1081 +1,1592 @@
-/* 导航样式 - 隐藏顶部导航 */
-.zen-navigation {
-  display: none;
-}
+@import"https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Zhi+Mang+Xing&family=ZCOOL+KuaiLe&family=Long+Cang&family=Liu+Jian+Mao+Cao&display=swap";
+@import "./styles/divine-interactions.css";
 
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--space-stanza);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-brand h1 {
-  color: var(--zen-gold);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nav-menu {
-  display: flex;
-  gap: var(--space-stanza);
-  align-items: center;
-}
-
-.nav-menu a {
-  color: var(--ink-medium);
-  text-decoration: none;
-  padding: var(--space-breath) var(--space-verse);
-  border-radius: var(--radius-moon);
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.nav-menu a:hover {
-  color: var(--zen-gold);
-  background: rgba(201, 169, 97, 0.1);
-  transform: translateY(-2px);
-}
-
-.nav-menu a.active {
-  color: var(--zen-gold);
-  background: rgba(201, 169, 97, 0.2);
-  border: 1px solid rgba(201, 169, 97, 0.4);
-}
-
-.nav-menu a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background: var(--zen-gold);
-  border-radius: 1px;
-}
-
-/* 主内容区域 - 隐藏旧样式 */
-.zen-main {
-  display: none;
-}
-
-/* 页面样式 */
-.zen-page {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.zen-header {
-  text-align: center;
-  margin-bottom: var(--space-stanza);
-  padding: var(--space-stanza);
-  background: var(--gradient-water);
-  border-radius: var(--radius-sun);
-  border: 2px solid var(--zen-gold);
-}
-
-.zen-title {
-  color: var(--zen-gold);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: var(--space-breath);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.zen-subtitle {
-  color: var(--ink-medium);
-  font-size: 1.1rem;
-  margin-bottom: var(--space-verse);
-}
-
-/* 容器样式 */
-.zen-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-stanza);
-}
-
-/* 区块样式 */
-.zen-section {
-  margin-bottom: var(--space-chapter);
-  padding: var(--space-stanza);
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: var(--radius-moon);
-  border: 1px solid rgba(201, 169, 97, 0.2);
-  box-shadow: var(--shadow-paper);
-}
-
-/* 表单样式 */
-.zen-form-group {
-  margin-bottom: var(--space-verse);
-}
-
-.zen-form-group label {
-  display: block;
-  margin-bottom: var(--space-breath);
-  color: var(--ink-dark);
-  font-weight: 500;
-}
-
-.zen-input {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  transition: all 0.3s ease;
-}
-
-.zen-input:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-  transform: scale(1.01);
-}
-
-.zen-textarea {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  resize: vertical;
-  min-height: 100px;
-  transition: all 0.3s ease;
-}
-
-.zen-textarea:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.zen-select {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  transition: all 0.3s ease;
-}
-
-.zen-select:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-/* 按钮样式 */
-.zen-button {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 1rem;
-  padding: var(--space-verse) var(--space-chapter);
-  border: 2px solid transparent;
-  border-radius: var(--radius-pebble);
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.zen-button:hover {
-  background: var(--gradient-sunset);
-  color: var(--paper-white);
-  border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-mountain);
-}
-
-.zen-button:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-paper);
-}
-
-.zen-button-primary {
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-}
-
-.zen-button-secondary {
-  background: transparent;
-  color: var(--zen-gold);
-  border-color: var(--zen-gold);
-}
-
-.zen-button-secondary:hover {
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-  border-color: transparent;
-}
-
-.zen-button-group {
-  display: flex;
-  gap: var(--space-verse);
-  flex-wrap: wrap;
-}
-
-/* 结果样式 */
-.zen-result {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: var(--radius-moon);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  padding: var(--space-stanza);
-  margin-top: var(--space-verse);
-}
-
-.zen-result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-verse);
-  padding-bottom: var(--space-breath);
-  border-bottom: 1px solid rgba(201, 169, 97, 0.2);
-}
-
-.zen-result-type {
-  font-weight: 600;
-  color: var(--zen-gold);
-}
-
-.zen-result-time {
-  font-size: 0.9rem;
-  color: var(--ink-light);
-}
-
-.zen-result-item {
-  margin-bottom: var(--space-verse);
-}
-
-.zen-result-item strong {
-  color: var(--zen-gold);
-  display: block;
-  margin-bottom: var(--space-breath);
-}
-
-.zen-response {
-  background: rgba(201, 169, 97, 0.05);
-  border-left: 3px solid var(--zen-gold);
-  padding: var(--space-verse);
-  border-radius: 0 var(--radius-pebble) var(--radius-pebble) 0;
-  margin-top: var(--space-breath);
-}
-
-.zen-error {
-  background: rgba(220, 53, 69, 0.1);
-  border-left: 3px solid #dc3545;
-  padding: var(--space-verse);
-  border-radius: 0 var(--radius-pebble) var(--radius-pebble) 0;
-  margin-top: var(--space-breath);
-  color: #dc3545;
-}
-
-/* 信息样式 */
-.zen-info {
-  background: rgba(201, 169, 97, 0.05);
-  border: 1px solid rgba(201, 169, 97, 0.2);
-  border-radius: var(--radius-pebble);
-  padding: var(--space-verse);
-}
-
-.zen-info p {
-  margin-bottom: var(--space-breath);
-  color: var(--ink-medium);
-}
-
-.zen-info p:last-child {
-  margin-bottom: 0;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    gap: var(--space-verse);
-  }
-  
-  .nav-menu {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .nav-menu a {
-    font-size: var(--text-small);
-    padding: var(--space-feather) var(--space-breath);
-  }
-  
-  .zen-main {
-    padding: var(--space-verse);
-  }
-  
-  .zen-header {
-    padding: var(--space-verse);
-  }
-  
-  .zen-title {
-    font-size: var(--text-large);
-  }
-  
-  .zen-subtitle {
-    font-size: var(--text-base);
-  }
-}
-
-/* 底部导航栏样式 */
+/* ===== WordPress Plugin Original Styles ===== */
 :root {
-  --zen-text: #2c2c2c;
-  --zen-text-secondary: #6b7280;
+  /* 🌟 玄学核心色彩系统 */
+  --taiji-yang: #FFFFFF;
+  --taiji-yin: #0a0a0a;
+  --wood-essence: #2d5016;
+  --fire-essence: #8b1538;
+  --earth-essence: #8b6914;
+  --metal-essence: #666666;
+  --water-essence: #1e3a8a;
+  
+  /* 🔥 震撼金色系统 */
+  --divine-gold: #ffd700;
+  --divine-gold-bright: #ffed4e;
+  --divine-gold-deep: #b8860b;
+  --divine-gold-shadow: #8b6914;
+  --celestial-gold: #ffeaa7;
+  --mystic-gold: #fdcb6e;
+  
+  /* ✨ 神秘紫色系统 */
+  --divine-purple: #6c5ce7;
+  --mystic-purple: #a29bfe;
+  --deep-purple: #5f3dc4;
+  --cosmic-purple: #845ec2;
+  --shadow-purple: #3d2987;
+  
+  /* 🌌 深邃背景系统 */
+  --cosmic-black: #000000;
+  --space-black: #0a0a0a;
+  --shadow-black: #1a1a1a;
+  --mystic-black: #2d2d2d;
+  --twilight-black: #3d3d3d;
+  /* 🎯 运势等级色彩 */
+  --fortune-excellent: #00ff88;
+  --fortune-good: #00d4ff;
+  --fortune-normal: #ffaa00;
+  --fortune-challenging: #ff4757;
+  --fortune-terrible: #ff3838;
+  
+  /* 🎨 背景层次系统 */
+  --bg-cosmic: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 35%, #0f0f23 100%);
+  --bg-starfield: radial-gradient(circle at 20% 80%, rgba(120, 255, 214, 0.15) 0%, transparent 50%), 
+                  radial-gradient(circle at 80% 20%, rgba(255, 120, 255, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, rgba(120, 120, 255, 0.15) 0%, transparent 50%);
+  --bg-nebula: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-aurora: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+  
+  /* 📝 文字系统 */
+  --text-divine: #ffd700;
+  --text-celestial: #ffffff;
+  --text-mystic: #e0e0e0;
+  --text-mortal: #b0b0b0;
+  --text-shadow: #666666;
+  /* 🔮 边框魔法系统 */
+  --border-divine: rgba(255, 215, 0, 0.8);
+  --border-celestial: rgba(255, 215, 0, 0.6);
+  --border-mystic: rgba(255, 215, 0, 0.4);
+  --border-ethereal: rgba(255, 255, 255, 0.3);
+  --border-shadow: rgba(255, 255, 255, 0.1);
+  --border-cosmic: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+  --border-rainbow: linear-gradient(90deg, #ff0000, #ff7700, #ffdd00, #00ff00, #0099ff, #6600ff);
+  /* 🌌 震撼渐变系统 */
+  --gradient-cosmic: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 35%, #0f0f23 100%);
+  --gradient-starfield: linear-gradient(135deg, #000428 0%, #004e92 100%);
+  --gradient-divine: linear-gradient(135deg, #ffd700 0%, #ff6b6b 25%, #4ecdc4 50%, #45b7d1 75%, #96ceb4 100%);
+  --gradient-celestial: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  --gradient-mystic: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(108, 92, 231, 0.3) 50%, rgba(255, 107, 107, 0.3) 100%);
+  --gradient-fortune: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(108, 92, 231, 0.2) 100%);
+  --gradient-avatar: linear-gradient(135deg, #ffd700 0%, #ff6b6b 50%, #4ecdc4 100%);
+  --gradient-button: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  /* 🎯 按钮魔法渐变 */
+  --gradient-button-divine: linear-gradient(135deg, #ffd700 0%, #ff6b6b 50%, #4ecdc4 100%);
+  --gradient-button-celestial: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-button-mystic: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(108, 92, 231, 0.3) 100%);
+  --gradient-button-hover: linear-gradient(135deg, #ffed4e 0%, #ff8a80 50%, #80deea 100%);
+  /* ✨ 神圣阴影系统 */
+  --shadow-divine: 0 20px 60px rgba(255, 215, 0, 0.4), 0 10px 30px rgba(255, 215, 0, 0.3), 0 5px 15px rgba(255, 215, 0, 0.2);
+  --shadow-celestial: 0 15px 45px rgba(108, 92, 231, 0.3), 0 8px 20px rgba(108, 92, 231, 0.2);
+  --shadow-mystic: 0 12px 36px rgba(255, 107, 107, 0.25), 0 6px 18px rgba(255, 107, 107, 0.15);
+  --shadow-cosmic: 0 25px 75px rgba(0, 0, 0, 0.5), 0 15px 45px rgba(255, 215, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.2);
+  --shadow-button: 0 8px 25px rgba(255, 215, 0, 0.4), 0 4px 12px rgba(255, 215, 0, 0.3);
+  --shadow-button-hover: 0 12px 35px rgba(255, 215, 0, 0.6), 0 6px 18px rgba(255, 215, 0, 0.4);
+  --space-xs: .25rem;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-large: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  /* 🎨 玄学字体系统 */
+  --font-divine: "Ma Shan Zheng", "Long Cang", serif;
+  --font-celestial: "Liu Jian Mao Cao", "Zhi Mang Xing", cursive;
+  --font-primary: "Noto Serif SC", serif;
+  --font-mystic: "ZCOOL KuaiLe", sans-serif;
+  --font-modern: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* ⚡ 交互与动画 */
+  --duration-lightning: 0.1s;
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.8s;
+  --duration-cosmic: 1.2s;
+  --duration-eternal: 2s;
+  
+  /* 🎭 缓动函数 */
+  --ease-divine: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-celestial: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-mystic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-cosmic: cubic-bezier(0.23, 1, 0.32, 1);
+  
+  /* 📏 布局系统 */
+  --nav-height: 80px;
+  --card-radius: 20px;
+  --button-radius: 15px;
+  --input-radius: 12px;
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--gradient-cosmic);
+  background-attachment: fixed;
+  color: var(--text-celestial);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-starfield);
+  opacity: 0.6;
+  z-index: -2;
+  animation: cosmicFlow var(--duration-eternal) ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all var(--duration-normal) ease;
+  -webkit-tap-highlight-color: rgba(255,215,0,.2);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+input, textarea {
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 🌌 PWA 宇宙级样式 */
 .zen-app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--gradient-mist);
+  background: transparent;
+  position: relative;
 }
 
-/* 头部状态栏 */
-.zen-header {
+.zen-app::before {
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  z-index: 1000;
-  background: linear-gradient(135deg, rgba(245, 244, 232, 0.95) 0%, rgba(250, 249, 240, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  padding: 0.5rem 1rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-}
-
-.zen-header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(108, 92, 231, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.08) 0%, transparent 50%);
+  z-index: -1;
+  animation: mysticPulse var(--duration-cosmic) ease-in-out infinite;
+  pointer-events: none;
 }
 
-.zen-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.zen-app.mobile {
+  padding-bottom: 80px;
 }
 
-.zen-brand-icon {
-  font-size: 1.5rem;
+/* ✨ 神圣头部 */
+.zen-header-mobile {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(108, 92, 231, 0.1) 100%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 2px solid;
+  border-image: var(--border-cosmic) 1;
+  padding: var(--space-lg);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-divine);
+  position: relative;
+  overflow: hidden;
 }
 
-.zen-brand-text {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--zen-gold);
-  font-family: 'Ma Shan Zheng', serif;
+.zen-header-mobile::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(255, 215, 0, 0.1), transparent);
+  animation: headerRotate var(--duration-eternal) linear infinite;
+  z-index: -1;
 }
 
-.zen-status {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.zen-header-mobile::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-divine);
+  animation: divineFlow var(--duration-slow) ease-in-out infinite alternate;
 }
 
-.zen-time {
+.zen-header-mobile h1 {
+  color: var(--divine-gold);
+  font-family: var(--font-divine);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 30px rgba(255, 215, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  background: var(--gradient-divine);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textGlow var(--duration-slow) ease-in-out infinite alternate;
+  position: relative;
+  z-index: 2;
+}
+
+.zen-header-mobile .time {
+  color: var(--text-secondary);
   font-size: 0.9rem;
-  color: var(--zen-text);
-  font-weight: 300;
+  margin-top: var(--space-xs);
 }
 
-/* 主要内容区域 */
+/* ===== Main Content ===== */
 .zen-main-content {
   flex: 1;
-  padding-top: 60px;
-  padding-bottom: 80px;
+  padding: var(--space-lg);
   overflow-y: auto;
+  background: var(--gradient-primary);
 }
 
-.zen-page-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+/* 🎴 魔法卡片系统 */
+.feature-card {
+  background: var(--gradient-glass);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  backdrop-filter: blur(25px) saturate(180%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--card-radius);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-celestial);
+  transition: all var(--duration-normal) var(--ease-divine);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-/* 底部导航栏 */
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-mystic);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-divine);
+  border-radius: var(--card-radius);
+  z-index: -1;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--gradient-divine);
+  border-radius: var(--card-radius);
+  z-index: -2;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-divine);
+}
+
+.feature-card:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 15% 25%, rgba(255,215,0,.03) 0%, transparent 30%), radial-gradient(circle at 85% 75%, rgba(255,182,193,.02) 0%, transparent 30%);
+  background-size: 300px 300px, 250px 250px;
+  pointer-events: none;
+  opacity: .6;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-divine);
+}
+
+.feature-card:hover::before {
+  opacity: 0.2;
+}
+
+.feature-card:hover::after {
+  opacity: 1;
+  animation: borderGlow var(--duration-slow) ease-in-out infinite alternate;
+}
+
+.feature-card:active {
+  transform: translateY(-4px) scale(0.98);
+  transition: all var(--duration-fast) var(--ease-divine);
+}
+
+.feature-card h3 {
+  color: var(--divine-gold);
+  font-family: var(--font-divine);
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  text-shadow: 
+    0 0 5px rgba(255, 215, 0, 0.6),
+    0 0 10px rgba(255, 215, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.feature-card p {
+  color: var(--text-mystic);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+  font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* 🔮 神秘运势概览 */
+.fortune-overview {
+  background: var(--gradient-divine);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--card-radius);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-cosmic);
+  position: relative;
+  overflow: hidden;
+}
+
+.fortune-overview::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: var(--gradient-divine);
+  border-radius: var(--card-radius);
+  z-index: -1;
+  animation: fortuneBorder var(--duration-cosmic) linear infinite;
+}
+
+.fortune-overview::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(108, 92, 231, 0.1) 0%, transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+  animation: fortuneAura var(--duration-eternal) ease-in-out infinite alternate;
+}
+
+.fortune-level {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--divine-gold);
+  font-family: var(--font-divine);
+  text-align: center;
+  margin-bottom: var(--space-md);
+  text-shadow: 
+    0 0 20px rgba(255, 215, 0, 1),
+    0 0 40px rgba(255, 215, 0, 0.8),
+    0 0 60px rgba(255, 215, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.5);
+  background: var(--gradient-divine);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fortuneGlow var(--duration-slow) ease-in-out infinite alternate;
+  position: relative;
+  z-index: 2;
+}
+
+.fortune-message {
+  color: var(--text-celestial);
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  font-style: italic;
+  font-family: var(--font-celestial);
+  margin-bottom: var(--space-lg);
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 215, 0, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fortune-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+
+.fortune-detail {
+  text-align: center;
+  padding: var(--space-md);
+  background: var(--gradient-glass);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border-radius: var(--input-radius);
+  border: 1px solid var(--border-ethereal);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-divine);
+}
+
+.fortune-detail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  animation: shimmer var(--duration-cosmic) ease-in-out infinite;
+}
+
+.fortune-detail:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-mystic);
+  border-color: var(--border-celestial);
+}
+
+.fortune-detail strong {
+  color: var(--divine-gold);
+  font-family: var(--font-divine);
+  font-weight: 800;
+  display: block;
+  margin-bottom: var(--space-xs);
+  text-shadow: 
+    0 0 5px rgba(255, 215, 0, 0.8),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* ⚡ 魔法按钮系统 */
+.zen-button {
+  font-family: var(--font-divine);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: var(--space-lg) var(--space-2xl);
+  border: 3px solid transparent;
+  border-radius: var(--button-radius);
+  background: var(--gradient-button-divine);
+  color: var(--cosmic-black);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-celestial);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-button);
+  -webkit-user-select: none;
+  user-select: none;
+  min-width: 140px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.zen-button::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: var(--gradient-divine);
+  border-radius: var(--button-radius);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-divine);
+}
+
+.zen-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left var(--duration-slow) var(--ease-divine);
+}
+
+/* 删除旧的 before 伪元素样式，已在上面重新定义 */
+
+.zen-button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--shadow-button-hover);
+  filter: brightness(1.2) saturate(1.3);
+}
+
+.zen-button:hover::before {
+  opacity: 1;
+  animation: buttonGlow var(--duration-slow) ease-in-out infinite alternate;
+}
+
+.zen-button:hover::after {
+  left: 100%;
+}
+
+/* 删除旧的 hover before 样式，已在上面重新定义 */
+
+.zen-button:active {
+  transform: translateY(-2px) scale(1.02);
+  transition-duration: var(--duration-fast);
+  box-shadow: var(--shadow-mystic);
+}
+
+.zen-button-secondary {
+  background: var(--gradient-secondary-button);
+  color: var(--primary-gold);
+  border-color: var(--border-primary);
+}
+
+.zen-button-secondary:hover {
+  background: var(--gradient-secondary-button-hover);
+  border-color: var(--border-divine);
+}
+
+/* 🌌 神圣导航 */
 .zen-bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border-top: 3px solid;
+  border-image: var(--gradient-divine) 1;
+  padding: var(--space-md) 0;
   z-index: 1000;
-  background: linear-gradient(135deg, rgba(245, 244, 232, 0.95) 0%, rgba(250, 249, 240, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
-  padding: 0.5rem 0;
-  height: 80px;
-  display: flex;
-  align-items: center;
+  box-shadow: 
+    0 -10px 30px rgba(0, 0, 0, 0.6),
+    0 -5px 15px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-.zen-nav-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
+.zen-nav-items {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--space-md);
+  width: 100%;
 }
 
 .zen-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
   background: none;
   border: none;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: var(--space-md);
+  font-size: 0.8rem;
+  color: var(--text-mystic);
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  min-width: 60px;
-  flex: 1;
-  max-width: 80px;
-  position: relative;
-  color: var(--zen-text-secondary);
-}
-
-.zen-nav-item:hover {
-  background: rgba(212, 175, 55, 0.1);
-  transform: translateY(-2px);
-}
-
-.zen-nav-item.active {
-  color: var(--zen-gold);
-  background: rgba(212, 175, 55, 0.15);
-}
-
-.zen-nav-item.active::before {
-  content: '';
-  position: absolute;
-  top: -0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  background: var(--zen-gold);
-  border-radius: 50%;
-}
-
-.zen-nav-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.zen-nav-label {
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.zen-nav-description {
-  font-size: 0.65rem;
-  opacity: 0.7;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .zen-header {
-    padding: 0.5rem;
-  }
-  
-  .zen-page-container {
-    padding: 0.5rem;
-  }
-  
-  .zen-nav-item {
-    min-width: 50px;
-    max-width: 70px;
-    padding: 0.25rem;
-  }
-  
-  .zen-nav-icon {
-    font-size: 1.25rem;
-  }
-  
-  .zen-nav-label {
-    font-size: 0.7rem;
-  }
-  
-  .zen-nav-description {
-    font-size: 0.6rem;
-  }
-} 
-.zen-navigation {
-  display: none;
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--space-stanza);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-brand h1 {
-  color: var(--zen-gold);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nav-menu {
-  display: flex;
-  gap: var(--space-stanza);
-  align-items: center;
-}
-
-.nav-menu a {
-  color: var(--ink-medium);
+  transition: all var(--duration-normal) var(--ease-celestial);
   text-decoration: none;
-  padding: var(--space-breath) var(--space-verse);
-  border-radius: var(--radius-moon);
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.nav-menu a:hover {
-  color: var(--zen-gold);
-  background: rgba(201, 169, 97, 0.1);
-  transform: translateY(-2px);
-}
-
-.nav-menu a.active {
-  color: var(--zen-gold);
-  background: rgba(201, 169, 97, 0.2);
-  border: 1px solid rgba(201, 169, 97, 0.4);
-}
-
-.nav-menu a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background: var(--zen-gold);
-  border-radius: 1px;
-}
-
-/* 主内容区域 - 隐藏旧样式 */
-.zen-main {
-  display: none;
-}
-
-/* 页面样式 */
-.zen-page {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.zen-header {
-  text-align: center;
-  margin-bottom: var(--space-stanza);
-  padding: var(--space-stanza);
-  background: var(--gradient-water);
-  border-radius: var(--radius-sun);
-  border: 2px solid var(--zen-gold);
-}
-
-.zen-title {
-  color: var(--zen-gold);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: var(--space-breath);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.zen-subtitle {
-  color: var(--ink-medium);
-  font-size: 1.1rem;
-  margin-bottom: var(--space-verse);
-}
-
-/* 容器样式 */
-.zen-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-stanza);
-}
-
-/* 区块样式 */
-.zen-section {
-  margin-bottom: var(--space-chapter);
-  padding: var(--space-stanza);
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: var(--radius-moon);
-  border: 1px solid rgba(201, 169, 97, 0.2);
-  box-shadow: var(--shadow-paper);
-}
-
-/* 表单样式 */
-.zen-form-group {
-  margin-bottom: var(--space-verse);
-}
-
-.zen-form-group label {
-  display: block;
-  margin-bottom: var(--space-breath);
-  color: var(--ink-dark);
-  font-weight: 500;
-}
-
-.zen-input {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  transition: all 0.3s ease;
-}
-
-.zen-input:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-  transform: scale(1.01);
-}
-
-.zen-textarea {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  resize: vertical;
-  min-height: 100px;
-  transition: all 0.3s ease;
-}
-
-.zen-textarea:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.zen-select {
-  width: 100%;
-  padding: var(--space-verse);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  border-radius: var(--radius-pebble);
-  background: rgba(254, 254, 254, 0.8);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--ink-black);
-  transition: all 0.3s ease;
-}
-
-.zen-select:focus {
-  outline: none;
-  border-color: var(--zen-gold);
-  box-shadow: 0 0 0 4px rgba(201, 169, 97, 0.1);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-/* 按钮样式 */
-.zen-button {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 1rem;
-  padding: var(--space-verse) var(--space-chapter);
-  border: 2px solid transparent;
-  border-radius: var(--radius-pebble);
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--button-radius);
+  min-width: 70px;
   position: relative;
   overflow: hidden;
-  text-decoration: none;
-  display: inline-block;
+  flex: 1;
   text-align: center;
 }
 
-.zen-button:hover {
-  background: var(--gradient-sunset);
-  color: var(--paper-white);
-  border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-mountain);
-}
-
-.zen-button:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-paper);
-}
-
-.zen-button-primary {
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-}
-
-.zen-button-secondary {
-  background: transparent;
-  color: var(--zen-gold);
-  border-color: var(--zen-gold);
-}
-
-.zen-button-secondary:hover {
-  background: var(--gradient-dawn);
-  color: var(--paper-white);
-  border-color: transparent;
-}
-
-.zen-button-group {
-  display: flex;
-  gap: var(--space-verse);
-  flex-wrap: wrap;
-}
-
-/* 结果样式 */
-.zen-result {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: var(--radius-moon);
-  border: 2px solid rgba(201, 169, 97, 0.3);
-  padding: var(--space-stanza);
-  margin-top: var(--space-verse);
-}
-
-.zen-result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-verse);
-  padding-bottom: var(--space-breath);
-  border-bottom: 1px solid rgba(201, 169, 97, 0.2);
-}
-
-.zen-result-type {
-  font-weight: 600;
-  color: var(--zen-gold);
-}
-
-.zen-result-time {
-  font-size: 0.9rem;
-  color: var(--ink-light);
-}
-
-.zen-result-item {
-  margin-bottom: var(--space-verse);
-}
-
-.zen-result-item strong {
-  color: var(--zen-gold);
-  display: block;
-  margin-bottom: var(--space-breath);
-}
-
-.zen-response {
-  background: rgba(201, 169, 97, 0.05);
-  border-left: 3px solid var(--zen-gold);
-  padding: var(--space-verse);
-  border-radius: 0 var(--radius-pebble) var(--radius-pebble) 0;
-  margin-top: var(--space-breath);
-}
-
-.zen-error {
-  background: rgba(220, 53, 69, 0.1);
-  border-left: 3px solid #dc3545;
-  padding: var(--space-verse);
-  border-radius: 0 var(--radius-pebble) var(--radius-pebble) 0;
-  margin-top: var(--space-breath);
-  color: #dc3545;
-}
-
-/* 信息样式 */
-.zen-info {
-  background: rgba(201, 169, 97, 0.05);
-  border: 1px solid rgba(201, 169, 97, 0.2);
-  border-radius: var(--radius-pebble);
-  padding: var(--space-verse);
-}
-
-.zen-info p {
-  margin-bottom: var(--space-breath);
-  color: var(--ink-medium);
-}
-
-.zen-info p:last-child {
-  margin-bottom: 0;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    gap: var(--space-verse);
-  }
-  
-  .nav-menu {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .nav-menu a {
-    font-size: var(--text-small);
-    padding: var(--space-feather) var(--space-breath);
-  }
-  
-  .zen-main {
-    padding: var(--space-verse);
-  }
-  
-  .zen-header {
-    padding: var(--space-verse);
-  }
-  
-  .zen-title {
-    font-size: var(--text-large);
-  }
-  
-  .zen-subtitle {
-    font-size: var(--text-base);
-  }
-}
-
-/* 底部导航栏样式 */
-:root {
-  --zen-text: #2c2c2c;
-  --zen-text-secondary: #6b7280;
-}
-
-.zen-app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--gradient-mist);
-}
-
-/* 头部状态栏 */
-.zen-header {
-  position: fixed;
+.zen-nav-item::before {
+  content: '';
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
-  background: linear-gradient(135deg, rgba(245, 244, 232, 0.95) 0%, rgba(250, 249, 240, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-  padding: 0.5rem 1rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-}
-
-.zen-header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.zen-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.zen-brand-icon {
-  font-size: 1.5rem;
-}
-
-.zen-brand-text {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--zen-gold);
-  font-family: 'Ma Shan Zheng', serif;
-}
-
-.zen-status {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.zen-time {
-  font-size: 0.9rem;
-  color: var(--zen-text);
-  font-weight: 300;
-}
-
-/* 主要内容区域 */
-.zen-main-content {
-  flex: 1;
-  padding-top: 60px;
-  padding-bottom: 80px;
-  overflow-y: auto;
-}
-
-.zen-page-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-/* 底部导航栏 */
-.zen-bottom-nav {
-  position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: linear-gradient(135deg, rgba(245, 244, 232, 0.95) 0%, rgba(250, 249, 240, 0.95) 100%);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
-  padding: 0.5rem 0;
-  height: 80px;
-  display: flex;
-  align-items: center;
-}
-
-.zen-nav-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.zen-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  min-width: 60px;
-  flex: 1;
-  max-width: 80px;
-  position: relative;
-  color: var(--zen-text-secondary);
+  background: var(--gradient-mystic);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-divine);
+  border-radius: var(--button-radius);
 }
 
 .zen-nav-item:hover {
-  background: rgba(212, 175, 55, 0.1);
-  transform: translateY(-2px);
+  color: var(--divine-gold);
+  transform: translateY(-4px) scale(1.05);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+.zen-nav-item:hover::before {
+  opacity: 0.3;
 }
 
 .zen-nav-item.active {
-  color: var(--zen-gold);
-  background: rgba(212, 175, 55, 0.15);
+  color: var(--divine-gold);
+  transform: translateY(-2px);
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 1),
+    0 0 20px rgba(255, 215, 0, 0.6);
 }
 
 .zen-nav-item.active::before {
+  opacity: 0.5;
+  animation: buttonGlow var(--duration-slow) ease-in-out infinite alternate;
+}
+
+.zen-nav-item.active::after {
   content: '';
   position: absolute;
-  top: -0.5rem;
+  top: -3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
+  width: 30px;
   height: 4px;
-  background: var(--zen-gold);
-  border-radius: 50%;
+  background: var(--gradient-divine);
+  border-radius: var(--radius-small);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  animation: divineFlow var(--duration-slow) ease-in-out infinite alternate;
 }
 
 .zen-nav-icon {
-  font-size: 1.5rem;
-  line-height: 1;
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+  transition: all var(--duration-normal) var(--ease-celestial);
+  position: relative;
+  z-index: 2;
+}
+
+.zen-nav-item:hover .zen-nav-icon {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.zen-nav-item.active .zen-nav-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1));
+  animation: zen-glow var(--duration-slow) ease-in-out infinite;
 }
 
 .zen-nav-label {
   font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1;
-  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mystic);
+  position: relative;
+  z-index: 2;
 }
 
-.zen-nav-description {
-  font-size: 0.65rem;
-  opacity: 0.7;
-  line-height: 1;
-  white-space: nowrap;
+/* ✨ 宇宙级动画系统 */
+
+/* 🌌 宇宙流动 */
+@keyframes cosmicFlow {
+  0% { transform: translateX(-10px) translateY(-5px) rotate(0deg); }
+  25% { transform: translateX(5px) translateY(-10px) rotate(1deg); }
+  50% { transform: translateX(10px) translateY(5px) rotate(0deg); }
+  75% { transform: translateX(-5px) translateY(10px) rotate(-1deg); }
+  100% { transform: translateX(-10px) translateY(-5px) rotate(0deg); }
 }
 
-/* 响应式设计 */
+/* 🔮 神秘脉动 */
+@keyframes mysticPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+/* 🎆 头部旋转 */
+@keyframes headerRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ⚡ 神圣流动 */
+@keyframes divineFlow {
+  0% { transform: scaleX(0.8) translateX(-10px); opacity: 0.6; }
+  50% { transform: scaleX(1.2) translateX(5px); opacity: 1; }
+  100% { transform: scaleX(0.8) translateX(-10px); opacity: 0.6; }
+}
+
+/* 🌟 文字发光 */
+@keyframes textGlow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.8),
+      0 0 20px rgba(255, 215, 0, 0.6),
+      0 0 30px rgba(255, 215, 0, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  50% { 
+    text-shadow: 
+      0 0 20px rgba(255, 215, 0, 1),
+      0 0 40px rgba(255, 215, 0, 0.8),
+      0 0 60px rgba(255, 215, 0, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 🔥 边框发光 */
+@keyframes borderGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 
+                0 0 20px rgba(255, 215, 0, 0.4),
+                inset 0 0 10px rgba(255, 215, 0, 0.2); }
+  50% { 
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1), 
+                0 0 40px rgba(255, 215, 0, 0.8),
+                inset 0 0 20px rgba(255, 215, 0, 0.4); }
+}
+
+/* 🌊 运势边框 */
+@keyframes fortuneBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 🌈 运势光环 */
+@keyframes fortuneAura {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* ✨ 运势发光 */
+@keyframes fortuneGlow {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+    transform: scale(1);
+  }
+  50% { 
+    filter: brightness(1.3) drop-shadow(0 0 25px rgba(255, 215, 0, 1));
+    transform: scale(1.02);
+  }
+}
+
+/* 🌊 闪烁效果 */
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 0%; }
+  100% { left: 100%; }
+}
+
+/* 🔥 按钮发光 */
+@keyframes buttonGlow {
+  0%, 100% { 
+    opacity: 0.8;
+    filter: blur(1px);
+  }
+  50% { 
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* 🎭 悬浮动画 */
+@keyframes zen-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-12px) rotate(2deg); }
+  50% { transform: translateY(-6px) rotate(0deg); }
+  75% { transform: translateY(-18px) rotate(-2deg); }
+}
+
+/* ✨ 发光效果 */
+@keyframes zen-glow {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+  }
+  50% { 
+    filter: brightness(1.4) drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+  }
+}
+
+/* 🔄 旋转效果 */
+@keyframes cosmicSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* 🌌 波纹效果 */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 🎆 粒子效果 */
+@keyframes particles {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 🎭 动画类 */
+.zen-float { animation: zen-float 8s ease-in-out infinite; }
+.zen-glow { animation: zen-glow 4s ease-in-out infinite; }
+.cosmic-spin { animation: cosmicSpin 10s linear infinite; }
+.mystic-pulse { animation: mysticPulse 3s ease-in-out infinite; }
+.divine-shimmer { animation: shimmer 2s ease-in-out infinite; }
+.fortune-aura { animation: fortuneAura 5s ease-in-out infinite; }
+
+/* 🎭 沉浸式交互效果 */
+
+/* 🌊 点击波纹效果 */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* 🎯 磁力吸引效果 */
+.magnetic-hover {
+  transition: all var(--duration-normal) var(--ease-divine);
+}
+
+.magnetic-hover:hover {
+  transform: translateY(-8px) scale(1.05);
+  filter: brightness(1.3) saturate(1.4);
+  box-shadow: 
+    0 20px 60px rgba(255, 215, 0, 0.4),
+    0 10px 30px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+/* ⚡ 能量脉冲效果 */
+@keyframes energyPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 20px rgba(255, 215, 0, 0.4),
+      0 0 30px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 1),
+      0 0 40px rgba(255, 215, 0, 0.8),
+      0 0 60px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.energy-pulse {
+  animation: energyPulse var(--duration-slow) ease-in-out infinite;
+}
+
+/* 🌈 彩虹光谱动画 */
+@keyframes rainbowShift {
+  0% { filter: hue-rotate(0deg); }
+  25% { filter: hue-rotate(90deg); }
+  50% { filter: hue-rotate(180deg); }
+  75% { filter: hue-rotate(270deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.rainbow-shift {
+  animation: rainbowShift 6s linear infinite;
+}
+
+/* 🔥 火焰摇摆效果 */
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  25% {
+    transform: scale(1.05) rotate(1deg);
+    filter: brightness(1.2) saturate(1.3);
+  }
+  50% {
+    transform: scale(0.98) rotate(-0.5deg);
+    filter: brightness(0.9) saturate(0.8);
+  }
+  75% {
+    transform: scale(1.02) rotate(0.8deg);
+    filter: brightness(1.1) saturate(1.1);
+  }
+}
+
+.flame-flicker {
+  animation: flameFlicker var(--duration-slow) ease-in-out infinite;
+}
+
+/* ❄️ 冰晶旋转效果 */
+@keyframes crystalSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.8;
+  }
+}
+
+.crystal-spin {
+  animation: crystalSpin var(--duration-cosmic) linear infinite;
+}
+
+/* 🌟 星辰闪烁效果 */
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+.star-twinkle {
+  animation: starTwinkle var(--duration-cosmic) ease-in-out infinite;
+}
+
+/* 🌀 漩涡扭曲效果 */
+@keyframes vortexTwist {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.95);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.02);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.vortex-twist {
+  animation: vortexTwist var(--duration-eternal) ease-in-out infinite;
+}
+
+/* 💫 光芒四射效果 */
+@keyframes lightRay {
+  0% {
+    box-shadow: 
+      0 0 5px rgba(255, 215, 0, 0.8),
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 15px rgba(255, 215, 0, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 1),
+      0 0 40px rgba(255, 215, 0, 0.8),
+      0 0 60px rgba(255, 215, 0, 0.6),
+      0 0 80px rgba(255, 215, 0, 0.4);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 
+      0 0 5px rgba(255, 215, 0, 0.8),
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 15px rgba(255, 215, 0, 0.4);
+    transform: scale(1);
+  }
+}
+
+.light-ray {
+  animation: lightRay var(--duration-slow) ease-in-out infinite;
+}
+
+/* 🎪 弹性缩放效果 */
+@keyframes elasticScale {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.25);
+  }
+  40% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  65% {
+    transform: scale(1.05);
+  }
+  75% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.elastic-scale {
+  animation: elasticScale var(--duration-slow) var(--ease-celestial) infinite;
+}
+
+/* 📱 触摸反馈效果 */
+.touch-feedback {
+  -webkit-tap-highlight-color: rgba(255, 215, 0, 0.3);
+  tap-highlight-color: rgba(255, 215, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-feedback:active {
+  transform: scale(0.98);
+  transition: transform var(--duration-fast) var(--ease-divine);
+}
+
+.touch-feedback:active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+  animation: touchRipple var(--duration-normal) ease-out;
+}
+
+@keyframes touchRipple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* 🎨 渐变动画效果 */
+.gradient-animation {
+  background-size: 200% 200%;
+  animation: gradientShift var(--duration-eternal) ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===== 响应式设计 ===== */
 @media (max-width: 768px) {
-  .zen-header {
-    padding: 0.5rem;
+  .zen-main-content {
+    padding: var(--space-md);
   }
   
-  .zen-page-container {
-    padding: 0.5rem;
+  .feature-card {
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+  
+  .fortune-overview {
+    padding: var(--space-lg);
+  }
+  
+  .fortune-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .zen-nav-items {
+    padding: 0 var(--space-sm);
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    align-items: center !important;
   }
   
   .zen-nav-item {
     min-width: 50px;
-    max-width: 70px;
-    padding: 0.25rem;
+    padding: var(--space-xs);
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    flex: 1;
   }
   
   .zen-nav-icon {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
   
   .zen-nav-label {
-    font-size: 0.7rem;
+    font-size: .65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .zen-header-mobile {
+    padding: var(--space-md);
   }
   
-  .zen-nav-description {
+  .zen-header-mobile h1 {
+    font-size: 1.3rem;
+  }
+  
+  .zen-main-content {
+    padding: var(--space-sm);
+  }
+  
+  .feature-card {
+    padding: var(--space-md);
+  }
+  
+  .zen-button {
+    min-width: 100px;
+    padding: var(--space-sm) var(--space-lg);
+  }
+  
+  /* 导航栏小屏优化 */
+  .zen-nav-items {
+    padding: 0 var(--space-xs);
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+  }
+  
+  .zen-nav-item {
+    min-width: 45px;
+    padding: var(--space-xs);
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    flex: 1;
+  }
+  
+  .zen-nav-icon {
+    font-size: 1.3rem;
+  }
+  
+  .zen-nav-label {
     font-size: 0.6rem;
   }
+}
+
+/* ===== Dark Mode Support ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* 📺 平板设备优化 (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --space-xs: 0.3rem;
+    --space-sm: 0.6rem;
+    --space-md: 1.2rem;
+    --space-lg: 1.8rem;
+    --space-xl: 2.4rem;
+    --space-2xl: 3.6rem;
+    --card-radius: 18px;
+    --button-radius: 14px;
+  }
+  
+  .zen-main-content {
+    padding: var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .feature-card {
+    padding: var(--space-xl);
+  }
+  
+  .fortune-overview {
+    padding: var(--space-xl);
+  }
+  
+  .zen-button {
+    min-width: 130px;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 1.05rem;
+  }
+  
+  .zen-nav-item {
+    min-width: 65px;
+    padding: var(--space-md);
+  }
+  
+  .zen-nav-icon {
+    font-size: 1.6rem;
+  }
+  
+  .zen-nav-label {
+    font-size: 0.75rem;
+  }
+}
+
+/* 🖥️ 桌面设备优化 (≥1025px) */
+@media (min-width: 1025px) {
+  .zen-main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-2xl);
+  }
+  
+  .feature-card {
+    transition: all var(--duration-normal) var(--ease-celestial);
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-8px) scale(1.02) rotate(0.5deg);
+  }
+  
+  .zen-button:hover {
+    transform: translateY(-3px) scale(1.05);
+  }
+  
+  /* 桌面端增强动画效果 */
+  .zen-glow {
+    animation: zen-glow 4s ease-in-out infinite;
+  }
+  
+  .cosmic-spin {
+    animation: cosmicSpin 12s linear infinite;
+  }
+}
+
+/* 🌐 超宽屏优化 (≥1400px) */
+@media (min-width: 1400px) {
+  .zen-main-content {
+    max-width: 1400px;
+    padding: var(--space-3xl);
+  }
+  
+  .feature-card {
+    padding: var(--space-3xl);
+  }
+  
+  .fortune-overview {
+    padding: var(--space-3xl);
+  }
+  
+  /* 超宽屏增强视觉效果 */
+  .feature-card:hover {
+    transform: translateY(-12px) scale(1.03) rotate(1deg);
+    box-shadow: var(--shadow-cosmic);
+  }
+  
+  .zen-button:hover {
+    transform: translateY(-4px) scale(1.08);
+    filter: brightness(1.3) saturate(1.5);
+  }
+}
+
+/* 🔄 横屏模式适配 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .zen-header-mobile {
+    padding: var(--space-sm);
+  }
+  
+  .zen-header-mobile h1 {
+    font-size: 1.3rem;
+  }
+  
+  .zen-main-content {
+    padding: var(--space-sm);
+  }
+  
+  .fortune-overview {
+    padding: var(--space-md);
+  }
+  
+  .zen-bottom-nav {
+    padding: var(--space-xs) 0;
+  }
+  
+  .zen-nav-item {
+    padding: var(--space-xs);
+  }
+  
+  .zen-nav-icon {
+    font-size: 1.2rem;
+  }
+  
+  .zen-nav-label {
+    font-size: 0.6rem;
+  }
+}
+
+/* 🎯 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  .feature-card {
+    touch-action: manipulation;
+  }
+  
+  .feature-card:hover {
+    transform: none;
+  }
+  
+  .feature-card:active {
+    transform: scale(0.98);
+    transition: transform var(--duration-fast) var(--ease-divine);
+  }
+  
+  .zen-button:hover {
+    transform: none;
+  }
+  
+  .zen-button:active {
+    transform: scale(0.95);
+  }
+  
+  .zen-nav-item:hover {
+    transform: none;
+  }
+  
+  .zen-nav-item:active {
+    transform: scale(0.95);
+    background: var(--gradient-mystic);
+  }
+}
+
+/* 🔋 性能优化模式 */
+@media (prefers-reduced-motion: reduce) {
+  /* 性能优先，禁用复杂动画 */
+  .feature-card,
+  .zen-button,
+  .zen-nav-item {
+    transition: opacity var(--duration-fast) ease;
+  }
+  
+  .feature-card:hover,
+  .zen-button:hover,
+  .zen-nav-item:hover {
+    opacity: 0.8;
+    transform: none;
+  }
+}
+
+/* ===== 无障碍支持 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *:before, *:after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .zen-float,
+  .zen-glow,
+  .cosmic-spin,
+  .mystic-pulse,
+  .divine-shimmer,
+  .fortune-aura,
+  .energy-pulse,
+  .rainbow-shift,
+  .flame-flicker,
+  .crystal-spin,
+  .star-twinkle,
+  .vortex-twist,
+  .light-ray,
+  .elastic-scale {
+    animation: none !important;
+  }
+}
+
+/* 🎯 高对比度支持 */
+@media (prefers-contrast: high) {
+  :root {
+    --divine-gold: #ffff00;
+    --border-divine: rgba(255, 255, 0, 1);
+    --border-celestial: rgba(255, 255, 0, 0.8);
+    --text-mystic: #ffffff;
+    --text-celestial: #ffffff;
+  }
+}
+
+/* 🌃 暗色主题偏好 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg-cosmic: radial-gradient(ellipse at center, #0a0a1a 0%, #05051a 35%, #000010 100%);
+  }
+}
+
+/* 🔆 亮色主题偏好 */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-cosmic: radial-gradient(ellipse at center, #f5f5f5 0%, #e8e8e8 35%, #d5d5d5 100%);
+    --text-celestial: #333333;
+    --text-mystic: #666666;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary-gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-gold), #ffb347);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-gold-light), var(--primary-gold));
+}
+
+/* ===== Selection Styling ===== */
+::selection {
+  background: rgba(255, 215, 0, .3);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background: rgba(255, 215, 0, .3);
+  color: var(--text-primary);
 } 

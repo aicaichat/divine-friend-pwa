@@ -4,11 +4,11 @@ Flask-CORS==4.0.0
 
 # Web服务器
 gunicorn==21.2.0
-gevent==23.9.1
+# gevent==23.9.1  # 移除，Python 3.13兼容性问题
 
 # 数据处理
-numpy==1.24.3
-pandas==2.0.3
+numpy==1.26.4
+pandas==2.1.4
 
 # 缓存系统
 redis==5.0.1

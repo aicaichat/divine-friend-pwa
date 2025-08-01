@@ -1,0 +1,258 @@
+version: '3.8'
+
+services:
+  # Nginx反向代理
+  nginx:
+    image: nginx:alpine
+    container_name: divine-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - frontend
+      - admin-dashboard
+      - backend
+    networks:
+      - divine-network
+
+  # 前端应用
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: divine-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=https://api.bless.top
+      - VITE_APP_DOMAIN=today.bless.top
+    volumes:
+      - frontend_dist:/usr/share/nginx/html
+    networks:
+      - divine-network
+    expose:
+      - "80"
+
+  # 管理后台
+  admin-dashboard:
+    build:
+      context: ../../admin-dashboard
+      dockerfile: ../docker/Dockerfile.admin
+    container_name: divine-admin
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=https://api.bless.top
+      - VITE_ADMIN_DOMAIN=admin.bless.top
+    volumes:
+      - admin_dist:/usr/share/nginx/html
+    networks:
+      - divine-network
+    expose:
+      - "80"
+
+  # 后端API
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: divine-backend
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=mysql://divine_friend:${MYSQL_PASSWORD}@mysql:3306/divine_friend_prod
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-change-this-secret-key}
+      - CORS_ORIGINS=https://today.bless.top,https://api.bless.top,https://admin.bless.top
+      - LOG_LEVEL=INFO
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+      - APP_DOMAIN=today.bless.top
+      - API_DOMAIN=api.bless.top
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - divine-network
+    expose:
+      - "5000"
+
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: divine-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root-password}
+      - MYSQL_DATABASE=divine_friend_prod
+      - MYSQL_USER=divine_friend
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-divine-friend-password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../../database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ../../database/my.cnf:/etc/mysql/conf.d/my.cnf
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root-password}"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+    networks:
+      - divine-network
+    expose:
+      - "3306"
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: divine-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-your-redis-password}
+    volumes:
+      - redis_data:/data
+      - ../../devops/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - divine-network
+    expose:
+      - "6379"
+
+  # 监控 - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: divine-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - divine-network
+    expose:
+      - "9090"
+
+  # 监控 - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: divine-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_SERVER_ROOT_URL=https://monitor.bless.top/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - divine-network
+    expose:
+      - "3000"
+
+  # 数据库管理 - phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: divine-phpmyadmin
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD:-root-password}
+      - UPLOAD_LIMIT=1G
+      - PMA_ARBITRARY=1
+    depends_on:
+      - mysql
+    networks:
+      - divine-network
+    expose:
+      - "80"
+
+  # Redis管理界面
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: divine-redis-commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-your-redis-password}
+    depends_on:
+      - redis
+    networks:
+      - divine-network
+    expose:
+      - "8081"
+
+  # 邮件测试服务
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: divine-mailhog
+    restart: unless-stopped
+    networks:
+      - divine-network
+    expose:
+      - "1025"  # SMTP
+      - "8025"  # Web UI
+
+  # 系统监控 - Node Exporter
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: divine-node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - divine-network
+    expose:
+      - "9100"
+
+  # Docker监控
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: divine-cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - divine-network
+    expose:
+      - "8080"
+
+volumes:
+  frontend_dist:
+  admin_dist:
+  mysql_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  divine-network:
+    driver: bridge 

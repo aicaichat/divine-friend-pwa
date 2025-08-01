@@ -1,0 +1,166 @@
+/* 底部导航图标颜色修复 - 确保在深色背景下清晰可见 */
+
+/* 专业导航图标颜色修复 */
+.professional-nav__icon svg {
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.professional-nav__item--active .professional-nav__icon svg {
+  color: #FFD700 !important; /* 亮金色激活状态 */
+  transform: scale(1.1) !important;
+  filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.6)) brightness(1.2) !important;
+}
+
+.professional-nav__item:hover .professional-nav__icon svg {
+  color: rgba(255, 255, 255, 0.9) !important;
+  transform: scale(1.05) !important;
+}
+
+/* 专业导航标签颜色修复 */
+.professional-nav__label {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500 !important;
+}
+
+.professional-nav__item--active .professional-nav__label {
+  color: #FFD700 !important; /* 亮金色激活状态 */
+  font-weight: 700 !important;
+  text-shadow: 0 1px 4px rgba(255, 215, 0, 0.5) !important;
+}
+
+.professional-nav__item:hover .professional-nav__label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 兼容旧版导航样式 */
+.zen-nav-item {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.zen-nav-item.active {
+  color: #FFD700 !important;
+}
+
+.zen-nav-item:hover {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.zen-nav-icon {
+  color: inherit !important;
+}
+
+/* 底部导航容器背景修复 */
+.professional-nav {
+  background: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+.zen-bottom-nav {
+  background: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+/* 增强对比度 - 适老化支持 */
+.accessibility-mode .professional-nav__icon svg,
+.accessibility-mode .professional-nav__label {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.accessibility-mode .professional-nav__item--active .professional-nav__icon svg,
+.accessibility-mode .professional-nav__item--active .professional-nav__label {
+  color: #FFD700 !important; /* 更亮的金色 */
+  font-weight: 700 !important;
+}
+
+/* 深色背景强制修复 */
+body:not(.accessibility-mode) .professional-nav__icon svg {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body:not(.accessibility-mode) .professional-nav__label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body:not(.accessibility-mode) .professional-nav__item--active .professional-nav__icon svg,
+body:not(.accessibility-mode) .professional-nav__item--active .professional-nav__label {
+  color: #FFD700 !important;
+}
+
+/* 悬停效果增强 */
+.professional-nav__item:hover .professional-nav__icon svg {
+  transform: scale(1.05) rotate(2deg) !important;
+}
+
+.professional-nav__item--active .professional-nav__icon svg {
+  animation: activeIconPulse 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes activeIconPulse {
+  from { 
+    filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.6)) brightness(1.2) !important;
+  }
+  to { 
+    filter: drop-shadow(0 4px 16px rgba(255, 215, 0, 0.8)) brightness(1.4) !important;
+  }
+}
+
+/* 确保所有图标都有正确的颜色继承 */
+.professional-nav__icon svg * {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 激活状态增强可见性 */
+.professional-nav__item--active {
+  background: rgba(255, 215, 0, 0.15) !important;
+  border-radius: 12px !important;
+  transform: translateY(-2px) !important;
+}
+
+.professional-nav__item--active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #FFD700 !important;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8) !important;
+}
+
+/* 强化激活状态的视觉反馈 */
+.professional-nav__item--active .professional-nav__icon {
+  position: relative;
+}
+
+.professional-nav__item--active .professional-nav__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: iconGlow 2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes iconGlow {
+  from { 
+    opacity: 0.6; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1.2); 
+  }
+} 

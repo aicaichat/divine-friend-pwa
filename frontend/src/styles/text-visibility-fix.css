@@ -1,0 +1,308 @@
+/* ========================================
+   🔧 文字可见性修复系统
+   解决白色背景上白色文字不可见的问题
+   ======================================== */
+
+/* ===== 默认模式文字可见性保证 ===== */
+
+/* 确保深色背景上的文字为白色 */
+body:not(.accessibility-mode) {
+  /* 深色背景默认使用白色文字 */
+  --safe-text-color: #ffffff;
+  --safe-text-light: rgba(255, 255, 255, 0.8);
+  --safe-text-lighter: rgba(255, 255, 255, 0.6);
+  
+  /* zen设计系统默认白色文字 */
+  --zen-text-primary-safe: #ffffff;
+  --zen-text-secondary-safe: rgba(255, 255, 255, 0.8);
+  --zen-text-tertiary-safe: rgba(255, 255, 255, 0.6);
+  
+  /* 为白色背景容器准备的黑色文字变量 */
+  --safe-text-color-dark: #2d2d2d;
+  --safe-text-light-dark: #666666;
+  --safe-text-lighter-dark: #999999;
+}
+
+/* ===== ZEN设计系统修复 ===== */
+
+/* 当页面或组件有白色背景时，强制使用安全的文字颜色 */
+body:not(.accessibility-mode) [style*="background: white"],
+body:not(.accessibility-mode) [style*="background: #fff"],
+body:not(.accessibility-mode) [style*="background: #ffffff"],
+body:not(.accessibility-mode) [style*="background-color: white"],
+body:not(.accessibility-mode) [style*="background-color: #fff"],
+body:not(.accessibility-mode) [style*="background-color: #ffffff"],
+body:not(.accessibility-mode) .white-background,
+body:not(.accessibility-mode) .light-background {
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+  --zen-text-secondary: var(--zen-text-secondary-safe) !important;
+  --zen-text-tertiary: var(--zen-text-tertiary-safe) !important;
+  color: var(--zen-text-primary-safe) !important;
+}
+
+/* 确保深色背景区域使用白色文字 */
+body:not(.accessibility-mode) .zen-page-container-redesign,
+body:not(.accessibility-mode) .zen-main-content-redesign {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+  --zen-text-secondary: var(--zen-text-secondary-safe) !important;
+  --zen-text-tertiary: var(--zen-text-tertiary-safe) !important;
+}
+
+/* 只有明确的白色背景才使用黑色文字 */
+body:not(.accessibility-mode) [style*="background: white"],
+body:not(.accessibility-mode) [style*="background: #fff"],
+body:not(.accessibility-mode) [style*="background-color: white"],
+body:not(.accessibility-mode) [style*="background-color: #fff"],
+body:not(.accessibility-mode) [style*="background-color: #ffffff"] {
+  color: var(--safe-text-color-dark) !important;
+  --zen-text-primary: var(--safe-text-color-dark) !important;
+  --zen-text-secondary: var(--safe-text-light-dark) !important;
+  --zen-text-tertiary: var(--safe-text-lighter-dark) !important;
+}
+
+/* 修复特定组件的文字可见性 */
+body:not(.accessibility-mode) .card,
+body:not(.accessibility-mode) .modal,
+body:not(.accessibility-mode) .dialog,
+body:not(.accessibility-mode) .popup,
+body:not(.accessibility-mode) .dropdown,
+body:not(.accessibility-mode) .menu,
+body:not(.accessibility-mode) .zen-card {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+  --zen-text-secondary: var(--zen-text-secondary-safe) !important;
+}
+
+/* 修复标题文字 */
+body:not(.accessibility-mode) h1,
+body:not(.accessibility-mode) h2,
+body:not(.accessibility-mode) h3,
+body:not(.accessibility-mode) h4,
+body:not(.accessibility-mode) h5,
+body:not(.accessibility-mode) h6 {
+  color: var(--safe-text-color) !important;
+}
+
+/* 修复段落和普通文字 */
+body:not(.accessibility-mode) p,
+body:not(.accessibility-mode) span,
+body:not(.accessibility-mode) div,
+body:not(.accessibility-mode) label,
+body:not(.accessibility-mode) .text {
+  color: inherit;
+}
+
+/* 特别修复白色背景区域内的文字 */
+body:not(.accessibility-mode) [style*="background"][style*="white"] *,
+body:not(.accessibility-mode) [style*="background"][style*="#fff"] *,
+body:not(.accessibility-mode) [style*="background"][style*="#ffffff"] * {
+  color: var(--safe-text-color) !important;
+}
+
+/* ===== 强制文字可见性规则 ===== */
+
+/* 任何具有白色或浅色背景的元素，强制使用深色文字 */
+[style*="background: white"] *:not(.keep-original-color),
+[style*="background: #fff"] *:not(.keep-original-color),
+[style*="background: #ffffff"] *:not(.keep-original-color),
+[style*="background-color: white"] *:not(.keep-original-color),
+[style*="background-color: #fff"] *:not(.keep-original-color),
+[style*="background-color: #ffffff"] *:not(.keep-original-color),
+[style*="background-color: rgb(255, 255, 255)"] *:not(.keep-original-color) {
+  color: var(--safe-text-color-dark) !important;
+  --zen-text-primary: var(--safe-text-color-dark) !important;
+  --zen-text-secondary: var(--safe-text-light-dark) !important;
+  --zen-text-tertiary: var(--safe-text-lighter-dark) !important;
+}
+
+/* ===== 全局ZEN变量安全修复 ===== */
+
+/* 确保body始终有深色背景 */
+body {
+  background: var(--gradient-cosmic) !important;
+  background-attachment: fixed !important;
+}
+
+/* 仅在特定白色背景容器内重新定义zen变量，而不是全局 */
+.white-bg-container,
+.light-bg-container,
+[style*="background: white"],
+[style*="background: #fff"],
+[style*="background: #ffffff"],
+[style*="background-color: white"],
+[style*="background-color: #fff"],
+[style*="background-color: #ffffff"] {
+  --zen-text-primary: var(--safe-text-color-dark) !important;
+  --zen-text-secondary: var(--safe-text-light-dark) !important;
+  --zen-text-tertiary: var(--safe-text-lighter-dark) !important;
+  --zen-text-muted: rgba(45, 45, 45, 0.4) !important;
+  color: var(--safe-text-color-dark) !important;
+}
+
+/* 修复表单元素 */
+body:not(.accessibility-mode) input,
+body:not(.accessibility-mode) textarea,
+body:not(.accessibility-mode) select,
+body:not(.accessibility-mode) button {
+  color: var(--safe-text-color);
+}
+
+/* 修复导航元素 */
+body:not(.accessibility-mode) .nav,
+body:not(.accessibility-mode) .navigation,
+body:not(.accessibility-mode) .menu-item,
+body:not(.accessibility-mode) .tab {
+  color: var(--safe-text-color);
+}
+
+/* ===== 反向文字保护 ===== */
+
+/* 保护原本应该是白色文字的元素（在深色背景上） */
+.keep-white-text,
+.dark-background,
+.dark-background .text,
+.dark-background h1,
+.dark-background h2,
+.dark-background h3,
+.dark-background h4,
+.dark-background h5,
+.dark-background h6,
+.dark-background p,
+.dark-background span {
+  color: #ffffff !important;
+  --zen-text-primary: #ffffff !important;
+  --zen-text-secondary: rgba(255, 255, 255, 0.8) !important;
+  --zen-text-tertiary: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 保护深色背景的zen组件 */
+body,
+[style*="background"][style*="gradient"],
+[style*="background"][style*="linear-gradient"],
+[style*="background"][style*="radial-gradient"],
+.zen-bg-primary,
+.dark-gradient,
+.dark-background {
+  --zen-text-primary: #ffffff !important;
+  --zen-text-secondary: rgba(255, 255, 255, 0.8) !important;
+  --zen-text-tertiary: rgba(255, 255, 255, 0.6) !important;
+  color: #ffffff !important;
+}
+
+/* ===== 特定页面修复 ===== */
+
+/* 修复手串页面 */
+.bracelet-page *:not(.keep-original-color),
+[data-page="bracelet"] *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* 修复用户中心页面 */
+.user-center *:not(.keep-original-color),
+.profile-page *:not(.keep-original-color),
+[data-page="profile"] *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* 修复设置页面 */
+.settings-page *:not(.keep-original-color),
+[data-page="settings"] *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* 修复开运页面 */
+.fortune-page *:not(.keep-original-color),
+[data-page="fortune"] *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* 修复聊天页面 */
+.chat-page *:not(.keep-original-color),
+[data-page="oracle"] *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* ===== 模态框和弹窗修复 ===== */
+
+.ant-modal-content *:not(.keep-original-color),
+.ant-drawer-content *:not(.keep-original-color),
+.ant-popover-content *:not(.keep-original-color),
+.zen-modal *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* ===== 表格修复 ===== */
+
+.ant-table *:not(.keep-original-color),
+table *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* ===== 卡片修复 ===== */
+
+.ant-card *:not(.keep-original-color),
+.card *:not(.keep-original-color),
+.zen-card *:not(.keep-original-color) {
+  color: var(--safe-text-color) !important;
+  --zen-text-primary: var(--zen-text-primary-safe) !important;
+}
+
+/* ===== 紧急修复规则 ===== */
+
+/* 如果其他规则都失效，这是最后的保障 */
+body:not(.accessibility-mode) {
+  --text-celestial: #ffffff !important;
+  --text-mystic: rgba(255, 255, 255, 0.8) !important;
+  --text-mortal: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 确保适老化模式的样式优先级更高 */
+.accessibility-mode {
+  --text-celestial: var(--color-text-primary) !important;
+  --text-mystic: var(--color-text-secondary) !important;
+  --text-mortal: var(--color-text-tertiary) !important;
+  --zen-text-primary: var(--color-text-primary) !important;
+  --zen-text-secondary: var(--color-text-secondary) !important;
+  --zen-text-tertiary: var(--color-text-tertiary) !important;
+}
+
+/* ===== 调试辅助 ===== */
+
+/* 开发环境下可以启用这个来查看问题区域 */
+.debug-text-visibility [style*="background"][style*="white"] {
+  border: 2px solid red !important;
+}
+
+.debug-text-visibility [style*="color"][style*="white"] {
+  background: yellow !important;
+}
+
+/* ===== 响应式修复 ===== */
+
+@media (max-width: 768px) {
+  /* 移动端额外确保文字可见 */
+  body:not(.accessibility-mode) * {
+    text-shadow: none !important;
+  }
+}
+
+/* ===== 高对比度模式额外保护 ===== */
+
+@media (prefers-contrast: high) {
+  body:not(.accessibility-mode) {
+    --safe-text-color: #ffffff !important;
+    --safe-text-light: #ffffff !important;
+    --safe-text-lighter: #ffffff !important;
+    --zen-text-primary: #ffffff !important;
+    --zen-text-secondary: #ffffff !important;
+    --zen-text-tertiary: #ffffff !important;
+  }
+} 

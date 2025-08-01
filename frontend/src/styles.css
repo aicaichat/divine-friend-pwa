@@ -1,5 +1,13 @@
 @import"https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=Zhi+Mang+Xing&family=ZCOOL+KuaiLe&family=Long+Cang&family=Liu+Jian+Mao+Cao&display=swap";
+@import "./styles/background-fix.css";
 @import "./styles/divine-interactions.css";
+@import "./styles/accessibility-optimized.css";
+@import "./styles/pages-accessibility.css";
+@import "./styles/logo.css";
+@import "./styles/text-visibility-fix.css";
+@import "./styles/navigation-icon-fix.css";
+@import "./styles/usercenter-visibility-fix.css";
+@import "./styles/usercenter-visibility-fix-critical.css";
 
 /* ===== WordPress Plugin Original Styles ===== */
 :root {

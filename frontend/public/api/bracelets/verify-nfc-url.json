@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "NFC验证成功",
+  "data": {
+    "valid": true,
+    "braceletInfo": {
+      "id": "BR001",
+      "owner": "测试用户",
+      "chipId": "CHIP-2024-001",
+      "material": "小叶紫檀",
+      "beadCount": 108,
+      "energyLevel": 85,
+      "consecrationDate": "2024年1月15日",
+      "consecrationTemple": "灵隐寺",
+      "consecrationMaster": "慧明法师",
+      "consecrationVideo": "https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/669_raw.mp4",
+      "imageUrl": "https://example.com/bracelet-image.jpg"
+    }
+  },
+  "timestamp": 1753610776324
+} 

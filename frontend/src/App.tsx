@@ -126,7 +126,7 @@ const App: React.FC = () => {
     {
       id: 'growth' as AppPage,
       icon: '🌱',
-      label: '共同成长',
+      label: '修心',
       description: '修行历程',
       value: '成就进步感'
     },

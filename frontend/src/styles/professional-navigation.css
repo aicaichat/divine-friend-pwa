@@ -7,15 +7,15 @@
   /* 专业色彩系统 */
   --nav-primary: #2C1810;         /* 深檀木色 */
   --nav-secondary: #8B4513;       /* 檀香色 */
-  --nav-accent: #D4AF37;          /* 金刚色 */
+  --nav-accent: #FFD700;          /* 亮金色 */
   --nav-surface: #F8F6F0;         /* 宣纸色 */
   --nav-on-surface: #3C3C3C;      /* 墨色 */
-  --nav-muted: #9E9E9E;           /* 禅灰 */
+  --nav-muted: rgba(255, 255, 255, 0.7);  /* 半透明白色 - 深色背景友好 */
   
   /* 渐变色彩 */
   --nav-gradient-primary: linear-gradient(135deg, #2C1810 0%, #5D4037 100%);
   --nav-gradient-secondary: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-  --nav-gradient-accent: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+  --nav-gradient-accent: linear-gradient(135deg, #FFD700 0%, #FFED4A 100%);
   --nav-gradient-surface: linear-gradient(135deg, #F8F6F0 0%, #FFFFFF 100%);
   
   /* 阴影系统 */

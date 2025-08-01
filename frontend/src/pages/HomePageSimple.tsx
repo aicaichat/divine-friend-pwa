@@ -9,6 +9,11 @@ interface UserState {
   name?: string;
   birthdate?: string;
   gender?: string;
+  birthYear?: number;
+  birthMonth?: number;
+  birthDay?: number;
+  birthHour?: number;
+  birthMinute?: number;
   hasBaziSetup: boolean;
   hasBraceletActivated: boolean;
   setupProgress: number;
@@ -63,7 +68,7 @@ const FortuneDisplay: React.FC<{ userState: UserState; currentTime: Date }> = ({
     };
 
     fetchFortuneData();
-  }, [userState.name, userState.birthdate]);
+  }, [userState.name, userState.birthdate, userState.birthYear, userState.birthMonth, userState.birthDay]);
 
   if (loading) {
     return (
@@ -281,6 +286,7 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
     try {
       console.log('🔍 检查用户状态...');
       const savedUserInfo = localStorage.getItem('userInfo');
+      const savedUserProfile = localStorage.getItem('userProfile');
       const braceletStatus = localStorage.getItem('braceletActivated');
       
       let newUserState: UserState = {
@@ -291,22 +297,93 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
 
       if (savedUserInfo) {
         const userInfo = JSON.parse(savedUserInfo);
-        const hasBaziSetup = !!(userInfo.birthdate && userInfo.name && userInfo.gender);
         const hasBraceletActivated = braceletStatus === 'true';
+        
+        // 统一数据格式：优先使用新格式（分离字段），兼容旧格式（birthdate字符串）
+        let birthdate = userInfo.birthdate;
+        let birthYear = userInfo.birthYear;
+        let birthMonth = userInfo.birthMonth;
+        let birthDay = userInfo.birthDay;
+        let birthHour = userInfo.birthHour;
+        let birthMinute = userInfo.birthMinute;
+        
+        // 如果有分离的年月日字段，生成birthdate字符串
+        if (birthYear && birthMonth && birthDay) {
+          birthdate = `${birthYear}-${birthMonth.toString().padStart(2, '0')}-${birthDay.toString().padStart(2, '0')}`;
+        }
+        // 如果只有birthdate字符串，解析成分离字段
+        else if (birthdate && !birthYear) {
+          const dateParts = birthdate.split('-');
+          if (dateParts.length === 3) {
+            birthYear = parseInt(dateParts[0]);
+            birthMonth = parseInt(dateParts[1]);
+            birthDay = parseInt(dateParts[2]);
+            // 更新localStorage中的数据结构
+            const updatedUserInfo = {
+              ...userInfo,
+              birthYear,
+              birthMonth,
+              birthDay,
+              birthHour: birthHour || 12,
+              birthMinute: birthMinute || 0
+            };
+            localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+          }
+        }
+        
+        // 同步用户资料数据
+        if (savedUserProfile) {
+          try {
+            const userProfile = JSON.parse(savedUserProfile);
+            // 确保用户资料和八字信息同步
+            if (birthdate && (!userProfile.birthday || userProfile.birthday !== birthdate)) {
+              const updatedProfile = {
+                ...userProfile,
+                birthday: birthdate,
+                birthHour: birthHour || 12,
+                birthMinute: birthMinute || 0,
+                gender: userInfo.gender || userProfile.gender
+              };
+              localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+              console.log('🔄 同步用户资料:', updatedProfile);
+            }
+          } catch (error) {
+            console.error('同步用户资料失败:', error);
+          }
+        }
+        
+        // 检查八字设置是否完整（需要姓名、性别、出生日期）
+        const hasBaziSetup = !!(userInfo.name && userInfo.gender && (birthdate || (birthYear && birthMonth && birthDay)));
         
         newUserState = {
           name: userInfo.name,
-          birthdate: userInfo.birthdate,
+          birthdate,
           gender: userInfo.gender,
+          birthYear,
+          birthMonth,
+          birthDay,
+          birthHour: birthHour || 12,
+          birthMinute: birthMinute || 0,
           hasBaziSetup,
           hasBraceletActivated,
-          setupProgress: calculateProgress(userInfo, hasBraceletActivated)
+          setupProgress: calculateProgress({
+            ...userInfo,
+            birthdate,
+            birthYear,
+            birthMonth,
+            birthDay
+          }, hasBraceletActivated)
         };
         
         console.log('📊 用户信息详情:', {
           name: userInfo.name,
-          birthdate: userInfo.birthdate,
+          birthdate,
           gender: userInfo.gender,
+          birthYear,
+          birthMonth,
+          birthDay,
+          birthHour,
+          birthMinute,
           hasBaziSetup,
           hasBraceletActivated,
           progress: newUserState.setupProgress
@@ -326,9 +403,10 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
   const calculateProgress = (userInfo: any, braceletActivated: boolean) => {
     let progress = 0;
     if (userInfo?.name) progress += 20;
-    if (userInfo?.birthdate) progress += 30;
+    if (userInfo?.birthdate || (userInfo?.birthYear && userInfo?.birthMonth && userInfo?.birthDay)) progress += 30;
     if (userInfo?.gender) progress += 20;
-    if (braceletActivated) progress += 30;
+    // 移除手串激活进度
+    // if (braceletActivated) progress += 30;
     return progress;
   };
 
@@ -352,7 +430,7 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
         description: '设置您的八字信息，获取专属的每日运势指引',
         buttonText: '🔮 设置八字信息',
         icon: '✨',
-        action: () => onNavigate('settings')
+                          action: () => onNavigate('settings-enhanced')
       };
     }
     
@@ -477,40 +555,83 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
         </div>
 
         {/* 问候区域 */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.6, 
+            ease: [0.25, 0.46, 0.45, 0.94]
+          }}
+          style={{ textAlign: 'center', marginBottom: '2rem' }}
+        >
+          <motion.div 
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ 
+              duration: 0.8, 
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.1
+            }}
+            style={{ fontSize: '3rem', marginBottom: '1rem' }}
+          >
             {greeting.icon}
-          </div>
+          </motion.div>
           
-          <h1 style={{
-            fontSize: '1.75rem',
-            fontWeight: '600',
-            color: 'white',
-            marginBottom: '0.5rem'
-          }}>
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6, 
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.2
+            }}
+            style={{
+              fontSize: '1.75rem',
+              fontWeight: '600',
+              color: 'white',
+              marginBottom: '0.5rem'
+            }}
+          >
             {greeting.text}
-          </h1>
+          </motion.h1>
           
-          <p style={{
-            color: 'rgba(255, 255, 255, 0.8)',
-            fontSize: '1rem',
-            margin: 0
-          }}>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6, 
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.3
+            }}
+            style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '1rem',
+              margin: 0
+            }}
+          >
             {userState.name ? `${userState.name}，` : ''}菩萨在此护佑您
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* 主要内容 */}
         {guidanceInfo ? (
           // 引导卡片
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            borderRadius: '20px',
-            padding: '2rem',
-            marginBottom: '1.5rem',
-            border: '1px solid rgba(255, 215, 0, 0.3)',
-            boxShadow: '0 0 20px rgba(212, 175, 55, 0.3)'
-          }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.6, 
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: 0.1
+            }}
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              borderRadius: '20px',
+              padding: '2rem',
+              marginBottom: '1.5rem',
+              border: '1px solid rgba(255, 215, 0, 0.3)',
+              boxShadow: '0 0 20px rgba(212, 175, 55, 0.3)'
+            }}>
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
                 {guidanceInfo.icon}
@@ -541,13 +662,20 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
               marginBottom: '1.5rem',
               overflow: 'hidden'
             }}>
-              <div style={{
-                width: `${userState.setupProgress}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #D4AF37, #F59E0B)',
-                borderRadius: '10px',
-                transition: 'width 1s ease-out'
-              }} />
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${userState.setupProgress}%` }}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.25, 0.46, 0.45, 0.94] // easeOutQuart
+                }}
+                style={{
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #D4AF37, #F59E0B)',
+                  borderRadius: '10px',
+                  boxShadow: '0 0 10px rgba(212, 175, 55, 0.5)'
+                }}
+              />
             </div>
 
             <div style={{
@@ -562,8 +690,21 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
               <span>{userState.setupProgress}%</span>
             </div>
 
-            <button
+            <motion.button
               onClick={guidanceInfo.action}
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.5)'
+              }}
+              whileTap={{ 
+                scale: 0.98,
+                transition: { duration: 0.1 }
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 25
+              }}
               style={{
                 width: '100%',
                 background: 'linear-gradient(135deg, #D4AF37, #F59E0B)',
@@ -578,8 +719,8 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
               }}
             >
               {guidanceInfo.buttonText}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
         ) : (
           // 设置完成后显示真实运势
@@ -587,19 +728,48 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
         )}
 
         {/* 快捷功能 */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '1rem'
-        }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.6, 
+            ease: [0.25, 0.46, 0.45, 0.94],
+            delay: 0.3
+          }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '1rem'
+          }}
+        >
           {[
             { icon: '💬', title: '与神对话', desc: '智慧指引', page: 'deity-chat', primary: true },
             { icon: '📿', title: '手串状态', desc: '功德进度', page: 'bracelet' },
             { icon: '📊', title: '命理分析', desc: '八字解读', page: 'bazi-analysis' },
             { icon: '⚙️', title: '个人设置', desc: '偏好配置', page: 'settings' }
-          ].map((action) => (
-            <div
+          ].map((action, index) => (
+            <motion.div
               key={action.title}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.5, 
+                ease: [0.25, 0.46, 0.45, 0.94],
+                delay: 0.4 + index * 0.1
+              }}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.05,
+                transition: { 
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 20
+                }
+              }}
+              whileTap={{ 
+                scale: 0.95,
+                transition: { duration: 0.1 }
+              }}
               onClick={() => onNavigate(action.page)}
               style={{
                 background: action.primary 
@@ -612,16 +782,25 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
                 border: action.primary 
                   ? '1px solid rgba(212, 175, 55, 0.4)'
                   : '1px solid rgba(255, 255, 255, 0.1)',
-                transition: 'all 0.3s ease'
+                boxShadow: action.primary 
+                  ? '0 4px 20px rgba(212, 175, 55, 0.2)'
+                  : '0 4px 20px rgba(0, 0, 0, 0.1)'
               }}
             >
-              <div style={{
-                fontSize: '2rem',
-                marginBottom: '0.75rem',
-                filter: action.primary ? 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))' : 'none'
-              }}>
+              <motion.div 
+                whileHover={{ 
+                  scale: 1.1,
+                  rotate: [0, -5, 5, 0]
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  fontSize: '2rem',
+                  marginBottom: '0.75rem',
+                  filter: action.primary ? 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))' : 'none'
+                }}
+              >
                 {action.icon}
-              </div>
+              </motion.div>
               
               <h4 style={{
                 fontSize: '1rem',
@@ -639,9 +818,9 @@ const HomePageSimple: React.FC<HomePageSimpleProps> = ({ onNavigate }) => {
               }}>
                 {action.desc}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

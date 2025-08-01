@@ -1,0 +1,549 @@
+/* ========================================
+   📱 页面级适老化优化样式
+   针对各个具体页面的视觉优化
+   ======================================== */
+
+/* ===== 首页适老化优化 ===== */
+.accessibility-mode .zen-page-container-redesign {
+  padding: var(--space-6) var(--space-4);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.accessibility-mode .zen-main-content-redesign {
+  background-color: var(--color-bg-primary);
+  min-height: calc(100vh - 120px);
+}
+
+/* 首页运势卡片 */
+.accessibility-mode .fortune-card {
+  background-color: var(--color-bg-primary) !important;
+  border: 2px solid var(--color-border-base) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--space-6) !important;
+  margin-bottom: var(--space-6) !important;
+  box-shadow: var(--shadow-base) !important;
+}
+
+.accessibility-mode .fortune-card h2,
+.accessibility-mode .fortune-card h3 {
+  color: var(--color-text-primary) !important;
+  font-size: var(--text-2xl) !important;
+  font-weight: 600 !important;
+  margin-bottom: var(--space-4) !important;
+  line-height: 1.4 !important;
+}
+
+.accessibility-mode .fortune-card p {
+  color: var(--color-text-primary) !important;
+  font-size: var(--text-lg) !important;
+  line-height: 1.8 !important;
+  margin-bottom: var(--space-4) !important;
+}
+
+/* 运势分数显示 */
+.accessibility-mode .fortune-score {
+  font-size: var(--text-3xl) !important;
+  font-weight: 700 !important;
+  color: var(--color-text-accent) !important;
+}
+
+/* ===== 用户中心适老化优化 ===== */
+.accessibility-mode .user-center-container {
+  background-color: var(--color-bg-primary) !important;
+  padding: var(--space-6) !important;
+}
+
+.accessibility-mode .user-tabs .ant-tabs-tab {
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+  padding: var(--space-4) var(--space-6) !important;
+  min-height: var(--touch-target-comfortable) !important;
+}
+
+.accessibility-mode .user-tabs .ant-tabs-tab-btn {
+  color: var(--color-text-secondary) !important;
+  font-size: var(--text-lg) !important;
+}
+
+.accessibility-mode .user-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--color-btn-primary-bg) !important;
+  font-weight: 700 !important;
+}
+
+/* 表单字段优化 */
+.accessibility-mode .ant-form-item-label > label {
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  line-height: 1.5 !important;
+}
+
+.accessibility-mode .ant-input,
+.accessibility-mode .ant-select-selector {
+  font-size: var(--text-lg) !important;
+  min-height: var(--touch-target-comfortable) !important;
+  padding: var(--space-3) var(--space-4) !important;
+  border: 2px solid var(--color-border-base) !important;
+  border-radius: var(--radius-base) !important;
+  background-color: var(--color-bg-primary) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.accessibility-mode .ant-input:focus,
+.accessibility-mode .ant-select-selector:focus {
+  border-color: var(--color-border-accent) !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+/* ===== 聊天页面适老化优化 ===== */
+.accessibility-mode .chat-container {
+  background-color: var(--color-bg-primary) !important;
+  padding: var(--space-4) !important;
+}
+
+.accessibility-mode .chat-message {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--space-4) !important;
+  margin-bottom: var(--space-4) !important;
+  font-size: var(--text-lg) !important;
+  line-height: 1.8 !important;
+  color: var(--color-text-primary) !important;
+}
+
+.accessibility-mode .chat-input {
+  font-size: var(--text-lg) !important;
+  min-height: var(--touch-target-comfortable) !important;
+  padding: var(--space-4) !important;
+  border: 2px solid var(--color-border-base) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+.accessibility-mode .chat-send-button {
+  min-height: var(--touch-target-comfortable) !important;
+  min-width: var(--touch-target-comfortable) !important;
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+}
+
+/* ===== 开运页面适老化优化 ===== */
+.accessibility-mode .fortune-page-container {
+  background-color: var(--color-bg-primary) !important;
+  padding: var(--space-6) !important;
+}
+
+.accessibility-mode .fortune-tab-content {
+  padding: var(--space-6) !important;
+}
+
+.accessibility-mode .bracelet-item,
+.accessibility-mode .blessing-item,
+.accessibility-mode .zodiac-item {
+  background-color: var(--color-bg-secondary) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--space-5) !important;
+  margin-bottom: var(--space-4) !important;
+  transition: box-shadow var(--duration-base) var(--ease-base) !important;
+}
+
+.accessibility-mode .bracelet-item:hover,
+.accessibility-mode .blessing-item:hover,
+.accessibility-mode .zodiac-item:hover {
+  box-shadow: var(--shadow-base) !important;
+  border-color: var(--color-border-accent) !important;
+}
+
+.accessibility-mode .item-title {
+  font-size: var(--text-xl) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: var(--space-2) !important;
+}
+
+.accessibility-mode .item-description {
+  font-size: var(--text-lg) !important;
+  color: var(--color-text-secondary) !important;
+  line-height: 1.7 !important;
+  margin-bottom: var(--space-3) !important;
+}
+
+.accessibility-mode .item-price {
+  font-size: var(--text-xl) !important;
+  font-weight: 700 !important;
+  color: var(--color-gold-text) !important;
+}
+
+/* ===== 手串页面适老化优化 ===== */
+.accessibility-mode .bracelet-page-container {
+  background-color: var(--color-bg-primary) !important;
+  padding: var(--space-6) !important;
+}
+
+.accessibility-mode .bracelet-info-card {
+  background-color: var(--color-bg-secondary) !important;
+  border: 2px solid var(--color-border-light) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: var(--space-6) !important;
+  margin-bottom: var(--space-6) !important;
+}
+
+.accessibility-mode .bracelet-name {
+  font-size: var(--text-3xl) !important;
+  font-weight: 700 !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: var(--space-4) !important;
+}
+
+.accessibility-mode .bracelet-description {
+  font-size: var(--text-lg) !important;
+  color: var(--color-text-primary) !important;
+  line-height: 1.8 !important;
+  margin-bottom: var(--space-4) !important;
+}
+
+.accessibility-mode .bracelet-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.accessibility-mode .stat-item {
+  background-color: var(--color-bg-primary) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--space-4) !important;
+  text-align: center;
+}
+
+.accessibility-mode .stat-label {
+  font-size: var(--text-base) !important;
+  color: var(--color-text-secondary) !important;
+  margin-bottom: var(--space-2) !important;
+}
+
+.accessibility-mode .stat-value {
+  font-size: var(--text-2xl) !important;
+  font-weight: 700 !important;
+  color: var(--color-text-accent) !important;
+}
+
+/* ===== 成长页面适老化优化 ===== */
+.accessibility-mode .growth-page-container {
+  background-color: var(--color-bg-primary) !important;
+  padding: var(--space-6) !important;
+}
+
+.accessibility-mode .growth-level-card {
+  background-color: var(--color-bg-secondary) !important;
+  border: 2px solid var(--color-border-light) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: var(--space-6) !important;
+  margin-bottom: var(--space-6) !important;
+}
+
+.accessibility-mode .level-title {
+  font-size: var(--text-2xl) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: var(--space-3) !important;
+}
+
+.accessibility-mode .progress-bar {
+  height: 12px !important;
+  background-color: var(--color-bg-tertiary) !important;
+  border-radius: var(--radius-full) !important;
+  overflow: hidden;
+  margin: var(--space-3) 0 !important;
+}
+
+.accessibility-mode .progress-fill {
+  height: 100%;
+  background-color: var(--color-btn-primary-bg) !important;
+  border-radius: var(--radius-full) !important;
+  transition: width var(--duration-slow) var(--ease-base);
+}
+
+/* ===== 导航栏适老化优化 ===== */
+.accessibility-mode .professional-nav {
+  background-color: var(--color-bg-primary) !important;
+  border-top: 2px solid var(--color-border-light) !important;
+  padding: var(--space-2) 0 !important;
+}
+
+.accessibility-mode .professional-nav__item {
+  min-height: var(--touch-target-min) !important;
+  padding: var(--space-3) var(--space-2) !important;
+  border-radius: var(--radius-base) !important;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  transition: all var(--duration-base) var(--ease-base) !important;
+}
+
+.accessibility-mode .professional-nav__item:hover {
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-border-light) !important;
+}
+
+.accessibility-mode .professional-nav__item--active {
+  background-color: var(--color-bg-accent) !important;
+  border-color: var(--color-border-accent) !important;
+}
+
+.accessibility-mode .professional-nav__label {
+  font-size: var(--text-sm) !important;
+  font-weight: 500 !important;
+  color: var(--color-text-secondary) !important;
+  margin-top: var(--space-1) !important;
+}
+
+.accessibility-mode .professional-nav__item--active .professional-nav__label {
+  color: var(--color-btn-primary-bg) !important;
+  font-weight: 600 !important;
+}
+
+/* ===== 头部导航适老化优化 ===== */
+.accessibility-mode .zen-header-redesign {
+  background-color: var(--color-bg-primary) !important;
+  border-bottom: 2px solid var(--color-border-light) !important;
+  padding: var(--space-4) var(--space-6) !important;
+}
+
+.accessibility-mode .zen-brand-text {
+  font-size: var(--text-xl) !important;
+  font-weight: 700 !important;
+  color: var(--color-text-primary) !important;
+}
+
+.accessibility-mode .zen-tagline {
+  font-size: var(--text-base) !important;
+  color: var(--color-text-secondary) !important;
+}
+
+/* ===== 模态框适老化优化 ===== */
+.accessibility-mode .ant-modal-content {
+  background-color: var(--color-bg-primary) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 2px solid var(--color-border-base) !important;
+}
+
+.accessibility-mode .ant-modal-header {
+  background-color: var(--color-bg-secondary) !important;
+  border-bottom: 1px solid var(--color-border-light) !important;
+  padding: var(--space-5) var(--space-6) !important;
+}
+
+.accessibility-mode .ant-modal-title {
+  font-size: var(--text-xl) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+}
+
+.accessibility-mode .ant-modal-body {
+  padding: var(--space-6) !important;
+  font-size: var(--text-lg) !important;
+  line-height: 1.7 !important;
+  color: var(--color-text-primary) !important;
+}
+
+.accessibility-mode .ant-modal-footer {
+  background-color: var(--color-bg-secondary) !important;
+  border-top: 1px solid var(--color-border-light) !important;
+  padding: var(--space-4) var(--space-6) !important;
+}
+
+.accessibility-mode .ant-btn {
+  min-height: var(--touch-target-comfortable) !important;
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+  padding: var(--space-3) var(--space-6) !important;
+  border-radius: var(--radius-base) !important;
+}
+
+.accessibility-mode .ant-btn-primary {
+  background-color: var(--color-btn-primary-bg) !important;
+  border-color: var(--color-btn-primary-bg) !important;
+  color: var(--color-btn-primary-text) !important;
+}
+
+.accessibility-mode .ant-btn-default {
+  background-color: var(--color-btn-secondary-bg) !important;
+  border-color: var(--color-border-base) !important;
+  color: var(--color-btn-secondary-text) !important;
+}
+
+/* ===== 表格适老化优化 ===== */
+.accessibility-mode .ant-table {
+  background-color: var(--color-bg-primary) !important;
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+.accessibility-mode .ant-table-thead > tr > th {
+  background-color: var(--color-bg-secondary) !important;
+  border-bottom: 2px solid var(--color-border-base) !important;
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  padding: var(--space-4) !important;
+}
+
+.accessibility-mode .ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--color-border-light) !important;
+  font-size: var(--text-base) !important;
+  color: var(--color-text-primary) !important;
+  padding: var(--space-4) !important;
+  line-height: 1.6 !important;
+}
+
+.accessibility-mode .ant-table-tbody > tr:hover > td {
+  background-color: var(--color-bg-secondary) !important;
+}
+
+/* ===== 分页器适老化优化 ===== */
+.accessibility-mode .ant-pagination {
+  margin-top: var(--space-6) !important;
+}
+
+.accessibility-mode .ant-pagination-item {
+  min-width: var(--touch-target-min) !important;
+  min-height: var(--touch-target-min) !important;
+  border-radius: var(--radius-base) !important;
+  border: 2px solid var(--color-border-base) !important;
+  font-size: var(--text-lg) !important;
+  font-weight: 500 !important;
+}
+
+.accessibility-mode .ant-pagination-item-active {
+  background-color: var(--color-btn-primary-bg) !important;
+  border-color: var(--color-btn-primary-bg) !important;
+}
+
+.accessibility-mode .ant-pagination-item-active a {
+  color: var(--color-btn-primary-text) !important;
+}
+
+.accessibility-mode .ant-pagination-prev,
+.accessibility-mode .ant-pagination-next {
+  min-width: var(--touch-target-min) !important;
+  min-height: var(--touch-target-min) !important;
+  border-radius: var(--radius-base) !important;
+  border: 2px solid var(--color-border-base) !important;
+}
+
+/* ===== 加载状态适老化优化 ===== */
+.accessibility-mode .ant-spin-dot {
+  font-size: var(--text-2xl) !important;
+}
+
+.accessibility-mode .ant-spin-text {
+  font-size: var(--text-lg) !important;
+  color: var(--color-text-primary) !important;
+  margin-top: var(--space-3) !important;
+}
+
+/* ===== 通知适老化优化 ===== */
+.accessibility-mode .ant-notification {
+  border-radius: var(--radius-lg) !important;
+  border: 2px solid var(--color-border-base) !important;
+  background-color: var(--color-bg-primary) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.accessibility-mode .ant-notification-notice-message {
+  font-size: var(--text-lg) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: var(--space-2) !important;
+}
+
+.accessibility-mode .ant-notification-notice-description {
+  font-size: var(--text-base) !important;
+  color: var(--color-text-secondary) !important;
+  line-height: 1.6 !important;
+}
+
+/* ===== 响应式适老化优化 ===== */
+@media (max-width: 768px) {
+  .accessibility-mode .zen-page-container-redesign {
+    padding: var(--space-4) var(--space-3);
+  }
+  
+  .accessibility-mode .card {
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  
+  .accessibility-mode .fortune-card {
+    padding: var(--space-4) !important;
+    margin-bottom: var(--space-4) !important;
+  }
+  
+  .accessibility-mode .professional-nav__item {
+    min-height: 56px !important;
+    padding: var(--space-4) var(--space-2) !important;
+  }
+  
+  .accessibility-mode .professional-nav__label {
+    font-size: var(--text-base) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .accessibility-mode .zen-page-container-redesign {
+    padding: var(--space-3) var(--space-2);
+  }
+  
+  .accessibility-mode .fortune-card h2,
+  .accessibility-mode .fortune-card h3 {
+    font-size: var(--text-xl) !important;
+  }
+  
+  .accessibility-mode .item-title {
+    font-size: var(--text-lg) !important;
+  }
+  
+  .accessibility-mode .bracelet-name {
+    font-size: var(--text-2xl) !important;
+  }
+}
+
+/* ===== 高对比度模式特殊优化 ===== */
+@media (prefers-contrast: high) {
+  .accessibility-mode {
+    --color-text-primary: #000000;
+    --color-bg-primary: #ffffff;
+    --color-border-base: #000000;
+    --color-btn-primary-bg: #000000;
+    --color-btn-primary-text: #ffffff;
+  }
+  
+  .accessibility-mode .fortune-card,
+  .accessibility-mode .bracelet-info-card,
+  .accessibility-mode .growth-level-card {
+    border-width: 3px !important;
+  }
+  
+  .accessibility-mode .ant-input,
+  .accessibility-mode .ant-select-selector {
+    border-width: 3px !important;
+  }
+}
+
+/* ===== 打印模式优化 ===== */
+@media print {
+  .accessibility-mode * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  
+  .accessibility-mode .professional-nav,
+  .accessibility-mode .zen-header-redesign,
+  .accessibility-mode button:not(.btn-print) {
+    display: none !important;
+  }
+} 

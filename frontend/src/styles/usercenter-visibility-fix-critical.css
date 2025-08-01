@@ -1,0 +1,312 @@
+/* 🚨 用户中心页面关键可见性修复 - 最高优先级 */
+
+/* === 全局强制修复 === */
+* {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* === 用户中心页面容器 === */
+body:not(.accessibility-mode) *[class*="text-gray"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+body:not(.accessibility-mode) *[class*="bg-gray"] {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* === 强制修复所有灰色文字类 === */
+body:not(.accessibility-mode) .text-gray-900,
+body:not(.accessibility-mode) .text-gray-800,
+body:not(.accessibility-mode) .text-gray-700,
+body:not(.accessibility-mode) .text-gray-600,
+body:not(.accessibility-mode) .text-gray-500,
+body:not(.accessibility-mode) .text-gray-400,
+body:not(.accessibility-mode) .text-gray-300 {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+  font-weight: 500 !important;
+}
+
+/* === 强制修复所有灰色背景类 === */
+body:not(.accessibility-mode) .bg-gray-50,
+body:not(.accessibility-mode) .bg-gray-100,
+body:not(.accessibility-mode) .bg-gray-200,
+body:not(.accessibility-mode) .bg-gray-300 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(15px) saturate(180%) !important;
+}
+
+/* === 悬停状态强制修复 === */
+body:not(.accessibility-mode) .hover\:bg-gray-50:hover,
+body:not(.accessibility-mode) .hover\:bg-gray-100:hover,
+body:not(.accessibility-mode) .hover\:bg-gray-200:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+body:not(.accessibility-mode) .hover\:text-gray-600:hover,
+body:not(.accessibility-mode) .hover\:text-gray-700:hover,
+body:not(.accessibility-mode) .hover\:text-gray-800:hover {
+  color: #ffffff !important;
+}
+
+/* === 用户中心特定元素强制修复 === */
+
+/* 卡片容器 */
+body:not(.accessibility-mode) .zen-card,
+body:not(.accessibility-mode) [class*="card"] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 标题强制修复 */
+body:not(.accessibility-mode) h1,
+body:not(.accessibility-mode) h2,
+body:not(.accessibility-mode) h3,
+body:not(.accessibility-mode) h4,
+body:not(.accessibility-mode) h5,
+body:not(.accessibility-mode) h6 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7) !important;
+  font-weight: 600 !important;
+}
+
+/* 按钮内容强制修复 */
+body:not(.accessibility-mode) button,
+body:not(.accessibility-mode) .btn {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+body:not(.accessibility-mode) button[class*="bg-gray"],
+body:not(.accessibility-mode) .btn[class*="bg-gray"] {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* 按钮内部文字和图标 */
+body:not(.accessibility-mode) button *,
+body:not(.accessibility-mode) .btn * {
+  color: inherit !important;
+}
+
+/* 输入框强制修复 */
+body:not(.accessibility-mode) input,
+body:not(.accessibility-mode) textarea,
+body:not(.accessibility-mode) select {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+body:not(.accessibility-mode) input::placeholder,
+body:not(.accessibility-mode) textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 标签导航强制修复 */
+body:not(.accessibility-mode) .grid button {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+body:not(.accessibility-mode) .grid button.bg-blue-500,
+body:not(.accessibility-mode) .grid button[class*="bg-blue"] {
+  background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+  color: #000000 !important;
+  text-shadow: none !important;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4) !important;
+}
+
+body:not(.accessibility-mode) .grid button:not([class*="bg-blue"]) {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 列表项和设置项强制修复 */
+body:not(.accessibility-mode) [class*="flex"][class*="items-center"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body:not(.accessibility-mode) [class*="flex"][class*="justify-between"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 箭头和图标强化可见性 */
+body:not(.accessibility-mode) span:contains("→"),
+body:not(.accessibility-mode) *[class*="arrow"] {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 1.3em !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* 特定文字大小类修复 */
+body:not(.accessibility-mode) .text-xs {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.875rem !important;
+}
+
+body:not(.accessibility-mode) .text-sm {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 1rem !important;
+}
+
+body:not(.accessibility-mode) .text-base {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 1.125rem !important;
+}
+
+body:not(.accessibility-mode) .text-lg {
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+}
+
+/* 边框和分割线修复 */
+body:not(.accessibility-mode) .border-gray-200,
+body:not(.accessibility-mode) .border-gray-300,
+body:not(.accessibility-mode) .border-t,
+body:not(.accessibility-mode) .border-b {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 阴影修复 */
+body:not(.accessibility-mode) .shadow-sm,
+body:not(.accessibility-mode) .shadow,
+body:not(.accessibility-mode) .shadow-md {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 进度条和状态指示器 */
+body:not(.accessibility-mode) .bg-gradient-to-r,
+body:not(.accessibility-mode) .bg-gradient-to-br {
+  background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+}
+
+/* 链接修复 */
+body:not(.accessibility-mode) a {
+  color: #60a5fa !important;
+  text-decoration: none !important;
+}
+
+body:not(.accessibility-mode) a:hover {
+  color: #93c5fd !important;
+  text-shadow: 0 1px 3px rgba(96, 165, 250, 0.5) !important;
+}
+
+/* === 适老化模式超强对比度 === */
+.accessibility-mode .text-gray-600,
+.accessibility-mode .text-gray-400,
+.accessibility-mode .text-gray-500,
+.accessibility-mode .text-gray-700,
+.accessibility-mode .text-gray-800 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  font-size: 1.1em !important;
+}
+
+.accessibility-mode .bg-gray-50,
+.accessibility-mode .bg-gray-100,
+.accessibility-mode .bg-gray-200 {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  border: 3px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+/* === 强制文字可见性 - 最后的手段 === */
+body:not(.accessibility-mode) * {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 白色卡片内容例外 */
+body:not(.accessibility-mode) .bg-white * {
+  color: #1f2937 !important;
+}
+
+/* 彩色按钮例外 */
+body:not(.accessibility-mode) .text-red-600 {
+  color: #ef4444 !important;
+}
+
+body:not(.accessibility-mode) .text-green-600 {
+  color: #22c55e !important;
+}
+
+body:not(.accessibility-mode) .text-blue-600 {
+  color: #3b82f6 !important;
+}
+
+body:not(.accessibility-mode) .text-yellow-600 {
+  color: #eab308 !important;
+}
+
+/* === 用户中心专属修复 === */
+
+/* 个人资料卡片 */
+body:not(.accessibility-mode) div[class*="zen-card"] h3 {
+  color: #ffffff !important;
+  font-size: 1.2em !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+}
+
+/* 统计数据 */
+body:not(.accessibility-mode) div[class*="text-2xl"],
+body:not(.accessibility-mode) div[class*="text-xl"] {
+  color: #FFD700 !important;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* 设置项列表 */
+body:not(.accessibility-mode) div[class*="space-y"] > * {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* 功德和愿望卡片特殊处理 */
+body:not(.accessibility-mode) div[class*="bg-gradient"] {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.1)) !important;
+  border: 1px solid rgba(255, 215, 0, 0.4) !important;
+}
+
+/* 确保所有图标可见 */
+body:not(.accessibility-mode) [class*="text-"] svg,
+body:not(.accessibility-mode) [class*="text-"] i {
+  color: inherit !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) !important;
+}
+
+/* === 最终强制修复 - 核心规则 === */
+body:not(.accessibility-mode) span,
+body:not(.accessibility-mode) p,
+body:not(.accessibility-mode) div,
+body:not(.accessibility-mode) label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 只有在明确需要深色文字的地方才使用深色 */
+body:not(.accessibility-mode) .bg-white span,
+body:not(.accessibility-mode) .bg-white p,
+body:not(.accessibility-mode) .bg-white div,
+body:not(.accessibility-mode) .bg-white label {
+  color: #1f2937 !important;
+}
+
+/* 导航激活状态文字确保黑色 */
+body:not(.accessibility-mode) .bg-blue-500 *,
+body:not(.accessibility-mode) [style*="background"] *[style*="#FFD700"] {
+  color: #000000 !important;
+} 

@@ -19,12 +19,14 @@ from services.daily_fortune_service import daily_fortune_service, DailyFortuneRe
 from services.taisui_database import taisui_database
 from services.benming_buddha_database import benming_buddha_database
 from services.fortune_cache_service import FortuneCacheService
+from services.outfit_ai_service import OutfitAIService, OutfitRecommendationRequest
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 CORS(app)
 
 # 创建全局服务实例
 fortune_cache_service = FortuneCacheService()  # 全局缓存服务实例
+outfit_ai_service = OutfitAIService()  # AI穿衣推荐服务实例
 
 
 @app.route('/api/health', methods=['GET'])
@@ -697,97 +699,6 @@ def calculate_fortune():
         'fortune_result': fortune_result,
     })
 
-
-@app.route('/api/calculate-master-blind-fortune', methods=['POST'])
-def calculate_master_blind_fortune():
-    """世界级盲派今日运势计算API"""
-    try:
-        data = request.get_json()
-        
-        # 验证必要参数
-        required_fields = ['birthdate', 'name', 'gender']
-        for field in required_fields:
-            if field not in data:
-                return jsonify({'error': f'缺少必要参数: {field}'}), 400
-        
-        # 导入世界级盲派运势服务
-        from services.master_blind_school_service import (
-            MasterBlindSchoolService,
-            MasterBlindFortuneRequest
-        )
-        
-        # 创建世界级盲派运势服务实例
-        master_service = MasterBlindSchoolService()
-        
-        # 检查缓存
-        cache_key = f"master_blind:{data['name']}:{data['birthdate']}:{data.get('target_date', str(date.today()))}"
-        cached_fortune = fortune_cache_service.get_cached_fortune(cache_key)
-        
-        if cached_fortune:
-            print(f"从缓存获取世界级盲派运势: {data['name']} - {data.get('target_date', str(date.today()))}")
-            return jsonify({
-                'success': True,
-                'data': cached_fortune,
-                'cached': True,
-                'method': 'master_blind_school'
-            })
-        
-        # 缓存未命中，计算新运势
-        print(f"计算新世界级盲派运势: {data['name']} - {data.get('target_date', str(date.today()))}")
-        
-        # 创建请求对象
-        fortune_request = MasterBlindFortuneRequest(
-            birthdate=data['birthdate'],
-            name=data['name'],
-            gender=data['gender'],
-            target_date=data.get('target_date')
-        )
-        
-        # 计算世界级盲派今日运势
-        result = master_service.calculate_master_blind_fortune(fortune_request)
-        
-        # 准备返回数据
-        fortune_data = {
-            'date': result.date,
-            'overall_score': result.overall_score,
-            'overall_level': result.overall_level,
-            'overall_description': result.overall_description,
-            
-            # 盲派核心分析
-            'blind_pattern_analysis': result.blind_pattern_analysis,
-            'blind_deity_analysis': result.blind_deity_analysis,
-            'blind_element_analysis': result.blind_element_analysis,
-            'blind_timing_analysis': result.blind_timing_analysis,
-            
-            # 各维度运势
-            'career_fortune': result.career_fortune,
-            'wealth_fortune': result.wealth_fortune,
-            'health_fortune': result.health_fortune,
-            'relationship_fortune': result.relationship_fortune,
-            'study_fortune': result.study_fortune,
-            
-            # 专业建议
-            'master_advice': result.master_advice,
-            'timing_advice': result.timing_advice,
-            'remedies': result.remedies
-        }
-        
-        # 缓存结果
-        fortune_cache_service.cache_fortune(cache_key, fortune_data)
-        
-        return jsonify({
-            'success': True,
-            'data': fortune_data,
-            'cached': False,
-            'method': 'master_blind_school'
-        })
-        
-    except Exception as e:
-        print(f"计算世界级盲派今日运势错误: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({'error': '计算失败，请稍后重试'}), 500
-
 @app.route('/ask', methods=['POST'])
 def ask_fortune():
     # client = OpenAI(api_key="") # This line is removed as per the new_code, as the service is now imported directly.
@@ -833,6 +744,149 @@ def payment():
     response = requests.post('https://api.mch.weixin.qq.com/pay/unifiedorder', data=data)
     
     return jsonify(response)
+
+
+# ===============================
+# AI智能穿衣推荐API
+# ===============================
+
+@app.route('/api/ai/outfit-recommendations', methods=['POST'])
+def ai_outfit_recommendations():
+    """AI智能穿衣推荐API"""
+    try:
+        data = request.get_json()
+        
+        # 验证请求数据
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'Invalid request data'
+            }), 400
+        
+        # 验证必需字段
+        user_profile = data.get('user_profile', {})
+        required_fields = ['birthdate', 'name', 'gender']
+        for field in required_fields:
+            if field not in user_profile:
+                return jsonify({
+                    'success': False,
+                    'error': f'缺少必需字段: user_profile.{field}'
+                }), 400
+        
+        # 创建请求对象
+        try:
+            request_obj = OutfitRecommendationRequest.from_dict(data)
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': 'Invalid request format',
+                'details': str(e)
+            }), 400
+        
+        # 调用AI服务
+        response = outfit_ai_service.generate_outfit_recommendations(request_obj)
+        
+        return jsonify({
+            'success': True,
+            'data': response.to_dict(),
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        print(f"AI穿衣推荐错误: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error',
+            'message': '穿衣推荐计算失败，请稍后重试'
+        }), 500
+
+
+@app.route('/api/ai/outfit-elements', methods=['GET'])
+def ai_outfit_elements():
+    """获取穿衣元素库API"""
+    try:
+        # 返回可用的穿衣元素
+        elements_data = {
+            'colors': {
+                'wood': ['绿色', '青色', '蓝色'],
+                'fire': ['红色', '橙色', '紫色', '粉色'],
+                'earth': ['黄色', '棕色', '土色', '咖啡色'],
+                'metal': ['白色', '银色', '金色', '灰色'],
+                'water': ['黑色', '深蓝色', '蓝色']
+            },
+            'materials': {
+                'wood': ['棉质', '麻质', '天然纤维', '竹纤维'],
+                'fire': ['丝绸', '亮面材质', '光泽面料'],
+                'earth': ['羊毛', '厚实材质', '粗纺面料'],
+                'metal': ['金属装饰', '光泽材质', '硬挺面料'],
+                'water': ['流动面料', '柔软材质', '垂坠感面料']
+            },
+            'styles': [
+                '商务精英', '权威专业', '温柔优雅', '自然活力',
+                '时尚潮流', '古典雅致', '休闲舒适', '运动健康'
+            ],
+            'occasions': [
+                'business', 'casual', 'formal', 'social', 
+                'sport', 'travel', 'date', 'interview'
+            ]
+        }
+        
+        return jsonify({
+            'success': True,
+            'data': elements_data
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/ai/fortune-analysis/<user_id>', methods=['GET'])
+def ai_fortune_analysis(user_id):
+    """获取用户运势分析API"""
+    try:
+        target_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+        
+        # 这里应该从数据库获取用户信息
+        # 示例返回模拟数据
+        analysis_data = {
+            'user_id': user_id,
+            'analysis_date': target_date,
+            'bazi_summary': {
+                'day_master': '甲木',
+                'main_element': 'wood',
+                'favorable_elements': ['water', 'wood'],
+                'avoid_elements': ['metal']
+            },
+            'daily_fortune': {
+                'overall_score': 85,
+                'wealth_fortune': 88,
+                'career_fortune': 85,
+                'love_fortune': 78,
+                'health_fortune': 80
+            },
+            'element_strength': {
+                'wood': 0.8,
+                'fire': 0.6,
+                'earth': 0.4,
+                'metal': 0.3,
+                'water': 0.9
+            }
+        }
+        
+        return jsonify({
+            'success': True,
+            'data': analysis_data
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

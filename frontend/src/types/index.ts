@@ -1,5 +1,5 @@
 // 应用页面类型
-export type AppPage = 'home' | 'chat' | 'free-chat' | 'deepseek-demo' | 'bracelet' | 'growth' | 'community' | 'settings' | 'test' | 'bazi-demo' | 'dayun-demo' | 'daily-fortune-demo'
+export type AppPage = 'home' | 'today' | 'today-fortune' | 'chat' | 'free-chat' | 'deepseek-demo' | 'bracelet' | 'growth' | 'community' | 'settings' | 'settings-optimized' | 'settings-enhanced' | 'test' | 'bazi-demo' | 'dayun-demo' | 'daily-fortune-demo' | 'guiren'
 
 // 导出社区相关类型
 export * from './community'

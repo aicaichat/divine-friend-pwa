@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户状态调试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .debug-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.true { background: #4CAF50; }
+        .status.false { background: #f44336; }
+        .data-display {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .clear-btn {
+            background: #dc3545;
+        }
+        .clear-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 用户状态调试工具</h1>
+    
+    <div class="debug-section">
+        <h2>📊 当前状态</h2>
+        <div id="current-status"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>📱 localStorage 数据</h2>
+        <div id="localstorage-data"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>🔧 操作</h2>
+        <button onclick="checkState()">🔄 刷新状态</button>
+        <button onclick="clearUserInfo()" class="clear-btn">🗑️ 清除用户信息</button>
+        <button onclick="clearBracelet()" class="clear-btn">🗑️ 清除手串状态</button>
+        <button onclick="setTestData()">🧪 设置测试数据</button>
+    </div>
+    
+    <div class="debug-section">
+        <h2>🎯 预期行为</h2>
+        <p><strong>如果 hasBaziSetup = false:</strong> 按钮应显示"🔮 设置八字信息"</p>
+        <p><strong>如果 hasBaziSetup = true:</strong> 按钮应显示"📿 激活手串"</p>
+        <p><strong>如果 hasBaziSetup = true 且 hasBraceletActivated = true:</strong> 引导卡片应隐藏</p>
+    </div>
+
+    <script>
+        function checkState() {
+            const userInfo = localStorage.getItem('userInfo');
+            const braceletActivated = localStorage.getItem('braceletActivated');
+            
+            let parsedUserInfo = null;
+            let hasBaziSetup = false;
+            let hasBraceletActivated = false;
+            
+            if (userInfo) {
+                try {
+                    parsedUserInfo = JSON.parse(userInfo);
+                    hasBaziSetup = !!(parsedUserInfo.birthdate && parsedUserInfo.name && parsedUserInfo.gender);
+                } catch (e) {
+                    console.error('解析用户信息失败:', e);
+                }
+            }
+            
+            hasBraceletActivated = braceletActivated === 'true';
+            
+            // 显示当前状态
+            const statusHtml = `
+                <div class="status ${hasBaziSetup ? 'true' : 'false'}">
+                    <strong>hasBaziSetup:</strong> ${hasBaziSetup} 
+                    ${hasBaziSetup ? '✅' : '❌'}
+                </div>
+                <div class="status ${hasBraceletActivated ? 'true' : 'false'}">
+                    <strong>hasBraceletActivated:</strong> ${hasBraceletActivated}
+                    ${hasBraceletActivated ? '✅' : '❌'}
+                </div>
+                <div class="status ${hasBaziSetup && hasBraceletActivated ? 'true' : 'false'}">
+                    <strong>完全设置:</strong> ${hasBaziSetup && hasBraceletActivated}
+                    ${hasBaziSetup && hasBraceletActivated ? '✅' : '❌'}
+                </div>
+            `;
+            
+            document.getElementById('current-status').innerHTML = statusHtml;
+            
+            // 显示 localStorage 数据
+            const dataHtml = `
+                <strong>userInfo:</strong>
+                ${userInfo ? JSON.stringify(parsedUserInfo, null, 2) : 'null'}
+                
+                <strong>braceletActivated:</strong>
+                ${braceletActivated || 'null'}
+            `;
+            
+            document.getElementById('localstorage-data').innerHTML = `<div class="data-display">${dataHtml}</div>`;
+        }
+        
+        function clearUserInfo() {
+            localStorage.removeItem('userInfo');
+            alert('用户信息已清除');
+            checkState();
+        }
+        
+        function clearBracelet() {
+            localStorage.removeItem('braceletActivated');
+            alert('手串状态已清除');
+            checkState();
+        }
+        
+        function setTestData() {
+            const testUserInfo = {
+                name: '测试用户',
+                gender: 'male',
+                birthdate: '1990-01-01'
+            };
+            localStorage.setItem('userInfo', JSON.stringify(testUserInfo));
+            localStorage.setItem('braceletActivated', 'false');
+            alert('测试数据已设置');
+            checkState();
+        }
+        
+        // 页面加载时检查状态
+        checkState();
+    </script>
+</body>
+</html> 

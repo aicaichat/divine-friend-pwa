@@ -161,7 +161,8 @@ const HomePageInteractive: React.FC<HomePageInteractiveProps> = ({ onNavigate })
     if (userInfo.name) progress += 20;
     if (userInfo.birthdate) progress += 30;
     if (userInfo.gender) progress += 20;
-    if (braceletActivated) progress += 30;
+    // 移除手串激活的进度计算，只计算八字设置进度
+    // if (braceletActivated) progress += 30;
     return progress;
   };
 
@@ -198,7 +199,7 @@ const HomePageInteractive: React.FC<HomePageInteractiveProps> = ({ onNavigate })
 
   // 🎯 引导用户设置八字
   const handleBaziSetup = () => {
-    onNavigate('settings');
+    onNavigate('settings-optimized');
   };
 
   // 📿 引导用户激活手串

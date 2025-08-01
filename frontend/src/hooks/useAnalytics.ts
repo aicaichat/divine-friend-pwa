@@ -22,10 +22,26 @@ class AnalyticsService {
   private events: AnalyticsEvent[] = [];
   private pageViews: PageView[] = [];
   private isInitialized = false;
+  private isDevelopment = false;
 
   constructor() {
     this.sessionId = this.generateSessionId();
+    this.isDevelopment = this.detectDevelopmentEnvironment();
     this.init();
+  }
+
+  private detectDevelopmentEnvironment(): boolean {
+    // 检测开发环境
+    return (
+      // Vite 开发环境
+      (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV) ||
+      // 本地主机
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.includes('192.168.') ||
+      // 端口号通常表示开发环境  
+      window.location.port !== ''
+    );
   }
 
   private generateSessionId(): string {
@@ -41,7 +57,8 @@ class AnalyticsService {
       language: navigator.language,
       platform: navigator.platform,
       screenSize: `${screen.width}x${screen.height}`,
-      viewportSize: `${window.innerWidth}x${window.innerHeight}`
+      viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+      environment: this.isDevelopment ? 'development' : 'production'
     });
 
     // 监听页面可见性变化
@@ -107,9 +124,13 @@ class AnalyticsService {
   }
 
   private sendEvent(event: AnalyticsEvent) {
-    // 这里可以发送到你的分析服务
-    // 例如：Google Analytics, 自建API等
     console.log('🚀 Sending Analytics Event:', event);
+    
+    // 开发环境只打印日志，不发送到服务器
+    if (this.isDevelopment) {
+      console.log('🔧 Development Mode: Analytics event logged locally only');
+      return;
+    }
     
     // 生产环境发送到服务器
     this.sendToServer(event);
@@ -124,7 +145,10 @@ class AnalyticsService {
       },
       body: JSON.stringify(event),
     }).catch(error => {
-      console.error('Failed to send analytics:', error);
+      // 静默处理错误，避免控制台噪音
+      if (!this.isDevelopment) {
+        console.warn('Analytics service unavailable:', error.message);
+      }
     });
   }
 
@@ -137,8 +161,13 @@ class AnalyticsService {
       timestamp: Date.now()
     };
 
-    // 开发环境只打印日志，生产环境发送到服务器
     console.log('📊 Session Analytics Data:', data);
+    
+    // 开发环境只打印日志，不发送到服务器
+    if (this.isDevelopment) {
+      console.log('🔧 Development Mode: Session data logged locally only');
+      return;
+    }
     
     // 生产环境发送到服务器
     fetch('/api/analytics/batch', {
@@ -148,7 +177,8 @@ class AnalyticsService {
       },
       body: JSON.stringify(data),
     }).catch(error => {
-      console.error('Failed to send batch analytics:', error);
+      // 静默处理错误，避免控制台噪音
+      console.warn('Analytics batch service unavailable:', error.message);
     });
   }
 
@@ -156,7 +186,8 @@ class AnalyticsService {
     return {
       sessionId: this.sessionId,
       events: this.events,
-      pageViews: this.pageViews
+      pageViews: this.pageViews,
+      environment: this.isDevelopment ? 'development' : 'production'
     };
   }
 }

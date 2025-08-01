@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置功能测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0F1419;
+            color: white;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056CC; }
+        pre { 
+            background: rgba(0, 0, 0, 0.3); 
+            padding: 15px; 
+            border-radius: 8px; 
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .status { 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin: 10px 0; 
+        }
+        .success { background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; }
+        .error { background: rgba(239, 68, 68, 0.2); border: 1px solid #EF4444; }
+    </style>
+</head>
+<body>
+    <h1>🛠️ 设置功能测试</h1>
+    
+    <div class="test-section">
+        <h2>📱 访问设置页面</h2>
+        <p>点击下面的链接访问设置页面：</p>
+        <a href="http://localhost:3008/?page=profile" target="_blank" 
+           style="color: #007AFF; text-decoration: none; font-weight: 600;">
+           🔗 打开设置页面
+        </a>
+    </div>
+
+    <div class="test-section">
+        <h2>💾 本地存储测试</h2>
+        <button onclick="checkStorage()">检查当前存储</button>
+        <button onclick="createTestSettings()">创建测试设置</button>
+        <button onclick="clearStorage()">清除存储</button>
+        <div id="storageResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 设置模拟操作</h2>
+        <button onclick="toggleSetting('notifications', 'dailyReminder')">切换每日提醒</button>
+        <button onclick="toggleSetting('privacy', 'profilePublic')">切换资料公开</button>
+        <button onclick="toggleSetting('display', 'darkMode')">切换夜间模式</button>
+        <div id="toggleResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 实时监控</h2>
+        <button onclick="startMonitoring()">开始监控</button>
+        <button onclick="stopMonitoring()">停止监控</button>
+        <div id="monitorResult"></div>
+    </div>
+
+    <script>
+        let monitorInterval = null;
+
+        // 检查当前存储
+        function checkStorage() {
+            const result = document.getElementById('storageResult');
+            
+            try {
+                const appSettings = localStorage.getItem('appSettings');
+                const userInfo = localStorage.getItem('userInfo');
+                const braceletActivated = localStorage.getItem('braceletActivated');
+                
+                result.innerHTML = `
+                    <div class="status success">
+                        <h4>✅ 存储检查结果</h4>
+                        <p><strong>应用设置:</strong></p>
+                        <pre>${appSettings ? JSON.stringify(JSON.parse(appSettings), null, 2) : '未设置'}</pre>
+                        <p><strong>用户信息:</strong></p>
+                        <pre>${userInfo ? JSON.stringify(JSON.parse(userInfo), null, 2) : '未设置'}</pre>
+                        <p><strong>手串激活:</strong> ${braceletActivated || '未激活'}</p>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="status error">
+                        <h4>❌ 检查失败</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 创建测试设置
+        function createTestSettings() {
+            const result = document.getElementById('storageResult');
+            
+            try {
+                const testSettings = {
+                    notifications: {
+                        dailyReminder: true,
+                        meritUpdates: false,
+                        wishFulfillment: true
+                    },
+                    privacy: {
+                        profilePublic: false,
+                        practiceRecordsVisible: true
+                    },
+                    display: {
+                        elderlyMode: false,
+                        darkMode: true
+                    }
+                };
+
+                const testUserInfo = {
+                    name: '测试用户',
+                    email: 'test@example.com',
+                    gender: '男',
+                    birthdate: '1990-01-01'
+                };
+
+                localStorage.setItem('appSettings', JSON.stringify(testSettings));
+                localStorage.setItem('userInfo', JSON.stringify(testUserInfo));
+                localStorage.setItem('braceletActivated', 'true');
+
+                result.innerHTML = `
+                    <div class="status success">
+                        <h4>✅ 测试设置已创建</h4>
+                        <p>已在本地存储中创建完整的测试数据</p>
+                        <p><em>现在刷新设置页面应该能看到正确的开关状态</em></p>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="status error">
+                        <h4>❌ 创建失败</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 清除存储
+        function clearStorage() {
+            const result = document.getElementById('storageResult');
+            
+            try {
+                localStorage.removeItem('appSettings');
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('braceletActivated');
+                
+                result.innerHTML = `
+                    <div class="status success">
+                        <h4>✅ 存储已清除</h4>
+                        <p>所有测试数据已删除</p>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="status error">
+                        <h4>❌ 清除失败</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 切换设置
+        function toggleSetting(category, key) {
+            const result = document.getElementById('toggleResult');
+            
+            try {
+                let settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+                
+                if (!settings[category]) {
+                    settings[category] = {};
+                }
+                
+                settings[category][key] = !settings[category][key];
+                localStorage.setItem('appSettings', JSON.stringify(settings));
+                
+                result.innerHTML = `
+                    <div class="status success">
+                        <h4>✅ 设置已切换</h4>
+                        <p><strong>${category}.${key}</strong> = ${settings[category][key]}</p>
+                        <pre>${JSON.stringify(settings, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="status error">
+                        <h4>❌ 切换失败</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 开始监控
+        function startMonitoring() {
+            const result = document.getElementById('monitorResult');
+            
+            if (monitorInterval) {
+                clearInterval(monitorInterval);
+            }
+            
+            result.innerHTML = `
+                <div class="status success">
+                    <h4>🔍 开始实时监控</h4>
+                    <p>正在监控 localStorage 变化...</p>
+                    <div id="monitorData"></div>
+                </div>
+            `;
+            
+            monitorInterval = setInterval(() => {
+                const monitorData = document.getElementById('monitorData');
+                const appSettings = localStorage.getItem('appSettings');
+                
+                if (monitorData) {
+                    monitorData.innerHTML = `
+                        <p><small>最后更新: ${new Date().toLocaleTimeString()}</small></p>
+                        <pre>${appSettings ? JSON.stringify(JSON.parse(appSettings), null, 2) : '无设置'}</pre>
+                    `;
+                }
+            }, 1000);
+        }
+
+        // 停止监控
+        function stopMonitoring() {
+            const result = document.getElementById('monitorResult');
+            
+            if (monitorInterval) {
+                clearInterval(monitorInterval);
+                monitorInterval = null;
+            }
+            
+            result.innerHTML = `
+                <div class="status success">
+                    <h4>⏹️ 监控已停止</h4>
+                </div>
+            `;
+        }
+
+        // 页面加载时自动检查
+        window.onload = function() {
+            checkStorage();
+        };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,278 @@
+/* 用户中心页面文字可见性修复 - 确保在深色背景下清晰可见 */
+
+/* 灰色文字修复 */
+.text-gray-600 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.text-gray-400 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-gray-500 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.text-gray-700 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.text-gray-800 {
+  color: #ffffff !important;
+}
+
+/* 灰色背景修复 */
+.bg-gray-50 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.bg-gray-100 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.bg-gray-200 {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 悬停状态修复 */
+.hover\:bg-gray-50:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.hover\:text-gray-700:hover {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.hover\:text-gray-800:hover {
+  color: #ffffff !important;
+}
+
+/* 特定元素修复 */
+.zen-card {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.zen-card h3 {
+  color: #ffffff !important;
+}
+
+.zen-card p {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.zen-card span {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 按钮修复 */
+button .text-gray-400 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+button .text-gray-600 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 输入框修复 */
+input, textarea, select {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 标签导航修复 */
+.grid button {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.grid button.bg-blue-500 {
+  background-color: #FFD700 !important;
+  color: #000000 !important;
+}
+
+.grid button:not(.bg-blue-500) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.grid button:not(.bg-blue-500):hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 功德统计卡片修复 */
+.bg-gradient-to-br {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%) !important;
+  border: 1px solid rgba(255, 215, 0, 0.3) !important;
+}
+
+/* 红色警告元素保持 */
+.text-red-600 {
+  color: #ef4444 !important;
+}
+
+.bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.text-red-400 {
+  color: #f87171 !important;
+}
+
+/* 蓝色主题元素修复 */
+.text-blue-600 {
+  color: #60a5fa !important;
+}
+
+.bg-blue-50 {
+  background-color: rgba(96, 165, 250, 0.1) !important;
+}
+
+/* 绿色成功元素修复 */
+.text-green-600 {
+  color: #22c55e !important;
+}
+
+.bg-green-50 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+/* 标题和重要文字修复 */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
+}
+
+/* 特殊情况：白色卡片内容保持原样 */
+.bg-white {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.bg-white .text-gray-600 {
+  color: #6b7280 !important;
+}
+
+.bg-white .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.bg-white .text-gray-800 {
+  color: #1f2937 !important;
+}
+
+/* 适老化模式下的增强对比 */
+.accessibility-mode .text-gray-600 {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.accessibility-mode .text-gray-400 {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500 !important;
+}
+
+.accessibility-mode .bg-gray-50 {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.accessibility-mode .bg-gray-100 {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border: 2px solid rgba(255, 255, 255, 0.35) !important;
+}
+
+/* 确保箭头和图标可见 */
+span[class*="→"] {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 1.2em !important;
+}
+
+/* 边框修复 */
+.border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.border-gray-300 {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 分割线修复 */
+.border-t {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.border-b {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 阴影修复 */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 确保所有文本在深色背景下可见 */
+* {
+  text-shadow: none !important;
+}
+
+/* 特殊文本元素强化 */
+label, .form-label {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500 !important;
+}
+
+/* 数据显示元素 */
+.text-2xl, .text-xl, .text-lg {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* 小文本增强可读性 */
+.text-xs, .text-sm {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 图标旁边的文字 */
+.flex.items-center span {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 状态指示器 */
+.rounded-full {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 进度条和状态条 */
+.bg-gradient-to-r {
+  background: linear-gradient(90deg, #FFD700, #FFA500) !important;
+}
+
+/* 重要提示文字 */
+.font-semibold, .font-bold {
+  color: #ffffff !important;
+}
+
+/* 链接样式 */
+a {
+  color: #60a5fa !important;
+}
+
+a:hover {
+  color: #93c5fd !important;
+} 

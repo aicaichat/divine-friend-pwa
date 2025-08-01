@@ -1,0 +1,188 @@
+/* ========================================
+   🌌 背景修复系统
+   确保应用始终保持正确的深色背景
+   ======================================== */
+
+/* ===== 强制深色背景 ===== */
+
+/* 确保html和body始终有深色背景 */
+html {
+  background: #0f0f23 !important;
+}
+
+body {
+  background: var(--gradient-cosmic) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh !important;
+  color: var(--text-celestial, #ffffff) !important;
+}
+
+/* 防止任何元素覆盖body背景 */
+body::before {
+  content: '' !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: var(--bg-starfield) !important;
+  opacity: 0.6 !important;
+  z-index: -2 !important;
+  pointer-events: none !important;
+}
+
+/* ===== 页面容器背景修复 ===== */
+
+/* 确保主要页面容器不会覆盖背景 */
+.zen-page-container,
+.zen-page-container-redesign,
+.page-container,
+#root,
+.app-container {
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+/* 主内容区域保持透明 */
+.zen-main-content,
+.zen-main-content-redesign,
+.main-content {
+  background: transparent !important;
+}
+
+/* ===== 组件背景修复 ===== */
+
+/* 卡片和组件使用半透明背景，不是纯白色 */
+.zen-card,
+.card,
+.modal-content,
+.drawer-content {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* 确保模态框不会有白色背景 */
+.ant-modal-content,
+.ant-drawer-content,
+.ant-popover-content {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== 防止白色背景出现 ===== */
+
+/* 禁止任何元素使用纯白色背景 */
+*:not(.allow-white-bg) {
+  background-color: transparent !important;
+}
+
+/* 如果必须有背景，使用半透明 */
+.needs-background {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ===== 适老化模式背景 ===== */
+
+/* 适老化模式使用纯白色背景和黑色文字 */
+.accessibility-mode body {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.accessibility-mode body::before {
+  display: none !important;
+}
+
+.accessibility-mode .zen-card,
+.accessibility-mode .card {
+  background: #f7f7f7 !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+/* ===== 响应式背景 ===== */
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll !important;
+  }
+}
+
+/* ===== 打印模式背景 ===== */
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  body::before {
+    display: none !important;
+  }
+}
+
+/* ===== 高对比度模式 ===== */
+
+@media (prefers-contrast: high) {
+  body {
+    background: #000000 !important;
+    color: #ffffff !important;
+  }
+  
+  .zen-card,
+  .card {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  }
+}
+
+/* ===== 减少动画模式 ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none !important;
+  }
+}
+
+/* ===== 调试模式 ===== */
+
+.debug-background body {
+  border: 3px solid red !important;
+}
+
+.debug-background .zen-card {
+  border: 2px solid yellow !important;
+}
+
+/* ===== 紧急修复 ===== */
+
+/* 如果其他样式失效，这是最后的保障 */
+.emergency-dark-bg {
+  background: linear-gradient(135deg, #0F1419 0%, #1A1B26 50%, #2D2E3F 100%) !important;
+  color: #ffffff !important;
+}
+
+/* 全局紧急修复类 */
+.force-dark-theme {
+  background: var(--gradient-cosmic) !important;
+  color: var(--text-celestial) !important;
+}
+
+.force-dark-theme * {
+  color: inherit !important;
+}
+
+/* ===== 页面加载时的背景保护 ===== */
+
+/* 防止页面加载时出现白色闪烁 */
+html,
+body {
+  background-color: #0f0f23 !important;
+}
+
+/* 页面未加载完成时的基础背景 */
+.loading-state,
+.initial-load {
+  background: #0f0f23 !important;
+  color: #ffffff !important;
+} 

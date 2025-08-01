@@ -190,10 +190,97 @@ export const ProfileIcon: React.FC<IconProps> = ({ size = 24, color = 'currentCo
   </svg>
 );
 
+// 开运祈福 - 八卦符咒
+export const FortuneIcon: React.FC<IconProps> = ({ size = 24, color = 'currentColor', strokeWidth = 1.5, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    {/* 八卦外圈 */}
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="12" cy="12" r="7" strokeWidth="1" opacity="0.6" />
+    
+    {/* 太极阴阳 */}
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 8a4 4 0 0 1 0 8 2 2 0 1 1 0-4 2 2 0 1 0 0-4z" fill={color} opacity="0.3" />
+    <circle cx="12" cy="10" r="1" fill={color} />
+    <circle cx="12" cy="14" r="1" fill="white" />
+    
+    {/* 八卦符号 */}
+    <path d="M12 2v2" strokeWidth="2" />
+    <path d="M12 20v2" strokeWidth="2" />
+    <path d="M22 12h-2" strokeWidth="2" />
+    <path d="M2 12h2" strokeWidth="2" />
+    
+    {/* 斜方向八卦 */}
+    <path d="M19.07 4.93l-1.41 1.41" strokeWidth="1.5" />
+    <path d="M6.34 17.66l-1.41 1.41" strokeWidth="1.5" />
+    <path d="M19.07 19.07l-1.41-1.41" strokeWidth="1.5" />
+    <path d="M6.34 6.34l-1.41-1.41" strokeWidth="1.5" />
+    
+    {/* 星辰点缀 */}
+    <circle cx="8" cy="8" r="0.5" fill={color} opacity="0.7" />
+    <circle cx="16" cy="8" r="0.5" fill={color} opacity="0.7" />
+    <circle cx="8" cy="16" r="0.5" fill={color} opacity="0.7" />
+    <circle cx="16" cy="16" r="0.5" fill={color} opacity="0.7" />
+    
+    {/* 运势光环 */}
+    <circle cx="12" cy="12" r="11" strokeWidth="0.5" opacity="0.3" strokeDasharray="2,2" />
+  </svg>
+);
+
+// 贵人相助 - 双手合十与连接
+export const GuirenIcon: React.FC<IconProps> = ({ size = 24, color = 'currentColor', strokeWidth = 1.5, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    {/* 双人连接 */}
+    <circle cx="8" cy="7" r="3" />
+    <circle cx="16" cy="7" r="3" />
+    
+    {/* 身体轮廓 */}
+    <path d="M3 20v-1a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1" />
+    <path d="M13 20v-1a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1" />
+    
+    {/* 贵人连接线 - 心灵相通 */}
+    <path d="M8 12c0-1 1-2 2-2h2c1 0 2 1 2 2" strokeWidth="2" opacity="0.7" />
+    <path d="M9 13c0-0.5 0.5-1 1-1h4c0.5 0 1 0.5 1 1" strokeWidth="1.5" opacity="0.5" />
+    
+    {/* 祥云装饰 */}
+    <path d="M5 4c0-1 1-2 2-2s2 1 2 2-1 2-2 2-2-1-2-2z" opacity="0.4" />
+    <path d="M15 4c0-1 1-2 2-2s2 1 2 2-1 2-2 2-2-1-2-2z" opacity="0.4" />
+    
+    {/* 福缘星光 */}
+    <circle cx="6" cy="9" r="0.5" fill={color} opacity="0.6" />
+    <circle cx="18" cy="9" r="0.5" fill={color} opacity="0.6" />
+    <circle cx="12" cy="6" r="0.8" fill={color} opacity="0.8" />
+    
+    {/* 光环效应 */}
+    <circle cx="12" cy="12" r="11" strokeWidth="0.5" opacity="0.2" strokeDasharray="3,3" />
+  </svg>
+);
+
 export const NavigationIcons = {
   TodayIcon,
   TreasureIcon,
   OracleIcon,
   GrowthIcon,
-  ProfileIcon
+  ProfileIcon,
+  FortuneIcon,
+  GuirenIcon
 };

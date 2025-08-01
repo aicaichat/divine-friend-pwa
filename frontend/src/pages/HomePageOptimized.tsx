@@ -429,7 +429,7 @@ const HomePageOptimized: React.FC<HomePageOptimizedProps> = ({ onNavigate }) => 
             } },
             { icon: '⚙️', title: '个人设置', desc: '偏好配置', action: () => {
               analytics.trackUserAction('feature_click', { feature: 'settings', title: '个人设置' });
-              onNavigate('settings');
+              onNavigate('settings-optimized');
             } }
           ].map((feature, index) => (
             <motion.div

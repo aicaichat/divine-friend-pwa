@@ -1,5 +1,5 @@
 # 后端生产环境 Dockerfile
-FROM python:3.11-slim
+FROM registry.cn-hangzhou.aliyuncs.com/library/python:3.11-slim
 
 # 设置工作目录
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制requirements文件
+# 复制依赖文件
 COPY requirements.txt .
 
 # 安装Python依赖

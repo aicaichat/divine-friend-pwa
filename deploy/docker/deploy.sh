@@ -121,15 +121,15 @@ build_images() {
     
     # 构建前端镜像
     log_info "构建前端镜像..."
-    docker build -f deploy/docker/Dockerfile.frontend -t divine-friend/frontend:latest ../../frontend
+    docker build -f deploy/docker/Dockerfile.frontend -t divine-friend/frontend:latest ./frontend
     
     # 构建管理后台镜像
     log_info "构建管理后台镜像..."
-    docker build -f deploy/docker/Dockerfile.admin -t divine-friend/admin:latest ../../admin-dashboard
+    docker build -f deploy/docker/Dockerfile.admin -t divine-friend/admin:latest ./admin-dashboard
     
     # 构建后端镜像
     log_info "构建后端镜像..."
-    docker build -f deploy/docker/Dockerfile.backend -t divine-friend/backend:latest ../../backend
+    docker build -f deploy/docker/Dockerfile.backend -t divine-friend/backend:latest ./backend
     
     log_success "镜像构建完成"
 }

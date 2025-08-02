@@ -1,5 +1,7 @@
 # 管理后台生产环境 Dockerfile
-FROM node:18-alpine AS builder
+
+# 构建阶段
+FROM registry.cn-hangzhou.aliyuncs.com/library/node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -17,7 +19,7 @@ COPY . .
 RUN npm run build
 
 # 生产环境 - Nginx
-FROM nginx:alpine
+FROM registry.cn-hangzhou.aliyuncs.com/library/nginx:alpine
 
 # 复制构建产物
 COPY --from=builder /app/dist /usr/share/nginx/html

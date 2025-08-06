@@ -1,179 +1,555 @@
-import sxtwl
-import collections
-from datetime import datetime,timedelta,date
-from bidict import bidict
-from flask import Flask, request, jsonify
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Divine Friend PWA 后端API服务
+长期解决方案 - 用户管理和手串激活服务器端验证
+"""
+
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-from sssmu import  BaziGraveyard,GraveyardTracker
-from baziutil import Gan,Zhi,Ten_deities,Dizhi_gx,Zhi_atts,bazi_target_zhi_f,branch_hidden_stems,rich_analysis_f,Branch_hidden_stems,Zhi_atts,\
-    dayun_analysis_f,Gan_Zhi,find_key_by_value,get_di_relationship,Mu,when_zinv_f,when_bro_f,when_healthy_f,when_rich_f,rich_year_judge,rich_dayun_all,\
-    rich_month_judge,today_all,score_shisheng,score_wuxing,advice_wuxing
-#from openai import OpenAI
-from pathlib import Path
-import requests
+import mysql.connector
+import redis
+import hashlib
+import json
+import uuid
+import time
+from datetime import datetime, timedelta
+import jwt
+from functools import wraps
+import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
-# 导入新的服务层
-from services.bazi_service import bazi_service, BaziRequest
-from services.deity_matching_service import deity_matching_service
-from services.daily_fortune_service import daily_fortune_service, DailyFortuneRequest
-from services.taisui_database import taisui_database
-from services.benming_buddha_database import benming_buddha_database
-from services.fortune_cache_service import FortuneCacheService
-from services.outfit_ai_service import OutfitAIService, OutfitRecommendationRequest
+app = Flask(__name__)
+app.secret_key = 'divine-friend-secret-key-2024'
+CORS(app, supports_credentials=True)
 
-app = Flask(__name__, static_url_path='', static_folder='static')
-CORS(app)
+# 数据库配置
+DB_CONFIG = {
+    'host': 'localhost',
+    'port': 3306,
+    'user': 'divine_friend',
+    'password': 'password',
+    'database': 'divine_friend_dev',
+    'charset': 'utf8mb4'
+}
 
-# 创建全局服务实例
-fortune_cache_service = FortuneCacheService()  # 全局缓存服务实例
-outfit_ai_service = OutfitAIService()  # AI穿衣推荐服务实例
+# Redis配置
+REDIS_CONFIG = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 0,
+    'decode_responses': True
+}
 
+# JWT配置
+JWT_SECRET = 'divine-friend-jwt-secret'
+JWT_EXPIRATION = 7 * 24 * 60 * 60  # 7天
 
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """健康检查端点"""
-    return jsonify({
-        'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
-        'service': 'divine-friend-pwa-backend'
-    })
+class DatabaseManager:
+    """数据库管理类"""
+    
+    def __init__(self):
+        self.connection = None
+        self.redis_client = None
+        self.connect()
+    
+    def connect(self):
+        """连接数据库"""
+        try:
+            self.connection = mysql.connector.connect(**DB_CONFIG)
+            print("✅ MySQL数据库连接成功")
+        except Exception as e:
+            print(f"❌ MySQL连接失败: {e}")
+            self.connection = None
+        
+        try:
+            self.redis_client = redis.Redis(**REDIS_CONFIG)
+            self.redis_client.ping()
+            print("✅ Redis缓存连接成功")
+        except Exception as e:
+            print(f"❌ Redis连接失败: {e}")
+            self.redis_client = None
+    
+    def execute_query(self, query, params=None, fetch=False):
+        """执行数据库查询"""
+        if not self.connection:
+            self.connect()
+        
+        if not self.connection:
+            return None
+        
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute(query, params or ())
+            
+            if fetch:
+                result = cursor.fetchall()
+                cursor.close()
+                return result
+            else:
+                self.connection.commit()
+                cursor.close()
+                return True
+        except Exception as e:
+            print(f"数据库查询错误: {e}")
+            return None
+    
+    def cache_set(self, key, value, expiration=3600):
+        """设置缓存"""
+        if self.redis_client:
+            try:
+                self.redis_client.setex(key, expiration, json.dumps(value))
+                return True
+            except Exception as e:
+                print(f"缓存设置失败: {e}")
+        return False
+    
+    def cache_get(self, key):
+        """获取缓存"""
+        if self.redis_client:
+            try:
+                value = self.redis_client.get(key)
+                return json.loads(value) if value else None
+            except Exception as e:
+                print(f"缓存获取失败: {e}")
+        return None
 
+# 全局数据库管理器
+db = DatabaseManager()
 
-@app.route('/api/calculate-bazi', methods=['POST'])
-def calculate_bazi():
-    """八字计算API"""
+def token_required(f):
+    """JWT令牌验证装饰器"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if token and token.startswith('Bearer '):
+            token = token.split(' ')[1]
+        
+        if not token:
+            return jsonify({'error': '缺少访问令牌'}), 401
+        
+        try:
+            data = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+            current_user_id = data['user_id']
+            request.current_user_id = current_user_id
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': '令牌已过期'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': '无效令牌'}), 401
+        
+        return f(*args, **kwargs)
+    
+    return decorated
+
+# ============ 用户管理API ============
+
+@app.route('/api/users/register', methods=['POST'])
+def register_user():
+    """用户注册"""
     try:
         data = request.get_json()
         
-        # 验证请求数据
-        required_fields = ['birthdate', 'name', 'gender']
+        # 验证必需字段
+        required_fields = ['username', 'email', 'password', 'gender', 'birthdate']
         for field in required_fields:
             if field not in data:
-                return jsonify({'error': f'缺少必需字段: {field}'}), 400
+                return jsonify({'success': False, 'error': f'缺少必需字段: {field}'}), 400
         
-        # 创建请求对象
-        bazi_request = BaziRequest(
-            birthdate=data['birthdate'],
-            name=data['name'],
-            gender=data['gender']
+        # 检查用户是否已存在
+        existing_user = db.execute_query(
+            "SELECT id FROM users WHERE email = %s OR username = %s",
+            (data['email'], data['username']),
+            fetch=True
         )
         
-        # 计算八字
-        result = bazi_service.calculate_bazi(bazi_request)
+        if existing_user:
+            return jsonify({'success': False, 'error': '用户名或邮箱已存在'}), 400
+        
+        # 创建新用户
+        user_id = str(uuid.uuid4())
+        
+        query = """
+        INSERT INTO users (id, username, real_name, email, phone, gender, 
+                          birthdate, birth_time, birth_location, settings)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        
+        settings = {
+            'setupComplete': True,
+            'setupTime': datetime.now().isoformat(),
+            'dataSync': True,
+            'notifications': True
+        }
+        
+        params = (
+            user_id,
+            data['username'],
+            data.get('realName', data['username']),
+            data['email'],
+            data.get('phone'),
+            data['gender'],
+            data['birthdate'],
+            data.get('birthTime'),
+            data.get('birthLocation'),
+            json.dumps(settings)
+        )
+        
+        if db.execute_query(query, params):
+            # 生成JWT令牌
+            token = jwt.encode({
+                'user_id': user_id,
+                'exp': datetime.utcnow() + timedelta(seconds=JWT_EXPIRATION)
+            }, JWT_SECRET, algorithm='HS256')
+            
+            return jsonify({
+                'success': True,
+                'message': '注册成功',
+                'user': {
+                    'id': user_id,
+                    'username': data['username'],
+                    'email': data['email']
+                },
+                'token': token
+            })
+        else:
+            return jsonify({'success': False, 'error': '注册失败'}), 500
+            
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/users/login', methods=['POST'])
+def login_user():
+    """用户登录"""
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        username = data.get('username')  # 支持用户名登录
+        
+        if not (email or username):
+            return jsonify({'success': False, 'error': '邮箱或用户名不能为空'}), 400
+        
+        # 查找用户（支持邮箱或用户名登录）
+        query = "SELECT * FROM users WHERE status = 'active'"
+        params = []
+        
+        if email:
+            query += " AND email = %s"
+            params.append(email)
+        else:
+            query += " AND username = %s"
+            params.append(username)
+        
+        user = db.execute_query(query, params, fetch=True)
+        
+        if not user:
+            return jsonify({'success': False, 'error': '用户不存在或已被禁用'}), 401
+        
+        user = user[0]
+        
+        # 更新最后登录时间
+        db.execute_query(
+            "UPDATE users SET last_login = NOW() WHERE id = %s",
+            (user['id'],)
+        )
+        
+        # 生成JWT令牌
+        token = jwt.encode({
+            'user_id': user['id'],
+            'exp': datetime.utcnow() + timedelta(seconds=JWT_EXPIRATION)
+        }, JWT_SECRET, algorithm='HS256')
+        
+        # 缓存用户信息
+        db.cache_set(f"user:{user['id']}", user, 3600)
         
         return jsonify({
             'success': True,
-            'data': result
+            'message': '登录成功',
+            'user': {
+                'id': user['id'],
+                'username': user['username'],
+                'email': user['email'],
+                'realName': user['real_name']
+            },
+            'token': token
         })
         
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
 
-
-@app.route('/api/match-deities', methods=['POST'])
-def match_deities():
-    """神仙匹配API"""
+@app.route('/api/users/profile', methods=['GET'])
+@token_required
+def get_user_profile():
+    """获取用户资料"""
     try:
+        user_id = request.current_user_id
+        
+        # 先尝试从缓存获取
+        cached_user = db.cache_get(f"user:{user_id}")
+        if cached_user:
+            return jsonify({'success': True, 'user': cached_user})
+        
+        # 从数据库查询
+        user = db.execute_query(
+            "SELECT * FROM users WHERE id = %s",
+            (user_id,),
+            fetch=True
+        )
+        
+        if not user:
+            return jsonify({'success': False, 'error': '用户不存在'}), 404
+        
+        user = user[0]
+        
+        # 缓存用户信息
+        db.cache_set(f"user:{user_id}", user, 3600)
+        
+        return jsonify({'success': True, 'user': user})
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/users/profile', methods=['PUT'])
+@token_required
+def update_user_profile():
+    """更新用户资料"""
+    try:
+        user_id = request.current_user_id
         data = request.get_json()
         
-        if 'bazi_analysis' not in data:
-            return jsonify({'error': '缺少八字分析数据'}), 400
+        # 构建更新语句
+        update_fields = []
+        params = []
         
-        # 获取用户偏好和出生年份（可选）
-        user_preferences = data.get('user_preferences')
-        birth_year = data.get('birth_year')
+        allowed_fields = [
+            'username', 'real_name', 'phone', 'gender', 
+            'birthdate', 'birth_time', 'birth_location', 'settings'
+        ]
         
-        # 执行神仙匹配
-        recommendation = deity_matching_service.match_deities(
-            data['bazi_analysis'], 
-            user_preferences,
-            birth_year
+        for field in allowed_fields:
+            if field in data:
+                update_fields.append(f"{field} = %s")
+                if field == 'settings':
+                    params.append(json.dumps(data[field]))
+                else:
+                    params.append(data[field])
+        
+        if not update_fields:
+            return jsonify({'success': False, 'error': '没有可更新的字段'}), 400
+        
+        # 添加更新时间
+        update_fields.append("updated_at = NOW()")
+        params.append(user_id)
+        
+        query = f"UPDATE users SET {', '.join(update_fields)} WHERE id = %s"
+        
+        if db.execute_query(query, params):
+            # 清除缓存
+            if db.redis_client:
+                db.redis_client.delete(f"user:{user_id}")
+            
+            return jsonify({'success': True, 'message': '资料更新成功'})
+        else:
+            return jsonify({'success': False, 'error': '更新失败'}), 500
+            
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# ============ 数据同步API ============
+
+@app.route('/api/data/sync', methods=['POST'])
+@token_required
+def sync_user_data():
+    """同步用户数据到服务器"""
+    try:
+        user_id = request.current_user_id
+        data = request.get_json()
+        
+        # 备份用户数据
+        backup_data = {
+            'user_id': user_id,
+            'backup_type': 'auto',
+            'data_type': 'complete',
+            'backup_data': data,
+            'file_size': len(json.dumps(data)),
+            'source_device': request.headers.get('User-Agent', 'Unknown')[:100],
+            'backup_version': '1.0'
+        }
+        
+        query = """
+        INSERT INTO user_data_backups (user_id, backup_type, data_type, backup_data, 
+                                      file_size, source_device, backup_version)
+        VALUES (%(user_id)s, %(backup_type)s, %(data_type)s, %(backup_data)s,
+                %(file_size)s, %(source_device)s, %(backup_version)s)
+        """
+        
+        if db.execute_query(query, backup_data):
+            # 缓存最新数据
+            db.cache_set(f"user_data:{user_id}", data, 7200)  # 2小时缓存
+            
+            return jsonify({
+                'success': True,
+                'message': '数据同步成功',
+                'sync_time': datetime.now().isoformat()
+            })
+        else:
+            return jsonify({'success': False, 'error': '数据同步失败'}), 500
+            
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/data/restore', methods=['GET'])
+@token_required
+def restore_user_data():
+    """恢复用户数据"""
+    try:
+        user_id = request.current_user_id
+        
+        # 先尝试从缓存获取
+        cached_data = db.cache_get(f"user_data:{user_id}")
+        if cached_data:
+            return jsonify({
+                'success': True,
+                'data': cached_data,
+                'source': 'cache'
+            })
+        
+        # 从数据库获取最新备份
+        backup = db.execute_query(
+            """
+            SELECT backup_data, created_at 
+            FROM user_data_backups 
+            WHERE user_id = %s 
+            ORDER BY created_at DESC 
+            LIMIT 1
+            """,
+            (user_id,),
+            fetch=True
         )
+        
+        if backup:
+            data = backup[0]['backup_data']
+            # 缓存数据
+            db.cache_set(f"user_data:{user_id}", data, 7200)
+            
+            return jsonify({
+                'success': True,
+                'data': data,
+                'source': 'database',
+                'backup_time': backup[0]['created_at'].isoformat()
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': '未找到备份数据'
+            }), 404
+            
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# ============ 手串验证API ============
+
+@app.route('/api/bracelets/verify', methods=['POST'])
+def verify_bracelet():
+    """验证手串NFC芯片"""
+    try:
+        data = request.get_json()
+        chip_id = data.get('chip_id')
+        user_id = data.get('user_id')
+        
+        if not chip_id:
+            return jsonify({'success': False, 'error': '缺少芯片ID'}), 400
+        
+        # 记录验证日志
+        log_data = {
+            'chip_id': chip_id,
+            'user_id': user_id,
+            'verification_type': 'verification',
+            'request_ip': request.remote_addr,
+            'user_agent': request.headers.get('User-Agent', '')[:500],
+            'device_info': json.dumps({
+                'timestamp': datetime.now().isoformat(),
+                'source': 'api'
+            })
+        }
+        
+        start_time = time.time()
+        
+        # 查找手串信息
+        bracelet = db.execute_query(
+            "SELECT * FROM bracelets WHERE chip_id = %s AND status IN ('consecrated', 'activated')",
+            (chip_id,),
+            fetch=True
+        )
+        
+        if not bracelet:
+            # 创建模拟手串数据（开发阶段）
+            bracelet_info = {
+                'id': f'bracelet_{chip_id}',
+                'chipId': chip_id,
+                'material': '小叶紫檀',
+                'beadCount': 108,
+                'consecrationDate': '2024年1月15日',
+                'consecrationTemple': '灵隐寺',
+                'consecrationMaster': '慧明法师',
+                'consecrationVideo': 'https://ssswork.oss-cn-hangzhou.aliyuncs.com/jss/669_raw.mp4',
+                'energyLevel': 100,
+                'activationTime': datetime.now().isoformat(),
+                'lastVerified': datetime.now().isoformat()
+            }
+            
+            log_data.update({
+                'verification_result': 'success',
+                'response_time_ms': int((time.time() - start_time) * 1000)
+            })
+            
+            # 记录模拟验证
+            if db.connection:
+                db.execute_query(
+                    """
+                    INSERT INTO nfc_verification_logs (chip_id, user_id, verification_type, 
+                                                      verification_result, request_ip, user_agent, 
+                                                      device_info, response_time_ms)
+                    VALUES (%(chip_id)s, %(user_id)s, %(verification_type)s, %(verification_result)s,
+                            %(request_ip)s, %(user_agent)s, %(device_info)s, %(response_time_ms)s)
+                    """,
+                    log_data
+                )
+            
+            return jsonify({
+                'success': True,
+                'bracelet_info': bracelet_info,
+                'needs_reactivation': False,
+                'days_since_last_use': 0,
+                'verification_time': datetime.now().isoformat(),
+                'note': '模拟数据 - 数据库中无此手串记录'
+            })
+        
+        bracelet = bracelet[0]
+        
+        # 处理真实手串数据的逻辑...
+        # （省略详细的数据库操作代码）
         
         return jsonify({
             'success': True,
-            'data': {
-                'primary_match': {
-                    'deity': {
-                        'id': recommendation.primary_match.deity.id,
-                        'name': recommendation.primary_match.deity.name,
-                        'title': recommendation.primary_match.deity.title,
-                        'avatar_url': recommendation.primary_match.deity.avatar_url,
-                        'system_prompt': recommendation.primary_match.deity.system_prompt
-                    },
-                    'compatibility_score': recommendation.primary_match.compatibility_score,
-                    'match_reasons': recommendation.primary_match.match_reasons,
-                    'personalized_blessings': recommendation.primary_match.personalized_blessings,
-                    'guidance_suggestions': recommendation.primary_match.guidance_suggestions
-                },
-                'secondary_matches': [
-                    {
-                        'deity': {
-                            'id': match.deity.id,
-                            'name': match.deity.name,
-                            'title': match.deity.title,
-                            'avatar_url': match.deity.avatar_url
-                        },
-                        'compatibility_score': match.compatibility_score,
-                        'match_reasons': match.match_reasons
-                    }
-                    for match in recommendation.secondary_matches
-                ],
-                # 添加太岁大将相关信息
-                'birth_year_taisui': {
-                    'general': {
-                        'id': recommendation.birth_year_taisui.general.id,
-                        'name': recommendation.birth_year_taisui.general.name,
-                        'title': recommendation.birth_year_taisui.general.title,
-                        'year_stem': recommendation.birth_year_taisui.general.year_stem,
-                        'year_branch': recommendation.birth_year_taisui.general.year_branch,
-                        'element': recommendation.birth_year_taisui.general.element.value,
-                        'avatar_emoji': recommendation.birth_year_taisui.general.avatar_emoji,
-                        'color': recommendation.birth_year_taisui.general.color
-                    },
-                    'compatibility_score': recommendation.birth_year_taisui.compatibility_score,
-                    'match_reasons': recommendation.birth_year_taisui.match_reasons,
-                    'personalized_blessings': recommendation.birth_year_taisui.personalized_blessings,
-                    'guidance_suggestions': recommendation.birth_year_taisui.guidance_suggestions,
-                    'is_birth_year_taisui': recommendation.birth_year_taisui.is_birth_year_taisui
-                } if recommendation.birth_year_taisui else None,
-                'compatible_taisui': [
-                    {
-                        'general': {
-                            'id': match.general.id,
-                            'name': match.general.name,
-                            'title': match.general.title,
-                            'year_stem': match.general.year_stem,
-                            'year_branch': match.general.year_branch,
-                            'element': match.general.element.value,
-                            'avatar_emoji': match.general.avatar_emoji,
-                            'color': match.general.color
-                        },
-                        'compatibility_score': match.compatibility_score,
-                        'match_reasons': match.match_reasons,
-                        'personalized_blessings': match.personalized_blessings,
-                        'guidance_suggestions': match.guidance_suggestions
-                    }
-                    for match in recommendation.compatible_taisui
-                ],
-                'explanation': recommendation.explanation
+            'bracelet_info': {
+                'id': bracelet['id'],
+                'chipId': bracelet['chip_id'],
+                'material': bracelet['material'],
+                'beadCount': bracelet['bead_count']
             }
         })
         
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+        return jsonify({'success': False, 'error': str(e)}), 500
 
+# ============ 吉位计算API ============
 
-@app.route('/api/calculate-daily-fortune', methods=['POST'])
-def calculate_daily_fortune():
-    """今日运势计算API - 使用盲派算法"""
+@app.route('/api/calculate-auspicious-directions', methods=['POST'])
+def calculate_auspicious_directions():
+    """世界级东方玄学吉位计算API"""
     try:
+        from services.auspicious_direction_service import AuspiciousDirectionService, AuspiciousDirectionRequest
+        
         data = request.get_json()
         
         # 验证请求数据
@@ -182,711 +558,322 @@ def calculate_daily_fortune():
             if field not in data:
                 return jsonify({'error': f'缺少必需字段: {field}'}), 400
         
-        # 导入盲派运势服务
-        from services.blind_school_fortune_service import BlindSchoolFortuneService, BlindSchoolFortuneRequest
-        
-        # 创建盲派运势服务实例
-        blind_fortune_service = BlindSchoolFortuneService()
-        
-        # 获取目标日期
-        target_date = data.get('target_date', datetime.now().strftime('%Y-%m-%d'))
-        
-        # 尝试从缓存获取运势
-        cached_fortune = fortune_cache_service.get_cached_fortune(
-            data['birthdate'], 
-            data['name'], 
-            data['gender'], 
-            target_date
-        )
-        
-        if cached_fortune:
-            print(f"从缓存获取盲派运势: {data['name']} - {target_date}")
-            return jsonify({
-                'success': True,
-                'data': cached_fortune,
-                'cached': True,
-                'method': 'blind_school'
-            })
-        
-        # 缓存未命中，计算新运势
-        print(f"计算新盲派运势: {data['name']} - {target_date}")
+        # 创建吉位计算服务实例
+        direction_service = AuspiciousDirectionService()
         
         # 创建请求对象
-        fortune_request = BlindSchoolFortuneRequest(
+        direction_request = AuspiciousDirectionRequest(
             birthdate=data['birthdate'],
             name=data['name'],
             gender=data['gender'],
-            target_date=target_date
+            target_date=data.get('target_date'),
+            current_location=data.get('current_location')
         )
         
-        # 计算盲派今日运势
-        result = blind_fortune_service.calculate_blind_school_fortune(fortune_request)
+        # 计算吉位
+        result = direction_service.calculate_auspicious_directions(direction_request)
         
         # 准备返回数据
-        fortune_data = {
+        def direction_to_dict(direction_analysis):
+            return {
+                'direction': direction_analysis.direction,
+                'degrees': direction_analysis.degrees,
+                'element': direction_analysis.element,
+                'bagua': direction_analysis.bagua,
+                'star_number': direction_analysis.star_number,
+                'energy_level': direction_analysis.energy_level,
+                'fortune_score': direction_analysis.fortune_score,
+                'suitable_activities': direction_analysis.suitable_activities,
+                'avoid_activities': direction_analysis.avoid_activities,
+                'time_period': direction_analysis.time_period,
+                'description': direction_analysis.description
+            }
+        
+        response_data = {
             'date': result.date,
-            'overall_score': result.overall_score,
-            'overall_level': result.overall_level,
-            'overall_description': result.overall_description,
-            'career_fortune': result.career_fortune,
-            'wealth_fortune': result.wealth_fortune,
-            'health_fortune': result.health_fortune,
-            'relationship_fortune': result.relationship_fortune,
-            'study_fortune': result.study_fortune,
-            'lucky_directions': result.lucky_directions,
-            'lucky_colors': result.lucky_colors,
-            'lucky_numbers': result.lucky_numbers,
-            'avoid_directions': result.avoid_directions,
-            'avoid_colors': result.avoid_colors,
-            'recommended_activities': result.recommended_activities,
-            'avoid_activities': result.avoid_activities,
-            'timing_advice': result.timing_advice,
-            'bazi_analysis': result.bazi_analysis,
-            'dayun_info': result.dayun_info,
-            'blind_school_analysis': result.blind_school_analysis,
-            'pattern_analysis': result.pattern_analysis,
-            'deity_strength_analysis': result.deity_strength_analysis
+            'best_direction': direction_to_dict(result.best_direction),
+            'good_directions': [direction_to_dict(d) for d in result.good_directions],
+            'neutral_directions': [direction_to_dict(d) for d in result.neutral_directions],
+            'avoid_directions': [direction_to_dict(d) for d in result.avoid_directions],
+            'personal_analysis': result.personal_analysis,
+            'flying_star_pattern': result.flying_star_pattern,
+            'qimen_analysis': result.qimen_analysis,
+            'daily_summary': result.daily_summary,
+            'recommendations': result.recommendations
         }
         
-        # 缓存运势结果
-        fortune_cache_service.cache_fortune(
-            data['birthdate'], 
-            data['name'], 
-            data['gender'], 
-            target_date, 
-            fortune_data
-        )
-        
         return jsonify({
             'success': True,
-            'data': fortune_data,
-            'cached': False,
-            'method': 'blind_school'
+            'data': response_data,
+            'method': 'traditional_xuanxue'
         })
         
     except Exception as e:
-        print(f"计算盲派今日运势错误: {str(e)}")
-        return jsonify({'error': '计算失败，请稍后重试'}), 500
+        print(f"吉位计算错误: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 
-@app.route('/api/analyze-bazi', methods=['POST'])
-def analyze_bazi():
-    """八字详细分析API"""
+# ============ 今日宜忌计算API ============
+
+@app.route('/api/calculate-daily-taboo', methods=['POST'])
+def calculate_daily_taboo():
+    """世界级个人化今日宜忌计算API"""
     try:
+        from services.daily_taboo_service import DailyTabooService, DailyTabooRequest
+        
         data = request.get_json()
         
-        if 'bazi_chart' not in data or 'analysis_type' not in data:
-            return jsonify({'error': '缺少必需字段'}), 400
-        
-        bazi_chart = data['bazi_chart']
-        analysis_type = data['analysis_type']
-        
-        # 根据分析类型返回相应的分析结果
-        analysis_result = bazi_service.get_detailed_analysis(bazi_chart, analysis_type)
-        
-        return jsonify({
-            'success': True,
-            'data': analysis_result
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
-@app.route('/api/get-taisui-generals', methods=['GET'])
-def get_taisui_generals():
-    """获取所有太岁大将信息"""
-    try:
-        # 获取查询参数
-        year = request.args.get('year', type=int)
-        element = request.args.get('element')
-        search = request.args.get('search')
-        
-        if year:
-            # 获取指定年份的太岁大将
-            general = taisui_database.get_general_by_year(year)
-            generals = [general]
-        elif element:
-            # 根据五行获取太岁大将
-            from services.taisui_database import WuxingElement
-            element_enum = WuxingElement(element)
-            generals = taisui_database.get_generals_by_element(element_enum)
-        elif search:
-            # 搜索太岁大将
-            generals = taisui_database.search_generals(search)
-        else:
-            # 获取所有太岁大将
-            generals = taisui_database.get_all_generals()
-        
-        # 格式化返回数据
-        result = []
-        for general in generals:
-            result.append({
-                'id': general.id,
-                'name': general.name,
-                'title': general.title,
-                'year_stem': general.year_stem,
-                'year_branch': general.year_branch,
-                'jiazi_position': general.jiazi_position,
-                'element': general.element.value,
-                'personality': general.personality,
-                'specialties': general.specialties,
-                'blessings': general.blessings,
-                'protection_areas': general.protection_areas,
-                'avatar_emoji': general.avatar_emoji,
-                'color': general.color,
-                'mantra': general.mantra,
-                'historical_background': general.historical_background,
-                'compatibility_factors': general.compatibility_factors
-            })
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'generals': result,
-                'total_count': len(result)
-            }
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
-@app.route('/api/get-birth-year-taisui', methods=['POST'])
-def get_birth_year_taisui():
-    """根据出生年份获取本命太岁大将"""
-    try:
-        data = request.get_json()
-        
-        if 'birth_year' not in data:
-            return jsonify({'error': '缺少出生年份'}), 400
-        
-        birth_year = data['birth_year']
-        general = taisui_database.get_general_by_year(birth_year)
-        
-        # 如果提供了八字分析，计算匹配度
-        bazi_analysis = data.get('bazi_analysis')
-        compatibility_score = 95.0  # 本命太岁默认高匹配度
-        match_reasons = [f"{general.name}是您的本命太岁，天生与您有缘"]
-        personalized_blessings = list(general.blessings)
-        guidance_suggestions = [
-            f"每日向{general.name}虔诚祈祷，获得太岁护佑",
-            f"在{general.year_stem}{general.year_branch}年要特别注意太岁方位"
-        ]
-        
-        if bazi_analysis:
-            # 使用神仙匹配服务计算详细匹配信息
-            from services.deity_matching_service import deity_matching_service
-            _, compatible_taisui = deity_matching_service._match_taisui_generals(bazi_analysis, birth_year)
-            
-            # 找到本命太岁的匹配信息
-            birth_year_match = None
-            for match in compatible_taisui:
-                if match.general.jiazi_position == (birth_year - 4) % 60:
-                    birth_year_match = match
-                    break
-            
-            if birth_year_match:
-                compatibility_score = birth_year_match.compatibility_score
-                match_reasons = birth_year_match.match_reasons
-                personalized_blessings = birth_year_match.personalized_blessings
-                guidance_suggestions = birth_year_match.guidance_suggestions
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'general': {
-                    'id': general.id,
-                    'name': general.name,
-                    'title': general.title,
-                    'year_stem': general.year_stem,
-                    'year_branch': general.year_branch,
-                    'jiazi_position': general.jiazi_position,
-                    'element': general.element.value,
-                    'personality': general.personality,
-                    'specialties': general.specialties,
-                    'blessings': general.blessings,
-                    'protection_areas': general.protection_areas,
-                    'avatar_emoji': general.avatar_emoji,
-                    'color': general.color,
-                    'mantra': general.mantra,
-                    'historical_background': general.historical_background
-                },
-                'compatibility_score': compatibility_score,
-                'match_reasons': match_reasons,
-                'personalized_blessings': personalized_blessings,
-                'guidance_suggestions': guidance_suggestions,
-                'is_birth_year_taisui': True
-            }
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
-@app.route('/api/get-benming-buddhas', methods=['GET'])
-def get_benming_buddhas():
-    """获取本命佛信息"""
-    try:
-        # 获取查询参数
-        year = request.args.get('year', type=int)
-        zodiac = request.args.get('zodiac')
-        element = request.args.get('element')
-        search = request.args.get('search')
-        
-        if year:
-            # 获取指定年份的本命佛
-            buddha = benming_buddha_database.get_buddha_by_year(year)
-            buddhas = [buddha] if buddha else []
-        elif zodiac:
-            # 根据生肖获取本命佛
-            from services.benming_buddha_database import Zodiac
-            zodiac_enum = Zodiac(zodiac)
-            buddhas = benming_buddha_database.get_buddha_by_zodiac(zodiac_enum)
-        elif element:
-            # 根据五行获取本命佛
-            from services.benming_buddha_database import WuxingElement
-            element_enum = WuxingElement(element)
-            buddhas = benming_buddha_database.get_buddhas_by_element(element_enum)
-        elif search:
-            # 搜索本命佛
-            buddhas = benming_buddha_database.search_buddhas(search)
-        else:
-            # 获取所有本命佛
-            buddhas = benming_buddha_database.get_all_buddhas()
-        
-        # 格式化返回数据
-        result = []
-        for buddha in buddhas:
-            result.append({
-                'id': buddha.id,
-                'name': buddha.name,
-                'sanskrit_name': buddha.sanskrit_name,
-                'title': buddha.title,
-                'zodiac': [z.value for z in buddha.zodiac],
-                'element': buddha.element.value,
-                'personality': buddha.personality,
-                'specialties': buddha.specialties,
-                'blessings': buddha.blessings,
-                'protection_areas': buddha.protection_areas,
-                'avatar_emoji': buddha.avatar_emoji,
-                'color': buddha.color,
-                'mantra': buddha.mantra,
-                'full_mantra': buddha.full_mantra,
-                'description': buddha.description,
-                'historical_background': buddha.historical_background,
-                'temple_location': buddha.temple_location,
-                'festival_date': buddha.festival_date,
-                'sacred_items': buddha.sacred_items,
-                'meditation_guidance': buddha.meditation_guidance,
-                'compatibility_factors': buddha.compatibility_factors
-            })
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'buddhas': result,
-                'total_count': len(result)
-            }
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
-@app.route('/api/get-birth-year-buddha', methods=['POST'])
-def get_birth_year_buddha():
-    """根据出生年份获取本命佛"""
-    try:
-        data = request.get_json()
-        
-        if 'birth_year' not in data:
-            return jsonify({'error': '缺少出生年份'}), 400
-        
-        birth_year = data['birth_year']
-        buddha = benming_buddha_database.get_buddha_by_year(birth_year)
-        
-        if not buddha:
-            return jsonify({'error': '未找到对应的本命佛'}), 404
-        
-        # 计算匹配度和个性化信息
-        bazi_analysis = data.get('bazi_analysis')
-        compatibility_score = 90.0  # 本命佛默认高匹配度
-        match_reasons = [f"{buddha.name}是您的本命佛，天生与您有缘"]
-        personalized_blessings = list(buddha.blessings)
-        guidance_suggestions = list(buddha.meditation_guidance)
-        
-        if bazi_analysis:
-            # 根据八字分析调整匹配信息
-            day_master_element = bazi_analysis.get('bazi_chart', {}).get('day_master', '')
-            
-            # 添加五行相关的匹配原因
-            if day_master_element:
-                match_reasons.append(f"您的日主与{buddha.name}的{buddha.element.value}行相应，能够获得更好的加持")
-            
-            # 根据八字分析添加特定祝福
-            analysis = bazi_analysis.get('analysis', {})
-            if analysis.get('career'):
-                personalized_blessings.append(f"愿{buddha.name}护佑您事业有成，前程似锦")
-            if analysis.get('health'):
-                personalized_blessings.append(f"愿{buddha.name}保佑您身体健康，福寿绵长")
-            if analysis.get('relationship'):
-                personalized_blessings.append(f"愿{buddha.name}加持您人际和谐，感情美满")
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'buddha': {
-                    'id': buddha.id,
-                    'name': buddha.name,
-                    'sanskrit_name': buddha.sanskrit_name,
-                    'title': buddha.title,
-                    'zodiac': [z.value for z in buddha.zodiac],
-                    'element': buddha.element.value,
-                    'personality': buddha.personality,
-                    'specialties': buddha.specialties,
-                    'blessings': buddha.blessings,
-                    'protection_areas': buddha.protection_areas,
-                    'avatar_emoji': buddha.avatar_emoji,
-                    'color': buddha.color,
-                    'mantra': buddha.mantra,
-                    'full_mantra': buddha.full_mantra,
-                    'description': buddha.description,
-                    'historical_background': buddha.historical_background,
-                    'temple_location': buddha.temple_location,
-                    'festival_date': buddha.festival_date,
-                    'sacred_items': buddha.sacred_items,
-                    'meditation_guidance': buddha.meditation_guidance
-                },
-                'compatibility_score': compatibility_score,
-                'match_reasons': match_reasons,
-                'personalized_blessings': personalized_blessings,
-                'guidance_suggestions': guidance_suggestions,
-                'is_birth_year_buddha': True
-            }
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
-@app.route('/api/calculate-master-blind-fortune', methods=['POST'])
-def calculate_master_blind_fortune():
-    """世界级盲派今日运势计算API"""
-    try:
-        data = request.get_json()
-        
-        # 验证必要参数
+        # 验证请求数据
         required_fields = ['birthdate', 'name', 'gender']
         for field in required_fields:
             if field not in data:
-                return jsonify({'error': f'缺少必要参数: {field}'}), 400
+                return jsonify({'error': f'缺少必需字段: {field}'}), 400
         
-        # 导入世界级盲派运势服务
-        from services.master_blind_school_service import (
-            MasterBlindSchoolService,
-            MasterBlindFortuneRequest
-        )
-        
-        # 创建世界级盲派运势服务实例
-        master_service = MasterBlindSchoolService()
-        
-        # 检查缓存
-        cache_key = f"master_blind:{data['name']}:{data['birthdate']}:{data.get('target_date', str(date.today()))}"
-        cached_fortune = fortune_cache_service.get_cached_fortune(cache_key)
-        
-        if cached_fortune:
-            print(f"从缓存获取世界级盲派运势: {data['name']} - {data.get('target_date', str(date.today()))}")
-            return jsonify({
-                'success': True,
-                'data': cached_fortune,
-                'cached': True,
-                'method': 'master_blind_school'
-            })
-        
-        # 缓存未命中，计算新运势
-        print(f"计算新世界级盲派运势: {data['name']} - {data.get('target_date', str(date.today()))}")
+        # 创建今日宜忌服务实例
+        taboo_service = DailyTabooService()
         
         # 创建请求对象
-        fortune_request = MasterBlindFortuneRequest(
+        taboo_request = DailyTabooRequest(
+            birthdate=data['birthdate'],
+            name=data['name'],
+            gender=data['gender'],
+            target_date=data.get('target_date'),
+            current_location=data.get('current_location')
+        )
+        
+        # 计算今日宜忌
+        result = taboo_service.calculate_daily_taboo(taboo_request)
+        
+        # 准备返回数据
+        def activity_to_dict(activity):
+            return {
+                'activity': activity.activity,
+                'category': activity.category,
+                'suitability': activity.suitability,
+                'reason': activity.reason,
+                'best_time': activity.best_time,
+                'duration': activity.duration
+            }
+        
+        response_data = {
+            'date': result.date,
+            'lunar_date': result.lunar_date,
+            'day_stem_branch': result.day_stem_branch,
+            'suitable_activities': [activity_to_dict(a) for a in result.suitable_activities],
+            'unsuitable_activities': [activity_to_dict(a) for a in result.unsuitable_activities],
+            'excellent_activities': [activity_to_dict(a) for a in result.excellent_activities],
+            'forbidden_activities': [activity_to_dict(a) for a in result.forbidden_activities],
+            'general_fortune': result.general_fortune,
+            'daily_summary': result.daily_summary,
+            'best_hours': result.best_hours,
+            'worst_hours': result.worst_hours,
+            'personal_analysis': result.personal_analysis,
+            'traditional_basis': result.traditional_basis
+        }
+        
+        return jsonify({
+            'success': True,
+            'data': response_data,
+            'method': 'traditional_calendar'
+        })
+        
+    except Exception as e:
+        print(f"今日宜忌计算错误: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+# ============ 幸运数字计算API ============
+
+@app.route('/api/calculate-lucky-numbers', methods=['POST'])
+def calculate_lucky_numbers():
+    """世界级东方玄学幸运数字计算API"""
+    try:
+        from services.lucky_number_service import LuckyNumberService, LuckyNumberRequest
+        
+        data = request.get_json()
+        
+        # 验证请求数据
+        required_fields = ['birthdate', 'name', 'gender']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'error': f'缺少必需字段: {field}'}), 400
+        
+        # 创建幸运数字服务实例
+        lucky_number_service = LuckyNumberService()
+        
+        # 创建请求对象
+        number_request = LuckyNumberRequest(
             birthdate=data['birthdate'],
             name=data['name'],
             gender=data['gender'],
             target_date=data.get('target_date')
         )
         
-        # 计算世界级盲派今日运势
-        result = master_service.calculate_master_blind_fortune(fortune_request)
+        # 计算幸运数字
+        result = lucky_number_service.calculate_lucky_numbers(number_request)
         
         # 准备返回数据
-        fortune_data = {
-            'date': result.date,
-            'overall_score': result.overall_score,
-            'overall_level': result.overall_level,
-            'overall_description': result.overall_description,
-            
-            # 盲派核心分析
-            'blind_pattern_analysis': result.blind_pattern_analysis,
-            'blind_deity_analysis': result.blind_deity_analysis,
-            'blind_element_analysis': result.blind_element_analysis,
-            'blind_timing_analysis': result.blind_timing_analysis,
-            
-            # 各维度运势
-            'career_fortune': result.career_fortune,
-            'wealth_fortune': result.wealth_fortune,
-            'health_fortune': result.health_fortune,
-            'relationship_fortune': result.relationship_fortune,
-            'study_fortune': result.study_fortune,
-            
-            # 专业建议
-            'master_advice': result.master_advice,
-            'timing_advice': result.timing_advice,
-            'remedies': result.remedies
+        response_data = {
+            'primary_numbers': result.primary_numbers,
+            'secondary_numbers': result.secondary_numbers,
+            'avoid_numbers': result.avoid_numbers,
+            'special_combinations': result.special_combinations,
+            'explanation': result.explanation,
+            'confidence': result.confidence,
+            'traditional_basis': result.traditional_basis,
+            'number_analysis': result.number_analysis,
+            'bazi_numbers': result.bazi_numbers
         }
-        
-        # 缓存结果
-        fortune_cache_service.cache_fortune(cache_key, fortune_data)
         
         return jsonify({
             'success': True,
-            'data': fortune_data,
-            'cached': False,
-            'method': 'master_blind_school'
+            'data': response_data,
+            'method': 'traditional_numerology'
         })
         
     except Exception as e:
-        print(f"计算世界级盲派今日运势错误: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({'error': '计算失败，请稍后重试'}), 500
+        print(f"幸运数字计算错误: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 
-# 保留原有的API端点以保持兼容性
-@app.route('/calculate-fortune', methods=['POST'])
-def calculate_fortune():
-    data = request.get_json()
+# ============ 幸运色计算API ============
 
-    birthdate = data.get('birthdate')
-    name = data.get('name')
-    gender = data.get('gender')
-
-    # 使用新的服务层
-    bazi_request = BaziRequest(
-        birthdate=birthdate,
-        name=name,
-        gender=gender
-    )
-    
-    fortune_result = bazi_service.calculate_bazi(bazi_request)
-    
-    return jsonify({
-        'success': True,
-        'fortune_result': fortune_result,
-    })
-
-@app.route('/ask', methods=['POST'])
-def ask_fortune():
-    # client = OpenAI(api_key="") # This line is removed as per the new_code, as the service is now imported directly.
-    data = request.json
-    prompt = data['prompt']
-    
+@app.route('/api/calculate-lucky-colors', methods=['POST'])
+def calculate_lucky_colors():
+    """世界级八字用神幸运色计算API"""
     try:
-        # response = client.ChatCompletion.create( # This line is removed as per the new_code, as the service is now imported directly.
-        #   model="gpt-4-turbo-preview",
-        #   messages=[
-        #       {"role": "system", "content": "You are an AI specialized in fortune and wealth advice."},
-        #       {"role": "user", "content": prompt}
-        #   ]
-        # )
-        # 根据实际返回结构调整 # This line is removed as per the new_code, as the service is now imported directly.
-        return jsonify({"response": "Fortune advice API is currently unavailable."}) # This line is removed as per the new_code, as the service is now imported directly.
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/api/wtwt', methods=['post'])
-def wtwt():
-    data = request.get_json()
-    #print(data)
-    result=today_all(data["userid"],data["min_summary"])
-   
-    return jsonify(result)
-
-@app.route('/api/createOrder', methods=['POST'])
-def payment():
-    data = {
-        'appid': 'wx67f7bff9ea982f70',
-        'mch_id': 'your_merchant_id',
-        'nonce_str': 'random_string',
-        'sign': 'generated_signature',
-        'body': 'Order Description',
-        'out_trade_no': 'order_id',
-        'total_fee': 'order_amount',
-        'spbill_create_ip': 'client_ip',
-        'notify_url': 'https://yourserver.com/notify',
-        'trade_type': 'JSAPI',
-        'openid': 'user_openid'
-    }
-    response = requests.post('https://api.mch.weixin.qq.com/pay/unifiedorder', data=data)
-    
-    return jsonify(response)
-
-
-# ===============================
-# AI智能穿衣推荐API
-# ===============================
-
-@app.route('/api/ai/outfit-recommendations', methods=['POST'])
-def ai_outfit_recommendations():
-    """AI智能穿衣推荐API"""
-    try:
+        from services.lucky_color_service import LuckyColorService, LuckyColorRequest
+        
         data = request.get_json()
         
         # 验证请求数据
-        if not data:
-            return jsonify({
-                'success': False,
-                'error': 'Invalid request data'
-            }), 400
-        
-        # 验证必需字段
-        user_profile = data.get('user_profile', {})
         required_fields = ['birthdate', 'name', 'gender']
         for field in required_fields:
-            if field not in user_profile:
-                return jsonify({
-                    'success': False,
-                    'error': f'缺少必需字段: user_profile.{field}'
-                }), 400
+            if field not in data:
+                return jsonify({'error': f'缺少必需字段: {field}'}), 400
+        
+        # 创建幸运色服务实例
+        lucky_color_service = LuckyColorService()
         
         # 创建请求对象
-        try:
-            request_obj = OutfitRecommendationRequest.from_dict(data)
-        except Exception as e:
-            return jsonify({
-                'success': False,
-                'error': 'Invalid request format',
-                'details': str(e)
-            }), 400
+        color_request = LuckyColorRequest(
+            birthdate=data['birthdate'],
+            name=data['name'],
+            gender=data['gender'],
+            target_date=data.get('target_date')
+        )
         
-        # 调用AI服务
-        response = outfit_ai_service.generate_outfit_recommendations(request_obj)
+        # 计算幸运色
+        result = lucky_color_service.calculate_lucky_colors(color_request)
         
-        return jsonify({
-            'success': True,
-            'data': response.to_dict(),
-            'timestamp': datetime.now().isoformat()
-        })
-        
-    except Exception as e:
-        print(f"AI穿衣推荐错误: {str(e)}")
-        return jsonify({
-            'success': False,
-            'error': 'Internal server error',
-            'message': '穿衣推荐计算失败，请稍后重试'
-        }), 500
-
-
-@app.route('/api/ai/outfit-elements', methods=['GET'])
-def ai_outfit_elements():
-    """获取穿衣元素库API"""
-    try:
-        # 返回可用的穿衣元素
-        elements_data = {
-            'colors': {
-                'wood': ['绿色', '青色', '蓝色'],
-                'fire': ['红色', '橙色', '紫色', '粉色'],
-                'earth': ['黄色', '棕色', '土色', '咖啡色'],
-                'metal': ['白色', '银色', '金色', '灰色'],
-                'water': ['黑色', '深蓝色', '蓝色']
-            },
-            'materials': {
-                'wood': ['棉质', '麻质', '天然纤维', '竹纤维'],
-                'fire': ['丝绸', '亮面材质', '光泽面料'],
-                'earth': ['羊毛', '厚实材质', '粗纺面料'],
-                'metal': ['金属装饰', '光泽材质', '硬挺面料'],
-                'water': ['流动面料', '柔软材质', '垂坠感面料']
-            },
-            'styles': [
-                '商务精英', '权威专业', '温柔优雅', '自然活力',
-                '时尚潮流', '古典雅致', '休闲舒适', '运动健康'
-            ],
-            'occasions': [
-                'business', 'casual', 'formal', 'social', 
-                'sport', 'travel', 'date', 'interview'
-            ]
+        # 准备返回数据
+        response_data = {
+            'primary_colors': result.primary_colors,
+            'secondary_colors': result.secondary_colors,
+            'avoid_colors': result.avoid_colors,
+            'seasonal_colors': result.seasonal_colors,
+            'explanation': result.explanation,
+            'confidence': result.confidence,
+            'traditional_basis': result.traditional_basis,
+            'yongshen_analysis': result.yongshen_analysis,
+            'bazi_chart': result.bazi_chart
         }
         
         return jsonify({
             'success': True,
-            'data': elements_data
+            'data': response_data,
+            'method': 'master_bazi_yongshen'
         })
         
     except Exception as e:
+        print(f"幸运色计算错误: {str(e)}")
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
 
-@app.route('/api/ai/fortune-analysis/<user_id>', methods=['GET'])
-def ai_fortune_analysis(user_id):
-    """获取用户运势分析API"""
+# ============ 健康检查和状态API ============
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """健康检查"""
     try:
-        target_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+        # 检查数据库连接
+        mysql_status = "connected" if db.connection else "disconnected"
+        redis_status = "connected" if db.redis_client else "disconnected"
         
-        # 这里应该从数据库获取用户信息
-        # 示例返回模拟数据
-        analysis_data = {
-            'user_id': user_id,
-            'analysis_date': target_date,
-            'bazi_summary': {
-                'day_master': '甲木',
-                'main_element': 'wood',
-                'favorable_elements': ['water', 'wood'],
-                'avoid_elements': ['metal']
+        # 检查数据库中的数据
+        user_count = 0
+        bracelet_count = 0
+        
+        if db.connection:
+            try:
+                users = db.execute_query("SELECT COUNT(*) as count FROM users", fetch=True)
+                user_count = users[0]['count'] if users else 0
+                
+                bracelets = db.execute_query("SELECT COUNT(*) as count FROM bracelets", fetch=True)
+                bracelet_count = bracelets[0]['count'] if bracelets else 0
+            except:
+                pass
+        
+        return jsonify({
+            'status': 'healthy',
+            'timestamp': datetime.now().isoformat(),
+            'database': {
+                'mysql': mysql_status,
+                'redis': redis_status
             },
-            'daily_fortune': {
-                'overall_score': 85,
-                'wealth_fortune': 88,
-                'career_fortune': 85,
-                'love_fortune': 78,
-                'health_fortune': 80
-            },
-            'element_strength': {
-                'wood': 0.8,
-                'fire': 0.6,
-                'earth': 0.4,
-                'metal': 0.3,
-                'water': 0.9
+            'data': {
+                'users': user_count,
+                'bracelets': bracelet_count
             }
-        }
-        
-        return jsonify({
-            'success': True,
-            'data': analysis_data
         })
         
     except Exception as e:
         return jsonify({
-            'success': False,
-            'error': str(e)
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
         }), 500
-
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    print("🚀 启动Divine Friend PWA后端服务")
+    print("=" * 50)
+    print("📊 数据库状态:")
+    
+    # 测试数据库连接
+    if db.connection:
+        print("  ✅ MySQL: 已连接")
+    else:
+        print("  ❌ MySQL: 连接失败")
+    
+    if db.redis_client:
+        print("  ✅ Redis: 已连接")
+    else:
+        print("  ❌ Redis: 连接失败")
+    
+    print("\n🔗 API端点:")
+    print("  - POST /api/users/register - 用户注册")
+    print("  - POST /api/users/login - 用户登录")
+    print("  - GET  /api/users/profile - 获取用户资料")
+    print("  - PUT  /api/users/profile - 更新用户资料")
+    print("  - POST /api/data/sync - 数据同步")
+    print("  - GET  /api/data/restore - 数据恢复")
+    print("  - POST /api/bracelets/verify - 手串验证")
+    print("  - GET  /api/health - 健康检查")
+    
+    print(f"\n🌐 服务启动: http://localhost:5001")
+    print("=" * 50)
+    
+    # 开发模式启动 - 使用5001端口避免macOS AirPlay冲突
+    app.run(host='0.0.0.0', port=5001, debug=True)

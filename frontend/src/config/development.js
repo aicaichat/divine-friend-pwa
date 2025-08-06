@@ -1,7 +1,7 @@
 // 开发环境配置
 export const config = {
   // API配置
-  API_BASE_URL: 'http://localhost:5000',
+  API_BASE_URL: 'http://localhost:5001',
   API_TIMEOUT: 10000,
   
   // 应用配置
